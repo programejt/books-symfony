@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book index{% endblock %}
+
+{% block body %}
+    <h1>Book index</h1>
+
+    <div class="container mb-5">
+      <form action="/books" method="get" class="row">
+        <div class="col-12 col-sm-3 d-flex align-items-center">Search books</div>
+        <div class="col-12 col-sm-6">
+          <input type="text" class="form-control col-6" name="book-title-or-author" value="{{ searchValue }}" placeholder="Search books">
+        </div>
+        <div class="col-12 col-sm-3">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Year</th>
+                <th>Isbn</th>
+                <th>Photo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.description }}</td>
+                <td>{{ book.year }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>
+                  {% if book.photo %}
+                    <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo">
+                  {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('app_books_show', {'id': book.id}) }}">show</a>
+                    <a href="{{ path('app_books_edit', {'id': book.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+      <a href="{{ path('app_books_new') }}" class="btn btn-success">Create new</a>
+    </div>
+
+    <div class="mt-5">
+      {% if currentPage > 1 %}
+        <a href="{{ path('app_books_index', {
+          'page': currentPage - 1,
+          'book-title-or-author': searchValue
+        }) }}" class="btn btn-secondary">Previous page</a>
+      {% endif %}
+      {% if currentPage < pagesCount %}
+        <a href="{{ path('app_books_index', {
+          'page': currentPage + 1,
+          'book-title-or-author': searchValue
+        }) }}" class="btn btn-secondary">Next page</a>
+      {% endif %}
+    </div>
+{% endblock %}

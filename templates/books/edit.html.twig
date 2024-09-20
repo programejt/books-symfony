@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block body %}
+    <h1>Edit Book</h1>
+
+    {% if book.photo %}
+      <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo">
+    {% endif %}
+
+    {{ include('books/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_books_index') }}" class="btn btn-secondary">Back to list</a>
+
+    {{ include('books/_delete_form.html.twig') }}
+{% endblock %}

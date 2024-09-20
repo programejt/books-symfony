@@ -1,3 +1,20 @@
 body {
-    background-color: skyblue;
+    /* background-color: #222222;
+    color: #dddddd; */
+    margin: 0;
+    line-height: 1.3;
+    font-size: 18px;
+}
+
+input, select, textarea {
+  /* background-color: #303030; */
+  /* color: #dddddd; */
+  font-size: 18px;
+  /* border: 2px solid #272727; */
+  border-radius: 5px;
+}
+
+img {
+  max-height: 100px;
+  max-width: 100px;
 }

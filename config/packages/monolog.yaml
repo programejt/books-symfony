@@ -1,6 +1,13 @@
 monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - books
+    handlers:
+      books:
+        type: stream
+        path: "%kernel.logs_dir%/books.log"
+        level: info
+        channels: books
 
 when@dev:
     monolog:
