@@ -46,7 +46,7 @@ class BookType extends AbstractType
           $form = $event->getForm();
 
           if ($book && null !== $book->getPhoto()) {
-              $form->add('delete-photo', CheckboxType::class, [
+              $form->add('deletePhoto', CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
                 'label' => 'Delete photo'
