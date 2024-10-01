@@ -16,9 +16,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use App\Event\BookAddEvent;
 use App\EventListener\BookAddEventListener;
-use App\Service\IsbnGenerator;
-use Symfony\Component\Validator\Constraints\Isbn;
-use Symfony\Component\Validator\Constraints\IsbnValidator;
 
 #[Route('/books')]
 final class BooksController extends AbstractController
@@ -26,42 +23,22 @@ final class BooksController extends AbstractController
     #[Route(name: 'app_books_index', methods: ['GET'])]
     public function index(Request $request, BooksRepository $booksRepository): Response
     {
-      $isbn = new Isbn(Isbn::ISBN_13);
-      // $value = ;
-
-      $validator = new IsbnValidator();
-
-      // $validator->validate(
-      //   // IsbnGenerator::generate(),
-      //   123324416,
-      //   $isbn
-      // );
-
-      try {
-        $book = new Book();
-        $book->setIsbn(123123);
-      } catch (\Exception $e) {
-        var_dump($e->getMessage());
-      }
-
       $currentPage = (int) ($request->get('page') ?? 1);
 
       $searchValue = $request->get('book-title-or-author');
 
-      IsbnGenerator::generate();
-
-      if ($currentPage < 0) {
+      if ($currentPage < 1) {
         $currentPage = 1;
       }
 
-      $limit = 10;
+      $limit = 12;
 
       $books = $booksRepository->findPaginated($searchValue, $currentPage, $limit);
 
       return $this->render('books/index.html.twig', [
           'searchValue' => $searchValue,
           'currentPage' => $currentPage,
-          'pagesCount' => $books->count() / $limit,
+          'pagesCount' => ceil($books->count() / $limit),
           'books' => $books,
       ]);
     }

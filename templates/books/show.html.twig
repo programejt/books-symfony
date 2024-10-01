@@ -3,10 +3,21 @@
 {% block title %}Book{% endblock %}
 
 {% block body %}
-    <h1>Book</h1>
+    <header class="text-center">
+      <h1>Book</h1>
+      <h2>{{ book.title }}</h2>
+    </header>
 
     <table class="table">
         <tbody>
+            <tr>
+                <th>Photo</th>
+                <td>
+                  {% if book.photo %}
+                    <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo">
+                  {% endif %}
+                </td>
+            </tr>
             <tr>
                 <th>Id</th>
                 <td>{{ book.id }}</td>
@@ -31,18 +42,8 @@
                 <th>Isbn</th>
                 <td>{{ book.isbn }}</td>
             </tr>
-            <tr>
-                <th>Photo</th>
-                <td>
-                  {% if book.photo %}
-                    <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo">
-                  {% endif %}
-                </td>
-            </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('app_books_index') }}" class="btn btn-secondary">Back to list</a>
 
     <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">Edit</a>
 
