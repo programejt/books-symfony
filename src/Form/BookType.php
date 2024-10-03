@@ -37,7 +37,7 @@ class BookType extends AbstractType
                     ],
                     'mimeTypesMessage' => 'Please upload a valid image',
                 ])
-                ],
+              ],
             ])
         ;
 
