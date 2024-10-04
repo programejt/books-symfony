@@ -1,0 +1,16 @@
+{% set defaultAttr = {
+  'class': (field_errors(field)|length ? 'is-invalid' : '')~' form-control'
+} %}
+{% if attr|default(null) != null %}
+  {% set defaultAttr = defaultAttr|merge(attr) %}
+{% endif %}
+
+<div class="mb-3">
+  <label class="form-label" for="{{ field.vars.id }}">{{ field_label(field) }}</label>
+  {{ form_widget(field, {
+    'attr': defaultAttr
+  }) }}
+  {% for error in field_errors(field) %}
+    <div class="invalid-feedback">{{ error }}</div>
+  {% endfor %}
+</div>

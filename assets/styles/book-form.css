@@ -1,3 +1,7 @@
+#book-form {
+  max-width: 600px;
+}
+
 .buttons-container > * {
   display: block;
   text-align: center;

@@ -115,11 +115,11 @@ class Book
     return $this;
   }
 
-  public function getPhotosPath(): string {
+  public function getPhotosDir(): string {
     return "assets/images/books/".$this->id;
   }
 
-  public function getSystemPhotosPath(): string {
-    return $_SERVER['DOCUMENT_ROOT']."/public/".$this->getPhotosPath();
+  public function getSystemPhotosDir(): string {
+    return $_SERVER['DOCUMENT_ROOT'].$this->getPhotosDir();
   }
 }

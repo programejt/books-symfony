@@ -67,7 +67,7 @@ final class BooksController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       $entityManager->persist($book);
 
-      $result = $this->store($form, $book, $entityManager);
+      $result = $this->store($form, $book, null, $entityManager);
 
       if ($result) {
         // $listener = $this->container->get(BookAddEventListener::class);
@@ -77,7 +77,11 @@ final class BooksController extends AbstractController
         $dispatcher->dispatch(new BookAddEvent($book), BookAddEvent::NAME);
       }
 
-      return $this->redirectToRoute('app_books_index', [], Response::HTTP_SEE_OTHER);
+      return $this->redirectToRoute(
+        'app_books_show',
+        ['id' => $book->getId()],
+        Response::HTTP_SEE_OTHER
+      );
     }
 
     return $this->render('books/new.html.twig', [
@@ -98,14 +102,18 @@ final class BooksController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        $this->store($form, $book, $entityManager);
+      $this->store($form, $book, $bookOriginal, $entityManager);
 
-        return $this->redirectToRoute('app_books_index', [], Response::HTTP_SEE_OTHER);
+      return $this->redirectToRoute(
+        'app_books_show',
+        ['id' => $book->getId()],
+        Response::HTTP_SEE_OTHER
+      );
     }
 
     return $this->render('books/edit.html.twig', [
-        'book' => $bookOriginal,
-        'form' => $form,
+      'book' => $bookOriginal,
+      'form' => $form,
     ]);
   }
 
@@ -116,33 +124,46 @@ final class BooksController extends AbstractController
     EntityManagerInterface $entityManager
   ): Response
   {
-    if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->getPayload()->getString('_token'))) {
-        $entityManager->remove($book);
-        $entityManager->flush();
+    if ($this->isCsrfTokenValid(
+      'delete'.$book->getId(),
+      $request->getPayload()->getString('_token')
+    )) {
+      $entityManager->remove($book);
+      $entityManager->flush();
     }
 
-    return $this->redirectToRoute('app_books_index', [], Response::HTTP_SEE_OTHER);
+    return $this->redirectToRoute(
+      'app_books_index',
+      [],
+      Response::HTTP_SEE_OTHER
+    );
   }
 
   private function store(
     FormInterface &$form,
     Book &$book,
+    ?Book &$bookOriginal,
     EntityManagerInterface &$entityManager
   ): bool {
     $newPhoto = $form->get('photo')->getData();
     $deletePhoto = $form->has('delete-photo') && $form->get('delete-photo');
-    $photo = $book->getPhoto();
+    $photo = $bookOriginal?->getPhoto();
 
-    if ($photo && $deletePhoto) {
-    } else if ($newPhoto) {
-      $fileExtension = strtolower($newPhoto->guessExtension());
+    // dd($newPhoto, $form->get('photo'));
 
-      if (!$this->validateBookPhotoExtension($fileExtension)) {
-        return false;
+    if (!$deletePhoto) {
+      if ($newPhoto) {
+        $fileExtension = strtolower($newPhoto->guessExtension());
+
+        if (!$this->validateBookPhotoExtension($fileExtension)) {
+          return false;
+        }
+
+        $newFilename = 'book'.'-'.bin2hex(random_bytes(13)).'.'.$fileExtension;
+        $book->setPhoto($newFilename);
+      } else {
+        $book->setPhoto($photo);
       }
-
-      $newFilename = 'book'.'-'.bin2hex(random_bytes(13)).'.'.$fileExtension;
-      $book->setPhoto($newFilename);
     }
 
     try {
@@ -151,17 +172,22 @@ final class BooksController extends AbstractController
       return false;
     }
 
-    $photoPath = $book->getSystemPhotosPath();
-    $photo = str_replace(['/', '..', '\\'], '', $photo);
-    $photoFullPath = str_replace('..', '', $photoPath)."/$photo";
+    if ($photo) {
+      $photo = str_replace(['/', '..', '\\'], '', $photo);
+    }
 
-    if (!($photo && $deletePhoto) && $newPhoto) {
+    $photoDir = $book->getSystemPhotosDir();
+    $photoPath = str_replace('..', '', $photoDir)."/$photo";
+
+    if ($deletePhoto && $photo) {
+      $this->deletePhoto($photoPath);
+    } else if ($newPhoto) {
       if ($photo) {
-        $this->deletePhoto($photoFullPath);
+        $this->deletePhoto($photoPath);
       }
 
       try {
-        $newPhoto->move($photoPath, $newFilename);
+        $newPhoto->move($photoDir, $newFilename);
       } catch (FileException $e) {
         return false;
       }
