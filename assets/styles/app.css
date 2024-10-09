@@ -6,6 +6,14 @@ body {
     font-size: 18px;
 }
 
+#main-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  background-color: inherit;
+}
+
 input, select, textarea {
   /* background-color: #303030; */
   /* color: #dddddd; */
@@ -21,4 +29,12 @@ img {
 
 .card-img {
   height: 200px;
+}
+
+.img {
+  border-radius: 10px;
+}
+
+.content-container {
+  max-width: 600px;
 }

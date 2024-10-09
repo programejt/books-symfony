@@ -146,10 +146,8 @@ final class BooksController extends AbstractController
     EntityManagerInterface &$entityManager
   ): bool {
     $newPhoto = $form->get('photo')->getData();
-    $deletePhoto = $form->has('delete-photo') && $form->get('delete-photo');
+    $deletePhoto = $form->has('deletePhoto') ? $form->get('deletePhoto')->getData() : false;
     $photo = $bookOriginal?->getPhoto();
-
-    // dd($newPhoto, $form->get('photo'));
 
     if (!$deletePhoto) {
       if ($newPhoto) {

@@ -5,13 +5,13 @@
 {{ form_start(form, {
   'attr': {
     'id': 'book-form',
-    'class': 'container'
+    'class': 'container content-container'
   }
 }) }}
   {{ form_errors(form) }}
     {% if book.photo %}
-      <div class="book-image mb-3">
-        <img src="{{ asset(book.getPhotosDir()~'/'~book.photo) }}" alt="photo">
+      <div class="book-image-container mb-3">
+        <img src="{{ asset(book.getPhotosDir()~'/'~book.photo) }}" alt="photo" class="img">
       </div>
       {{ include('books/form/field.html.twig', {
         'field': form.deletePhoto,
