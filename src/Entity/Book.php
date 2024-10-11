@@ -16,25 +16,51 @@ class Book
   #[ORM\Column]
   private ?int $id = null;
 
+  #[Assert\Length(
+    min: 3,
+    max: 255
+  )]
   #[ORM\Column(length: 255)]
   private ?string $title = null;
 
+  #[Assert\Length(
+    min: 3,
+    max: 255
+  )]
   #[ORM\Column(length: 255)]
   private ?string $author = null;
 
+  #[Assert\Length(
+    min: 3,
+    max: 255
+  )]
   #[ORM\Column(length: 255)]
   private ?string $description = null;
 
+  #[Assert\LessThan(2100)]
+  #[Assert\GreaterThan(1400)]
   #[ORM\Column(type: Types::SMALLINT)]
   private ?int $year = null;
 
   #[Assert\Isbn(
     type: Assert\Isbn::ISBN_13,
-    message: 'This value is not valid.'
+    message: 'ISBN is not valid.'
   )]
   #[ORM\Column(type: Types::BIGINT)]
   private ?int $isbn = null;
 
+  #[Assert\Image(
+    maxSize: '5m',
+    mimeTypes: [
+      'image/jpg',
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/avif',
+      'image/heif'
+    ],
+    mimeTypesMessage: 'Please upload a valid image'
+  )]
   #[ORM\Column(length: 255, nullable: true)]
   private ?string $photo = null;
 

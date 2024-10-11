@@ -149,20 +149,11 @@ final class BooksController extends AbstractController
     $deletePhoto = $form->has('deletePhoto') ? $form->get('deletePhoto')->getData() : false;
     $photo = $bookOriginal?->getPhoto();
 
-    if (!$deletePhoto) {
-      if ($newPhoto) {
-        $fileExtension = strtolower($newPhoto->guessExtension());
-
-        if (!$this->validateBookPhotoExtension($fileExtension)) {
-          return false;
-        }
-
-        $newFilename = 'book'.'-'.bin2hex(random_bytes(13)).'.'.$fileExtension;
-        $book->setPhoto($newFilename);
-      } else {
-        $book->setPhoto($photo);
-      }
-    }
+    $book->setPhoto(match(true) {
+      $deletePhoto => null,
+      $newPhoto != null => 'book'.'-'.bin2hex(random_bytes(13)).'.'.$newPhoto->guessExtension(),
+      default => $photo
+    });
 
     try {
       $entityManager->flush();
@@ -170,22 +161,18 @@ final class BooksController extends AbstractController
       return false;
     }
 
-    if ($photo) {
+    $photoDir = $book->getSystemPhotosDir();
+
+    if ($photo && ($deletePhoto || $newPhoto)) {
       $photo = str_replace(['/', '..', '\\'], '', $photo);
+      $photoPath = str_replace('..', '', $photoDir)."/$photo";
+
+      $this->deletePhoto($photoPath);
     }
 
-    $photoDir = $book->getSystemPhotosDir();
-    $photoPath = str_replace('..', '', $photoDir)."/$photo";
-
-    if ($deletePhoto && $photo) {
-      $this->deletePhoto($photoPath);
-    } else if ($newPhoto) {
-      if ($photo) {
-        $this->deletePhoto($photoPath);
-      }
-
+    if ($newPhoto) {
       try {
-        $newPhoto->move($photoDir, $newFilename);
+        $newPhoto->move($photoDir, $book->getPhoto());
       } catch (FileException $e) {
         return false;
       }
@@ -195,16 +182,9 @@ final class BooksController extends AbstractController
   }
 
   private function deletePhoto(string $photoFullPath): bool {
-    if (file_exists($photoFullPath)) {
+    if (file_exists($photoFullPath) && is_file($photoFullPath)) {
       return unlink($photoFullPath);
     }
     return false;
-  }
-
-  private function validateBookPhotoExtension(string $fileExtension): bool {
-    return match ($fileExtension) {
-      'jpg', 'jpeg', 'png', 'webp', 'avif', 'heif' => true,
-      default => false
-    };
   }
 }

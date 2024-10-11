@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -25,27 +25,25 @@ class BookType extends AbstractType
       ->add('title')
       ->add('author')
       ->add('description', TextareaType::class)
-      ->add('year', IntegerType::class, [
-
-      ])
+      ->add('year')
       ->add('isbn')
       ->add('photo', FileType::class, [
         'data_class' => null,
         'required' => false,
-        'constraints' => [
-          new File([
-            'maxSize' => '25m',
-            'mimeTypes' => [
-                'image/jpg',
-                'image/jpeg',
-                'image/png',
-                'image/webp',
-                'image/avif',
-                'image/heif'
-            ],
-            'mimeTypesMessage' => 'Please upload a valid image',
-          ])
-        ],
+        // 'constraints' => [
+        //   new Image([
+        //     'maxSize' => '25m',
+        //     'mimeTypes' => [
+        //         'image/jpg',
+        //         'image/jpeg',
+        //         'image/png',
+        //         'image/webp',
+        //         'image/avif',
+        //         'image/heif'
+        //     ],
+        //     'mimeTypesMessage' => 'Please upload a valid image',
+        //   ])
+        // ],
       ]);
 
     $builder->addEventListener(
