@@ -1,12 +1,8 @@
-.book-container {
-  max-width: 600px;
-}
-
-.book-image {
+.book-image-container {
   text-align: center;
-  height: 200px;
 }
 
+.book-image-container,
 .book-info {
   margin-bottom: 10px;
 }

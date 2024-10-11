@@ -9,7 +9,7 @@
 {% block body %}
     <header class="text-center">
       <h1>Book</h1>
-      <h2>{{ book.title }}</h2>
+      <h2><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light">{{ book.title }}</a></h2>
     </header>
 
     <div class="container mb-4 d-flex justify-content-center align-items-center gap-2">
@@ -18,10 +18,10 @@
       {{ include('books/_delete_form.html.twig') }}
     </div>
 
-    <div class="container book-container">
-      <div class="book-image">
+    <div class="container book-container content-container">
+      <div class="book-image-container">
         {% if book.photo %}
-          <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo">
+          <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo" class="img">
         {% endif %}
       </div>
       <div class="book-info">
