@@ -13,32 +13,32 @@
       <div class="book-image-container mb-3">
         <img src="{{ asset(book.getPhotosDir()~'/'~book.photo) }}" alt="photo" class="img">
       </div>
-      {{ include('books/form/field.html.twig', {
+      {{ include('forms/field.html.twig', {
         'field': form.deletePhoto,
         'attr': {
           'class': 'form-check-input'
         }
       }) }}
     {% endif %}
-    {{ include('books/form/field.html.twig', {
+    {{ include('forms/field.html.twig', {
       'field': form.photo
     }) }}
-    {{ include('books/form/field.html.twig', {
+    {{ include('forms/field.html.twig', {
       'field': form.title
     }) }}
-    {{ include('books/form/field.html.twig', {
+    {{ include('forms/field.html.twig', {
       'field': form.author
     }) }}
-    {{ include('books/form/field.html.twig', {
+    {{ include('forms/field.html.twig', {
       'field': form.year
     }) }}
-    {{ include('books/form/field.html.twig', {
+    {{ include('forms/field.html.twig', {
       'field': form.description,
       'attr': {
         'rows': 6
       }
     }) }}
-    {{ include('books/form/field.html.twig', {
+    {{ include('forms/field.html.twig', {
       'field': form.isbn
     }) }}
     {{ form_rest(form) }}

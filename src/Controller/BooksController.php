@@ -24,8 +24,7 @@ final class BooksController extends AbstractController
   public function index(
     Request $request,
     BooksRepository $booksRepository
-  ): Response
-  {
+  ): Response {
     $currentPage = (int) ($request->get('page') ?? 1);
     $searchValue = $request->get('book-title-or-author');
 
@@ -49,7 +48,7 @@ final class BooksController extends AbstractController
   public function show(Book $book): Response
   {
     return $this->render('books/show.html.twig', [
-        'book' => $book,
+      'book' => $book,
     ]);
   }
 
@@ -58,8 +57,7 @@ final class BooksController extends AbstractController
     Request $request,
     EntityManagerInterface $entityManager,
     BookAddEventListener $listener
-  ): Response
-  {
+  ): Response {
     $book = new Book();
     $form = $this->createForm(BookType::class, $book);
     $form->handleRequest($request);
@@ -86,7 +84,7 @@ final class BooksController extends AbstractController
 
     return $this->render('books/new.html.twig', [
       'book' => $book,
-      'form' => $form,
+      'form' => $form
     ]);
   }
 
@@ -95,8 +93,7 @@ final class BooksController extends AbstractController
     Request $request,
     Book $book,
     EntityManagerInterface $entityManager
-  ): Response
-  {
+  ): Response {
     $bookOriginal = clone $book;
     $form = $this->createForm(BookType::class, $book);
     $form->handleRequest($request);
@@ -113,7 +110,7 @@ final class BooksController extends AbstractController
 
     return $this->render('books/edit.html.twig', [
       'book' => $bookOriginal,
-      'form' => $form,
+      'form' => $form
     ]);
   }
 
@@ -122,10 +119,9 @@ final class BooksController extends AbstractController
     Request $request,
     Book $book,
     EntityManagerInterface $entityManager
-  ): Response
-  {
+  ): Response {
     if ($this->isCsrfTokenValid(
-      'delete'.$book->getId(),
+      'delete' . $book->getId(),
       $request->getPayload()->getString('_token')
     )) {
       $entityManager->remove($book);
@@ -149,9 +145,9 @@ final class BooksController extends AbstractController
     $deletePhoto = $form->has('deletePhoto') ? $form->get('deletePhoto')->getData() : false;
     $photo = $bookOriginal?->getPhoto();
 
-    $book->setPhoto(match(true) {
+    $book->setPhoto(match (true) {
       $deletePhoto => null,
-      $newPhoto != null => 'book'.'-'.bin2hex(random_bytes(13)).'.'.$newPhoto->guessExtension(),
+      $newPhoto != null => 'book' . '-' . bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
       default => $photo
     });
 
@@ -164,10 +160,7 @@ final class BooksController extends AbstractController
     $photoDir = $book->getSystemPhotosDir();
 
     if ($photo && ($deletePhoto || $newPhoto)) {
-      $photo = str_replace(['/', '..', '\\'], '', $photo);
-      $photoPath = str_replace('..', '', $photoDir)."/$photo";
-
-      $this->deletePhoto($photoPath);
+      $this->deletePhoto("$photoDir/$photo");
     }
 
     if ($newPhoto) {
@@ -181,7 +174,10 @@ final class BooksController extends AbstractController
     return true;
   }
 
-  private function deletePhoto(string $photoFullPath): bool {
+  private function deletePhoto(string $photoFullPath): bool
+  {
+    $photoFullPath = str_replace(['..', '\\'], '', $photoFullPath);
+
     if (file_exists($photoFullPath) && is_file($photoFullPath)) {
       return unlink($photoFullPath);
     }
