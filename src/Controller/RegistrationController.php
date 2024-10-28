@@ -18,7 +18,9 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-  public function __construct(private EmailVerifier $emailVerifier) {}
+  public function __construct(
+    private EmailVerifier $emailVerifier
+  ) {}
 
   #[Route('/register', name: 'app_register')]
   public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
@@ -29,7 +31,7 @@ class RegistrationController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       /** @var string $plainPassword */
-      $plainPassword = $form->get('plainPassword')->getData();
+      $plainPassword = $form->get('password')->getData();
 
       // encode the plain password
       $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));

@@ -13,15 +13,21 @@
 
   {{ form_start(registrationForm, {
     'attr': {
-      'id': 'book-form',
+      'id': 'registration-form',
       'class': 'container content-container'
     }
   }) }}
     {{ include('forms/field.html.twig', {
+      'field': registrationForm.name
+    }) }}
+    {{ include('forms/field.html.twig', {
       'field': registrationForm.email
     }) }}
     {{ include('forms/field.html.twig', {
-      'field': registrationForm.plainPassword
+      'field': registrationForm.password.first
+    }) }}
+    {{ include('forms/field.html.twig', {
+      'field': registrationForm.password.second
     }) }}
     {{ include('forms/field.html.twig', {
       'field': registrationForm.agreeTerms,

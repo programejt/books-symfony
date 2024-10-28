@@ -12,11 +12,13 @@
       <h2><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light">{{ book.title }}</a></h2>
     </header>
 
-    <div class="container mb-4 d-flex justify-content-center align-items-center gap-2">
-      <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">Edit</a>
+    {% if app.user %}
+      <div class="container mb-4 d-flex justify-content-center align-items-center gap-2">
+        <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">Edit</a>
 
-      {{ include('books/_delete_form.html.twig') }}
-    </div>
+        {{ include('books/_delete_form.html.twig') }}
+      </div>
+    {% endif %}
 
     <div class="container book-container content-container">
       <div class="book-image-container">

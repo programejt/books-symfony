@@ -5,9 +5,11 @@
 {% block body %}
     <h1 class="text-center">Books</h1>
 
+    {% if app.user %}
     <div class="text-center my-4">
       <a href="{{ path('app_books_new') }}" class="btn btn-success">Create new</a>
     </div>
+    {% endif %}
 
     <div class="container">
       <div class="row gap-3 justify-content-center">
