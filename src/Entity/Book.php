@@ -146,6 +146,10 @@ class Book
   }
 
   public function getSystemPhotosDir(): string {
-    return $_SERVER['DOCUMENT_ROOT'].$this->getPhotosDir();
+    $path = $_SERVER['DOCUMENT_ROOT'];
+    if (substr($path, -1) !== '/') {
+      $path .= '/';
+    }
+    return $path.$this->getPhotosDir();
   }
 }

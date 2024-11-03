@@ -17,10 +17,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use App\Event\BookAddEvent;
 use App\EventListener\BookAddEventListener;
 
-#[Route('/books')]
+#[Route('/books', name: 'app_books_')]
 final class BooksController extends AbstractController
 {
-  #[Route(name: 'app_books_index', methods: ['GET'])]
+  #[Route(name: 'index', methods: ['GET'])]
   public function index(
     Request $request,
     BooksRepository $booksRepository
@@ -44,7 +44,7 @@ final class BooksController extends AbstractController
     ]);
   }
 
-  #[Route('/{id}', name: 'app_books_show', methods: ['GET'])]
+  #[Route('/{id}', name: 'show', methods: ['GET'])]
   public function show(Book $book): Response
   {
     return $this->render('books/show.html.twig', [
@@ -52,7 +52,7 @@ final class BooksController extends AbstractController
     ]);
   }
 
-  #[Route('/new', name: 'app_books_new', methods: ['GET', 'POST'])]
+  #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
   public function new(
     Request $request,
     EntityManagerInterface $entityManager,
@@ -88,7 +88,7 @@ final class BooksController extends AbstractController
     ]);
   }
 
-  #[Route('/{id}/edit', name: 'app_books_edit', methods: ['GET', 'POST'])]
+  #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
   public function edit(
     Request $request,
     Book $book,
@@ -114,7 +114,7 @@ final class BooksController extends AbstractController
     ]);
   }
 
-  #[Route('/{id}', name: 'app_books_delete', methods: ['POST'])]
+  #[Route('/{id}', name: 'delete', methods: ['POST'])]
   public function delete(
     Request $request,
     Book $book,
