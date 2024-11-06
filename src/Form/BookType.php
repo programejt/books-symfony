@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Image;
+// use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -66,7 +66,7 @@ class BookType extends AbstractType
   public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
-        'data_class' => Book::class,
+      'data_class' => Book::class,
     ]);
   }
 }

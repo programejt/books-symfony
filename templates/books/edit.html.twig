@@ -3,19 +3,19 @@
 {% block title %}Edit Book{% endblock %}
 
 {% block body %}
-    <header class="text-center">
-      <h1>Edit Book</h1>
-      <h2><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light">{{ book.title }}</a></h2>
-    </header>
+  <header class="text-center">
+    <h1>Edit Book</h1>
+    <h2><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light">{{ book.title }}</a></h2>
+  </header>
 
-    {# {% if book.photo %}
-      <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo" class="img">
-    {% endif %} #}
+  {# {% if book.photo %}
+    <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo" class="img">
+  {% endif %} #}
 
-    {{ include('books/form/_form.html.twig', {'button_label': 'Update'}) }}
+  {{ include('books/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <div class="buttons-container">
-      <a href="{{ path('app_books_index') }}" class="btn btn-secondary form-button">Back to list</a>
-      {{ include('books/_delete_form.html.twig') }}
-    </div>
+  <div class="buttons-container">
+    <a href="{{ path('app_books_index') }}" class="btn btn-secondary form-button">Back to list</a>
+    {{ include('books/_delete_form.html.twig') }}
+  </div>
 {% endblock %}

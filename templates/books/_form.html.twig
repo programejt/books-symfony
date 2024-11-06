@@ -1,0 +1,52 @@
+{% block stylesheets %}
+  <link href="{{ asset('styles/book-form.css') }}" rel="stylesheet">
+{% endblock %}
+
+{{ form_start(form, {
+  'attr': {
+    'id': 'book-form',
+    'class': 'container content-container'
+  }
+}) }}
+  <div class="errors">
+    {% for error in form.vars.errors %}
+      <div class="alert alert-danger">{{ error.getMessage() }}</div>
+    {% endfor %}
+  </div>
+  {% if book.photo %}
+    <div class="book-image-container mb-3">
+      <img src="{{ asset(book.getPhotosDir()~'/'~book.photo) }}" alt="photo" class="img">
+    </div>
+    {{ include('forms/field.html.twig', {
+      'field': form.deletePhoto,
+      'attr': {
+        'class': 'form-check-input'
+      }
+    }) }}
+  {% endif %}
+  {{ include('forms/field.html.twig', {
+    'field': form.photo
+  }) }}
+  {{ include('forms/field.html.twig', {
+    'field': form.title
+  }) }}
+  {{ include('forms/field.html.twig', {
+    'field': form.author
+  }) }}
+  {{ include('forms/field.html.twig', {
+    'field': form.year
+  }) }}
+  {{ include('forms/field.html.twig', {
+    'field': form.description,
+    'attr': {
+      'rows': 6
+    }
+  }) }}
+  {{ include('forms/field.html.twig', {
+    'field': form.isbn
+  }) }}
+  {{ form_rest(form) }}
+  <div class="text-center">
+    <button class="btn btn-primary form-button">{{ button_label|default('Save') }}</button>
+  </div>
+{{ form_end(form) }}
