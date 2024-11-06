@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 class RegistrationController extends AbstractController
 {
@@ -23,6 +25,7 @@ class RegistrationController extends AbstractController
     private EmailVerifier $emailVerifier
   ) {}
 
+  #[IsGranted(new Expression('! is_authenticated()'))]
   #[Route('/register', name: 'app_register')]
   public function register(
     Request $request,
@@ -44,19 +47,11 @@ class RegistrationController extends AbstractController
       $entityManager->persist($user);
       $entityManager->flush();
 
-      $this->emailVerifier->sendEmailConfirmation(
-        'app_verify_email',
-        $user,
-        (new TemplatedEmail())
-          ->from(new Address('mailer@symfony-books.com', 'Symfony Books'))
-          ->to((string) $user->getEmail())
-          ->subject('Please Confirm your Email')
-          ->htmlTemplate('registration/confirmation_email.html.twig')
-      );
+      $this->_sendVerificationEmail($user);
 
       $security->login($user);
 
-      return $this->redirectToRoute('app_books_index');
+      return $this->redirectToRoute('app_email_verification');
     }
 
     return $this->render('registration/register.html.twig', [
@@ -64,25 +59,54 @@ class RegistrationController extends AbstractController
     ]);
   }
 
-  #[Route('/verify/email', name: 'app_verify_email')]
-  public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
+  #[Route('/email/verification', name: 'app_email_verification')]
+  public function userEmailVerification(
+    Request $request
+  ): Response
   {
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-    // validate email confirmation link, sets User::isVerified=true and persists
-    try {
-      /** @var User $user */
-      $user = $this->getUser();
-      $this->emailVerifier->handleEmailConfirmation($request, $user);
-    } catch (VerifyEmailExceptionInterface $exception) {
-      $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+    /** @var User $user */
+    $user = $this->getUser();
 
-      return $this->redirectToRoute('app_register');
+    if (!$user->isVerified() && $request->getMethod() === 'POST') {
+      $this->_sendVerificationEmail($user);
     }
 
-    // @TODO Change the redirect on success and handle or remove the flash message in your templates
-    $this->addFlash('success', 'Your email address has been verified.');
+    return $this->render('registration/email_verification.html.twig');
+  }
 
-    return $this->redirectToRoute('app_register');
+  #[Route('/email/verify', name: 'app_verify_email')]
+  public function verifyUserEmail(
+    Request $request,
+    TranslatorInterface $translator
+  ): Response
+  {
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+    /** @var User $user */
+    $user = $this->getUser();
+
+    if (!$user->isVerified()) {
+      try {
+        $this->emailVerifier->handleEmailConfirmation($request, $user);
+      } catch (VerifyEmailExceptionInterface $exception) {
+        $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+      }
+    }
+
+    return $this->redirectToRoute('app_email_verification');
+  }
+
+  private function _sendVerificationEmail(User $user): void {
+    $this->emailVerifier->sendEmailConfirmation(
+      'app_verify_email',
+      $user,
+      (new TemplatedEmail())
+        ->from(new Address('mailer@symfony-books.com', 'Symfony Books'))
+        ->to((string) $user->getEmail())
+        ->subject('Please Confirm your Email')
+        ->htmlTemplate('registration/confirmation_email.html.twig')
+    );
   }
 }

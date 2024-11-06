@@ -44,7 +44,7 @@ final class BooksController extends AbstractController
     ]);
   }
 
-  #[Route('/{id}', name: 'show', methods: ['GET'])]
+  #[Route('/{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+'])]
   public function show(Book $book): Response
   {
     return $this->render('books/show.html.twig', [
@@ -52,23 +52,25 @@ final class BooksController extends AbstractController
     ]);
   }
 
-  #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
+  #[Route('/new', name: 'new', methods: ['GET', 'POST'], priority: 2)]
   public function new(
     Request $request,
     EntityManagerInterface $entityManager,
     BookAddEventListener $listener
   ): Response {
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
     $book = new Book();
     $form = $this->createForm(BookType::class, $book);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       $entityManager->persist($book);
+      $bookOriginal = null;
 
-      $result = $this->store($form, $book, null, $entityManager);
+      $result = $this->store($form, $book, $bookOriginal, $entityManager);
 
       if ($result) {
-        // $listener = $this->container->get(BookAddEventListener::class);
         $dispatcher = new EventDispatcher();
 
         $dispatcher->addListener(BookAddEvent::NAME, [$listener, 'onBookAdd']);
@@ -94,6 +96,8 @@ final class BooksController extends AbstractController
     Book $book,
     EntityManagerInterface $entityManager
   ): Response {
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
     $bookOriginal = clone $book;
     $form = $this->createForm(BookType::class, $book);
     $form->handleRequest($request);
@@ -120,6 +124,8 @@ final class BooksController extends AbstractController
     Book $book,
     EntityManagerInterface $entityManager
   ): Response {
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
     if ($this->isCsrfTokenValid(
       'delete' . $book->getId(),
       $request->getPayload()->getString('_token')
