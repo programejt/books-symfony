@@ -11,7 +11,15 @@ body {
   top: 0;
   left: 0;
   z-index: 20;
-  background-color: inherit;
+}
+
+#main-header,
+.card {
+  background-color: #363d44;
+}
+
+main {
+  padding: 5px;
 }
 
 input, select, textarea {
@@ -27,8 +35,20 @@ img {
   max-width: 100%;
 }
 
+.dropdown-menu {
+  padding: 8px;
+}
+
+.card {
+  border: 0;
+  padding: 8px;
+}
+
 .card-img {
-  height: 200px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .img {
