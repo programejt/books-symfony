@@ -35,6 +35,7 @@
                   {{ app.user.name }}
                   </a>
                   <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ path('app_user_my_account') }}">Profile</a></li>
                     {% if not app.user.isVerified() %}
                       <li><a class="dropdown-item" href="{{ path('app_email_verification') }}">Verify email</a></li>
                     {% endif %}

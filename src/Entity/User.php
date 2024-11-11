@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -39,6 +40,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   #[ORM\Column]
   private bool $isVerified = false;
+
+  #[ORM\Column(length: 60, nullable: true)]
+  private ?string $photo = null;
+
+  #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+  private ?\DateTimeInterface $createdAt = null;
+
+  #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+  private ?\DateTimeInterface $passwordChangedAt = null;
 
   public function getId(): ?int
   {
@@ -125,13 +135,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   public function isVerified(): bool
   {
-      return $this->isVerified;
+    return $this->isVerified;
   }
 
   public function setVerified(bool $isVerified): static
   {
-      $this->isVerified = $isVerified;
+    $this->isVerified = $isVerified;
+    return $this;
+  }
 
-      return $this;
+  public function getPhoto(): ?string
+  {
+    return $this->photo;
+  }
+
+  public function setPhoto(?string $photo): static
+  {
+    $this->photo = $photo;
+    return $this;
+  }
+
+  public function getCreatedAt(): ?\DateTimeInterface
+  {
+    return $this->createdAt;
+  }
+
+  public function setCreatedAt(\DateTimeInterface $createdAt): static
+  {
+    $this->createdAt = $createdAt;
+    return $this;
+  }
+
+  public function getPasswordChangedAt(): ?\DateTimeInterface
+  {
+    return $this->passwordChangedAt;
+  }
+
+  public function setPasswordChangedAt(?\DateTimeInterface $passwordChangedAt): static
+  {
+    $this->passwordChangedAt = $passwordChangedAt;
+    return $this;
   }
 }

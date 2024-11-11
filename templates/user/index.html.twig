@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.name }}{% endblock %}
+
+{% block body %}
+  <header class="text-center">
+    <h1 class="h3"><a href="{{ path('app_user', {'user': user.id}) }}" class="link-light">{{ user.name }}</a></h1>
+  </header>
+
+  <div class="container content-container">
+    <div class="user-image-container">
+      {% if user.photo %}
+        <img src="{{ asset('assets/images/users/'~user.id~'/'~user.photo) }}" alt="photo" class="img">
+      {% endif %}
+    </div>
+    <div class="data-row">
+      <div class="data-row-title">Verified</div>
+      <div class="data-row-content">{{ user.isVerified() ? 'Yes' : 'No' }}</div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-title">Created at</div>
+      <div class="data-row-content">{{ user.createdAt.format('Y-m-d') }}</div>
+    </div>
+    {% if app.user and app.user.id is same as(user.id) %}
+      <div class="data-row">
+        <div class="data-row-title">Email</div>
+        <div class="data-row-content">{{ user.email }}</div>
+      </div>
+      <div class="data-row">
+        <div class="data-row-title">Password changed at</div>
+        <div class="data-row-content">{{ user.passwordChangedAt ? user.passwordChangedAt.format('Y-m-d') : 'Never' }}</div>
+      </div>
+      <div>
+        <a href="{{ path('app_user_change_name') }}" class="btn btn-primary">Change name</a>
+        <a href="{{ path('app_user_change_password') }}" class="btn btn-primary">Change password</a>
+        <a href="{{ path('app_user_change_email') }}" class="btn btn-primary">Change email</a>
+        <a href="{{ path('app_user_change_photo') }}" class="btn btn-primary">Change photo</a>
+        <a href="{{ path('app_logout') }}" class="btn btn-secondary">Logout</a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

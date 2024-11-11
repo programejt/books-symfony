@@ -7,9 +7,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20240920202752 extends AbstractMigration
 {
   public function getDescription(): string
@@ -19,7 +16,6 @@ final class Version20240920202752 extends AbstractMigration
 
   public function up(Schema $schema): void
   {
-    // this up() migration is auto-generated, please modify it to your needs
     $this->abortIf(
       !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\PostgreSQL120Platform,
       "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\PostgreSQL120Platform'."
@@ -42,7 +38,6 @@ final class Version20240920202752 extends AbstractMigration
 
   public function down(Schema $schema): void
   {
-    // this down() migration is auto-generated, please modify it to your needs
     $this->abortIf(
       !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\PostgreSQL120Platform,
       "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\PostgreSQL120Platform'."
