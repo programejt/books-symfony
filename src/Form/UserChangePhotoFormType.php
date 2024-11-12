@@ -2,41 +2,39 @@
 
 namespace App\Form;
 
-use App\Entity\Book;
+use App\Entity\User;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class BookType extends AbstractType
+class UserChangePhotoFormType extends AbstractType
 {
+  public function __construct(
+    private Security $security
+  ) {}
+
   public function buildForm(
     FormBuilderInterface $builder,
     array $options
   ): void
   {
     $builder
-      ->add('title')
-      ->add('author')
-      ->add('description', TextareaType::class)
-      ->add('year')
-      ->add('isbn')
-      ->add('photo', FileType::class, [
-        'data_class' => null,
-        'required' => false
-      ]);
+      ->add('photo')
+    ;
 
     $builder->addEventListener(
       FormEvents::PRE_SET_DATA,
       function (FormEvent $event): void {
-        $book = $event->getData();
+        /** @var User $user */
+        $user = $this->security->getUser();
         $form = $event->getForm();
 
-        if ($book && null != $book->getPhoto()) {
+        if (null != $user->getPhoto()) {
           $form->add('deletePhoto', CheckboxType::class, [
             'mapped' => false,
             'required' => false,
@@ -50,7 +48,7 @@ class BookType extends AbstractType
   public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
-      'data_class' => Book::class,
+      'data_class' => User::class,
     ]);
   }
 }

@@ -62,12 +62,11 @@ class RegistrationController extends AbstractController
   }
 
   #[Route('/email/verification', name: 'app_email_verification')]
+  #[isGranted('IS_AUTHENTICATED')]
   public function userEmailVerification(
     Request $request
   ): Response
   {
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
     /** @var User $user */
     $user = $this->getUser();
 
@@ -79,13 +78,12 @@ class RegistrationController extends AbstractController
   }
 
   #[Route('/email/verify', name: 'app_verify_email')]
+  #[isGranted('IS_AUTHENTICATED')]
   public function verifyUserEmail(
     Request $request,
     TranslatorInterface $translator
   ): Response
   {
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
     /** @var User $user */
     $user = $this->getUser();
 

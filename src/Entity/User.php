@@ -8,10 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Service\FileSystem;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['name'], message: 'There is already an account with this name')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -20,6 +24,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column]
   private ?int $id = null;
 
+  #[Assert\Length(
+    min: 3,
+    max: 180
+  )]
   #[ORM\Column(length: 180)]
   private ?string $email = null;
 
@@ -35,12 +43,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column]
   private ?string $password = null;
 
+  #[Assert\Length(
+    min: 2,
+    max: 255
+  )]
   #[ORM\Column(length: 60)]
   private ?string $name = null;
 
   #[ORM\Column]
   private bool $isVerified = false;
 
+  #[Assert\Image(
+    maxSize: '5m',
+    mimeTypes: [
+      'image/jpg',
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/avif',
+      'image/heif'
+    ],
+    mimeTypesMessage: 'Please upload a valid image'
+  )]
   #[ORM\Column(length: 60, nullable: true)]
   private ?string $photo = null;
 
@@ -175,5 +199,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   {
     $this->passwordChangedAt = $passwordChangedAt;
     return $this;
+  }
+
+  public function getPhotosDir(): string {
+    return FileSystem::IMAGES_DIR."/users/".$this->id;
   }
 }

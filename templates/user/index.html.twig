@@ -2,15 +2,19 @@
 
 {% block title %}{{ user.name }}{% endblock %}
 
+{% block stylesheets %}
+  <link href="{{ asset('styles/user.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
   <header class="text-center">
-    <h1 class="h3"><a href="{{ path('app_user', {'user': user.id}) }}" class="link-light">{{ user.name }}</a></h1>
+    <h1 class="h3"><a href="{{ path('app_user', {'user': user.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ user.name }}</a></h1>
   </header>
 
   <div class="container content-container">
-    <div class="user-image-container">
+    <div class="data-row text-center">
       {% if user.photo %}
-        <img src="{{ asset('assets/images/users/'~user.id~'/'~user.photo) }}" alt="photo" class="img">
+        <img src="{{ asset('assets/images/users/'~user.id~'/'~user.photo) }}" alt="photo" class="img img-circled user-photo">
       {% endif %}
     </div>
     <div class="data-row">

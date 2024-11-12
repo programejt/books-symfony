@@ -6,6 +6,7 @@ use App\Repository\BooksRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Service\FileSystem;
 
 #[ORM\Entity(repositoryClass: BooksRepository::class)]
 #[ORM\Table(name: 'books')]
@@ -142,14 +143,6 @@ class Book
   }
 
   public function getPhotosDir(): string {
-    return "assets/images/books/".$this->id;
-  }
-
-  public function getSystemPhotosDir(): string {
-    $path = $_SERVER['DOCUMENT_ROOT'];
-    if (substr($path, -1) !== '/') {
-      $path .= '/';
-    }
-    return $path.$this->getPhotosDir();
+    return FileSystem::IMAGES_DIR."/books/".$this->id;
   }
 }

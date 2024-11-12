@@ -32,7 +32,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {% if app.user %}
-                  {{ app.user.name }}
+                    {{ app.user.name }}
                   </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{{ path('app_user_my_account') }}">Profile</a></li>

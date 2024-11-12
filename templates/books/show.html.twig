@@ -8,12 +8,11 @@
 
 {% block body %}
   <header class="text-center">
-    <h1 class="h2">Book</h1>
-    <h2 class="h3"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light">{{ book.title }}</a></h2>
+    <h1 class="h2"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ book.title }}</a></h1>
   </header>
 
   {% if app.user %}
-    <div class="container mb-4 d-flex justify-content-center align-items-center gap-2">
+    <div class="container my-4 d-flex justify-content-center align-items-center gap-2">
       <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">Edit</a>
 
       {{ include('books/_delete_form.html.twig') }}
@@ -21,7 +20,7 @@
   {% endif %}
 
   <div class="container book-container content-container">
-    <div class="book-image-container">
+    <div class="data-row text-center">
       {% if book.photo %}
         <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo" class="img">
       {% endif %}
