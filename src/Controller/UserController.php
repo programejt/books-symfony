@@ -13,34 +13,35 @@ use App\Form\UserChangeNameFormType;
 use App\Form\UserChangePasswordFormType;
 use App\Form\UserChangeEmailFormType;
 use App\Form\UserChangePhotoFormType;
-use Symfony\Bundle\SecurityBundle\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Service\FileSystem;
+use App\Security\EmailVerifier;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class UserController extends AbstractController
 {
   #[Route('/user/my-account', name: 'app_user_my_account')]
   #[IsGranted('IS_AUTHENTICATED')]
-  public function myAccount(Security $security): Response
+  public function myAccount(): Response
   {
-    return $this->renderUserHomePage($security->getUser());
+    return $this->_renderUserHomePage($this->getUser());
   }
 
   #[Route('/user/{user}', name: 'app_user', requirements: ['user' => '\d+'])]
   public function index(User $user): Response
   {
-    return $this->renderUserHomePage($user);
+    return $this->_renderUserHomePage($user);
   }
 
   #[Route('/user/change-name', name: 'app_user_change_name')]
   #[IsGranted('IS_AUTHENTICATED')]
   public function changeName(
     Request $request,
-    EntityManagerInterface $entityManager,
-    Security $security
+    EntityManagerInterface $entityManager
   ): Response
   {
     $form = $this->createForm(UserChangeNameFormType::class);
@@ -51,7 +52,7 @@ class UserController extends AbstractController
       $name = $nameField->getData();
 
       /** @var User $user */
-      $user = $security->getUser();
+      $user = $this->getUser();
 
       if ($name !== $user->getName()) {
         $user->setName($name);
@@ -75,8 +76,7 @@ class UserController extends AbstractController
   public function changePassword(
     Request $request,
     UserPasswordHasherInterface $userPasswordHasher,
-    EntityManagerInterface $entityManager,
-    Security $security
+    EntityManagerInterface $entityManager
   ): Response
   {
     $form = $this->createForm(UserChangePasswordFormType::class);
@@ -85,7 +85,7 @@ class UserController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       $password = $form->get('password');
       /** @var User $user */
-      $user = $security->getUser();
+      $user = $this->getUser();
 
       if ($userPasswordHasher->isPasswordValid($user, $password->getData())) {
         $user->setPassword($userPasswordHasher->hashPassword(
@@ -112,8 +112,7 @@ class UserController extends AbstractController
   #[IsGranted('IS_AUTHENTICATED')]
   public function changeEmail(
     Request $request,
-    EntityManagerInterface $entityManager,
-    Security $security
+    EmailVerifier $emailVerifier
   ): Response
   {
     $form = $this->createForm(UserChangeEmailFormType::class);
@@ -124,18 +123,18 @@ class UserController extends AbstractController
       $email = $emailField->getData();
 
       /** @var User $user */
-      $user = $security->getUser();
+      $user = $this->getUser();
 
       if ($email !== $user->getEmail()) {
-        $user->setEmail($email);
-        $user->setVerified(false);
+        $this->_sendChangeEmailVerification($emailVerifier, $user);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+        /**  @var SessionInterface $session */
+        $session = $request->getSession();
+        $session->set('user_new_email', $email);
 
         return $this->redirectToRoute('app_user_my_account');
       } else {
-        $emailField->addError(new FormError('You typed the same name as you already have'));
+        $emailField->addError(new FormError('You typed the same email as you already have'));
       }
     }
 
@@ -144,19 +143,55 @@ class UserController extends AbstractController
     ]);
   }
 
+  #[Route('/user/set-new-email', name: 'app_user_set_new_email')]
+  #[IsGranted('IS_AUTHENTICATED')]
+  public function setNewEmail(
+    Request $request,
+    EntityManagerInterface $entityManager,
+    EmailVerifier $emailVerifier,
+    TranslatorInterface $translator
+  ): Response
+  {
+    /** @var User $user */
+    $user = $this->getUser();
+
+    /**  @var SessionInterface $session */
+    $session = $request->getSession();
+    $newEmail = $session->get('user_new_email');
+
+    if (! $newEmail) {
+      $this->addFlash('change_email_error', $translator->trans('session_empty_new_email'));
+
+      return $this->redirectToRoute('app_email_verification');
+    }
+
+    try {
+      $emailVerifier->validateEmailConfirmationFromRequest($request, $user);
+
+      $user->setEmail($newEmail);
+      $user->setVerified(false);
+
+      $entityManager->persist($user);
+      $entityManager->flush();
+    } catch (VerifyEmailExceptionInterface $exception) {
+      $this->addFlash('change_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+    }
+
+    return $this->redirectToRoute('app_email_verification');
+  }
+
   #[Route('/user/change-photo', name: 'app_user_change_photo', methods: ['GET', 'POST'])]
   #[IsGranted('IS_AUTHENTICATED')]
   public function changePhoto(
     Request $request,
-    EntityManagerInterface $entityManager,
-    Security $security
+    EntityManagerInterface $entityManager
   ): Response
   {
     $form = $this->createForm(UserChangePhotoFormType::class);
     $form->handleRequest($request);
 
     /** @var User $user */
-    $user = $security->getUser();
+    $user = $this->getUser();
     $photo = $user->getPhoto();
     $photosDir = $user->getPhotosDir();
 
@@ -202,9 +237,23 @@ class UserController extends AbstractController
     ]);
   }
 
-  private function renderUserHomePage(User $user) {
+  private function _renderUserHomePage(User $user) {
     return $this->render('user/index.html.twig', [
       'user' => $user,
     ]);
+  }
+
+  private function _sendChangeEmailVerification(
+    EmailVerifier $emailVerifier,
+    User $user
+  ): void
+  {
+    $emailVerifier->sendEmailConfirmation(
+      'app_user_set_new_email',
+      $user,
+      $emailVerifier->emailTemplate((string) $user->getEmail())
+        ->subject('Please Confirm your Change Email request')
+        ->htmlTemplate('registration/confirmation_change_email.html.twig')
+    );
   }
 }

@@ -8,10 +8,6 @@
     <h2 class="h3"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ book.title }}</a></h2>
   </header>
 
-  {# {% if book.photo %}
-    <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo" class="img">
-  {% endif %} #}
-
   {{ include('books/_form.html.twig', {'button_label': 'Update'}) }}
 
   <div class="buttons-container">

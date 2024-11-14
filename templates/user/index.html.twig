@@ -35,6 +35,9 @@
         <div class="data-row-content">{{ user.passwordChangedAt ? user.passwordChangedAt.format('Y-m-d') : 'Never' }}</div>
       </div>
       <div>
+        {% if not user.isVerified() %}
+          <a href="{{ path('app_email_verification') }}" class="btn btn-primary">Verify email</a>
+        {% endif %}
         <a href="{{ path('app_user_change_name') }}" class="btn btn-primary">Change name</a>
         <a href="{{ path('app_user_change_password') }}" class="btn btn-primary">Change password</a>
         <a href="{{ path('app_user_change_email') }}" class="btn btn-primary">Change email</a>
