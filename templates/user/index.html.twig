@@ -2,24 +2,14 @@
 
 {% block title %}{{ user.name }}{% endblock %}
 
-{% block stylesheets %}
-  <link href="{{ asset('styles/user.css') }}" rel="stylesheet">
-{% endblock %}
-
 {% block body %}
-  <header class="text-center">
-    <h1 class="h3"><a href="{{ path('app_user', {'user': user.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ user.name }}</a></h1>
-  </header>
-
+  {{ include('user/header.html.twig', {
+    'user': user
+  }) }}
   <div class="container content-container">
-    <div class="data-row text-center">
-      {% if user.photo %}
-        <img src="{{ asset('assets/images/users/'~user.id~'/'~user.photo) }}" alt="photo" class="img img-circled user-photo">
-      {% endif %}
-    </div>
     <div class="data-row">
-      <div class="data-row-title">Verified</div>
-      <div class="data-row-content">{{ user.isVerified() ? 'Yes' : 'No' }}</div>
+      <div class="data-row-title">Email verified</div>
+      <div class="data-row-content">{{ user.emailVerified ? 'Yes' : 'No' }}</div>
     </div>
     <div class="data-row">
       <div class="data-row-title">Created at</div>
@@ -35,7 +25,7 @@
         <div class="data-row-content">{{ user.passwordChangedAt ? user.passwordChangedAt.format('Y-m-d') : 'Never' }}</div>
       </div>
       <div>
-        {% if not user.isVerified() %}
+        {% if not user.emailVerified %}
           <a href="{{ path('app_email_verification') }}" class="btn btn-primary">Verify email</a>
         {% endif %}
         <a href="{{ path('app_user_change_name') }}" class="btn btn-primary">Change name</a>

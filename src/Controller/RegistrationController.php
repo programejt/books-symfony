@@ -49,7 +49,7 @@ class RegistrationController extends AbstractController
 
       $this->_sendVerificationEmail($user);
 
-      $security->login($user);
+      $security->login($user, 'form_login');
 
       return $this->redirectToRoute('app_email_verification');
     }
@@ -68,7 +68,7 @@ class RegistrationController extends AbstractController
     /** @var User $user */
     $user = $this->getUser();
 
-    if (!$user->isVerified() && $request->getMethod() === 'POST') {
+    if (!$user->emailVerified() && $request->getMethod() === 'POST') {
       $this->_sendVerificationEmail($user);
     }
 
@@ -86,11 +86,11 @@ class RegistrationController extends AbstractController
     /** @var User $user */
     $user = $this->getUser();
 
-    if (!$user->isVerified()) {
+    if (!$user->emailVerified()) {
       try {
         $this->emailVerifier->validateEmailConfirmationFromRequest($request, $user);
 
-        $user->setVerified(true);
+        $user->setEmailVerified(true);
 
         $entityManager->persist($user);
         $entityManager->flush();
@@ -109,7 +109,7 @@ class RegistrationController extends AbstractController
       $user,
       $this->emailVerifier->emailTemplate((string) $user->getEmail())
         ->subject('Please Confirm your Email')
-        ->htmlTemplate('registration/confirmation_email.html.twig')
+        ->htmlTemplate('email/confirmation_email.html.twig')
     );
   }
 }

@@ -66,7 +66,7 @@ class UserController extends AbstractController
       }
     }
 
-    return $this->render('user/changeNameForm.html.twig', [
+    return $this->render('user/change_name_form.html.twig', [
       'form' => $form,
     ]);
   }
@@ -103,7 +103,7 @@ class UserController extends AbstractController
       $password->addError(new FormError('Current password is not valid'));
     }
 
-    return $this->render('user/changePasswordForm.html.twig', [
+    return $this->render('user/change_password_form.html.twig', [
       'form' => $form,
     ]);
   }
@@ -112,6 +112,7 @@ class UserController extends AbstractController
   #[IsGranted('IS_AUTHENTICATED')]
   public function changeEmail(
     Request $request,
+    EntityManagerInterface $entityManager,
     EmailVerifier $emailVerifier
   ): Response
   {
@@ -128,17 +129,20 @@ class UserController extends AbstractController
       if ($email !== $user->getEmail()) {
         $this->_sendChangeEmailVerification($emailVerifier, $user);
 
-        /**  @var SessionInterface $session */
-        $session = $request->getSession();
-        $session->set('user_new_email', $email);
+        if (!$user->getNewEmail() || $user->getNewEmail() !== $email) {
+          $user->setNewEmail($email);
 
-        return $this->redirectToRoute('app_user_my_account');
+          $entityManager->persist($user);
+          $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_email_change_verification');
       } else {
         $emailField->addError(new FormError('You typed the same email as you already have'));
       }
     }
 
-    return $this->render('user/changeEmailForm.html.twig', [
+    return $this->render('user/change_email_form.html.twig', [
       'form' => $form,
     ]);
   }
@@ -154,22 +158,20 @@ class UserController extends AbstractController
   {
     /** @var User $user */
     $user = $this->getUser();
-
-    /**  @var SessionInterface $session */
-    $session = $request->getSession();
-    $newEmail = $session->get('user_new_email');
+    $newEmail = $user->getNewEmail();
 
     if (! $newEmail) {
-      $this->addFlash('change_email_error', $translator->trans('session_empty_new_email'));
+      $this->addFlash('change_email_error', $translator->trans('empty_new_email'));
 
-      return $this->redirectToRoute('app_email_verification');
+      return $this->redirectToRoute('app_email_change_verification');
     }
 
     try {
       $emailVerifier->validateEmailConfirmationFromRequest($request, $user);
 
       $user->setEmail($newEmail);
-      $user->setVerified(false);
+      $user->setNewEmail(null);
+      $user->setEmailVerified(false);
 
       $entityManager->persist($user);
       $entityManager->flush();
@@ -177,7 +179,24 @@ class UserController extends AbstractController
       $this->addFlash('change_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
     }
 
-    return $this->redirectToRoute('app_email_verification');
+    return $this->redirectToRoute('app_email_change_verification');
+  }
+
+  #[Route('/email/change-verification', name: 'app_email_change_verification')]
+  #[isGranted('IS_AUTHENTICATED')]
+  public function userEmailVerification(
+    Request $request,
+    EmailVerifier $emailVerifier
+  ): Response
+  {
+    /** @var User $user */
+    $user = $this->getUser();
+
+    if ($user->getNewEmail() && $request->getMethod() === 'POST') {
+      $this->_sendChangeEmailVerification($emailVerifier, $user);
+    }
+
+    return $this->render('user/change_email_verification.html.twig');
   }
 
   #[Route('/user/change-photo', name: 'app_user_change_photo', methods: ['GET', 'POST'])]
@@ -231,7 +250,7 @@ class UserController extends AbstractController
       }
     }
 
-    return $this->render('user/changePhotoForm.html.twig', [
+    return $this->render('user/change_photo_form.html.twig', [
       'form' => $form,
       'photo' => $photo ? "$photosDir/$photo" : null
     ]);
@@ -253,7 +272,7 @@ class UserController extends AbstractController
       $user,
       $emailVerifier->emailTemplate((string) $user->getEmail())
         ->subject('Please Confirm your Change Email request')
-        ->htmlTemplate('registration/confirmation_change_email.html.twig')
+        ->htmlTemplate('email/confirmation_change_email.html.twig')
     );
   }
 }
