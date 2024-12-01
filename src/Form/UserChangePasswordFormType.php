@@ -2,13 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use App\Service\PasswordFormField;
+use App\Service\UserFormFields;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class UserChangePasswordFormType extends AbstractType
 {
@@ -18,15 +18,16 @@ class UserChangePasswordFormType extends AbstractType
   ): void
   {
     $builder
-      ->add('password', PasswordType::class)
-      ->add('newPassword', RepeatedType::class, PasswordFormField::getConfig('New password', 'Repeat new password'))
+      ->add('password', PasswordType::class, [
+        'required' => true,
+        'constraints' => [
+          new Assert\NotBlank
+        ]
+      ])
+      ->add('newPassword', RepeatedType::class, UserFormFields::getPasswordConfig('New password', 'Repeat new password'))
     ;
   }
 
   public function configureOptions(OptionsResolver $resolver): void
-  {
-    $resolver->setDefaults([
-      'data_class' => User::class,
-    ]);
-  }
+  {}
 }

@@ -26,6 +26,4 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 20px 0;
-  border-top: 1px solid #505050;
 }

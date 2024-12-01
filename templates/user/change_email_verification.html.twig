@@ -1,27 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Change email{% endblock %}
+{% block title %}Confirm email change{% endblock %}
 
 {% block body %}
   <article class="container content-container">
-  <h1 class="text-center">Change email</h1>
+  <h1 class="text-center">Confirm email change</h1>
 
   {% if not app.user.newEmail %}
     <div class="alert alert-success" role="alert">Your email address has been changed.</div>
     <div class="text-center">
-      <a href="{{ path('app_home') }}" class="btn btn-secondary">Go to home</a>
+      <a href="{{ path('app_user_my_account') }}" class="btn btn-secondary">Go to your profile</a>
     </div>
   {% else %}
-    {% for flash_error in app.flashes('change_email_error') %}
-      <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    <div class="container section">
+      {% for flash_error in app.flashes('change_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+      {% endfor %}
 
-    <p class="text-center">Please confirm your change email request by clicking on link sent to your current email address.</p>
+      <p class="text-center">Please confirm your change email request by clicking on link sent to your current email address.</p>
+      <p class="text-center">Your new email address will be: <strong>{{ app.user.newEmail }}</strong>.</p>
+      <p class="text-center">If you didn't get confirmation mail, you can try send it again.</p>
 
-    <form method="post" class="text-center">
-      <input type="hidden" name="token" value="{{ csrf_token('resend_email') }}">
-      <button type="submit" class="btn btn-primary">Send email</button>
-    </form>
+      <form method="post" class="text-center">
+        <input type="hidden" name="_token" value="{{ csrf_token('resend_email') }}">
+        <button type="submit" class="btn btn-primary">Send confirmation mail</button>
+      </form>
+    </div>
+
+    <div class="container section">
+      <p class="text-center">You can also cancel email change request.</p>
+
+      <form action="{{ path('app_user_cancel_email_change') }}" method="post" class="text-center">
+        <input type="hidden" name="_token" value="{{ csrf_token('cancel_email_change') }}">
+        <button type="submit" class="btn btn-danger">Cancel email change</button>
+      </form>
+    </div>
   {% endif %}
   </article>
 

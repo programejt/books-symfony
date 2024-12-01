@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use App\Service\PasswordFormField;
+use App\Service\UserFormFields;
 
 class RegistrationFormType extends AbstractType
 {
@@ -20,17 +20,21 @@ class RegistrationFormType extends AbstractType
   ): void
   {
     $builder
-      ->add('email', EmailType::class)
-      ->add('name')
+      ->add('email', EmailType::class, [
+        'constraints' => UserFormFields::getEmailConstraints()
+      ])
+      ->add('name', options: [
+        'constraints' => UserFormFields::getNameConstraints()
+      ])
+      ->add('password', RepeatedType::class, UserFormFields::getPasswordConfig())
       ->add('agreeTerms', CheckboxType::class, [
         'mapped' => false,
         'constraints' => [
           new IsTrue([
             'message' => 'You should agree to our terms.',
-          ]),
-        ],
+          ])
+        ]
       ])
-      ->add('password', RepeatedType::class, PasswordFormField::getConfig())
     ;
   }
 

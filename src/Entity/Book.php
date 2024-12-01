@@ -17,6 +17,7 @@ class Book
   #[ORM\Column]
   private ?int $id = null;
 
+  #[Assert\NotBlank]
   #[Assert\Length(
     min: 3,
     max: 255
@@ -24,6 +25,7 @@ class Book
   #[ORM\Column(length: 255)]
   private ?string $title = null;
 
+  #[Assert\NotBlank]
   #[Assert\Length(
     min: 3,
     max: 255
@@ -31,6 +33,7 @@ class Book
   #[ORM\Column(length: 255)]
   private ?string $author = null;
 
+  #[Assert\NotBlank]
   #[Assert\Length(
     min: 3,
     max: 255
@@ -38,11 +41,13 @@ class Book
   #[ORM\Column(length: 255)]
   private ?string $description = null;
 
+  #[Assert\NotBlank]
   #[Assert\LessThan(2100)]
   #[Assert\GreaterThan(1400)]
   #[ORM\Column(type: Types::SMALLINT)]
   private ?int $year = null;
 
+  #[Assert\NotBlank]
   #[Assert\Isbn(
     type: Assert\Isbn::ISBN_13,
     message: 'ISBN is not valid.'

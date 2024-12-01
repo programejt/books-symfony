@@ -2,11 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Service\UserFormFields;
 
 class UserChangeEmailFormType extends AbstractType
 {
@@ -16,14 +16,13 @@ class UserChangeEmailFormType extends AbstractType
   ): void
   {
     $builder
-      ->add('email', EmailType::class)
+      ->add('email', EmailType::class, [
+        'required' => true,
+        'constraints' => UserFormFields::getEmailConstraints()
+      ])
     ;
   }
 
   public function configureOptions(OptionsResolver $resolver): void
-  {
-    $resolver->setDefaults([
-      'data_class' => User::class,
-    ]);
-  }
+  {}
 }

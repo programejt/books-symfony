@@ -44,6 +44,11 @@ img {
   padding: 8px;
 }
 
+.section {
+  padding: 20px 0;
+  border-top: 1px solid #505050;
+}
+
 .card {
   border: 0;
   padding: 0;

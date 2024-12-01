@@ -8,9 +8,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-// use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use App\Service\UserFormFields;
 
 class UserChangePhotoFormType extends AbstractType
 {
@@ -24,7 +25,10 @@ class UserChangePhotoFormType extends AbstractType
   ): void
   {
     $builder
-      ->add('photo')
+      ->add('photo', FileType::class, [
+        'required' => false,
+        'constraints' => UserFormFields::getPhotoConstraints()
+      ])
     ;
 
     $builder->addEventListener(
@@ -36,7 +40,6 @@ class UserChangePhotoFormType extends AbstractType
 
         if (null != $user->getPhoto()) {
           $form->add('deletePhoto', CheckboxType::class, [
-            'mapped' => false,
             'required' => false,
             'label' => 'Delete photo'
           ]);
@@ -46,9 +49,5 @@ class UserChangePhotoFormType extends AbstractType
   }
 
   public function configureOptions(OptionsResolver $resolver): void
-  {
-    $resolver->setDefaults([
-      'data_class' => User::class,
-    ]);
-  }
+  {}
 }

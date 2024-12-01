@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\FileSystem;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -24,10 +23,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column]
   private ?int $id = null;
 
-  #[Assert\Length(
-    min: 3,
-    max: 180
-  )]
   #[ORM\Column(length: 180)]
   private ?string $email = null;
 
@@ -37,34 +32,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column]
   private array $roles = [];
 
-  /**
-   * @var string The hashed password
-   */
   #[ORM\Column]
   private ?string $password = null;
 
-  #[Assert\Length(
-    min: 2,
-    max: 255
-  )]
   #[ORM\Column(length: 60)]
   private ?string $name = null;
 
   #[ORM\Column]
   private bool $emailVerified = false;
 
-  #[Assert\Image(
-    maxSize: '5m',
-    mimeTypes: [
-      'image/jpg',
-      'image/jpeg',
-      'image/png',
-      'image/webp',
-      'image/avif',
-      'image/heif'
-    ],
-    mimeTypesMessage: 'Please upload a valid image'
-  )]
   #[ORM\Column(length: 60, nullable: true)]
   private ?string $photo = null;
 

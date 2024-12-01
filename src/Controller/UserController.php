@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Service\FileSystem;
 use App\Security\EmailVerifier;
+use Exception;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -116,6 +117,14 @@ class UserController extends AbstractController
     EmailVerifier $emailVerifier
   ): Response
   {
+    /** @var User $user */
+    $user = $this->getUser();
+    $newEmail = $user->getNewEmail();
+
+    if ($newEmail) {
+      return $this->redirectToRoute('app_email_change_verification');
+    }
+
     $form = $this->createForm(UserChangeEmailFormType::class);
     $form->handleRequest($request);
 
@@ -123,13 +132,10 @@ class UserController extends AbstractController
       $emailField = $form->get('email');
       $email = $emailField->getData();
 
-      /** @var User $user */
-      $user = $this->getUser();
-
       if ($email !== $user->getEmail()) {
         $this->_sendChangeEmailVerification($emailVerifier, $user);
 
-        if (!$user->getNewEmail() || $user->getNewEmail() !== $email) {
+        if (!$newEmail || $newEmail !== $email) {
           $user->setNewEmail($email);
 
           $entityManager->persist($user);
@@ -141,6 +147,8 @@ class UserController extends AbstractController
         $emailField->addError(new FormError('You typed the same email as you already have'));
       }
     }
+
+    dump($form->getErrors());
 
     return $this->render('user/change_email_form.html.twig', [
       'form' => $form,
@@ -193,7 +201,12 @@ class UserController extends AbstractController
     $user = $this->getUser();
 
     if ($user->getNewEmail() && $request->getMethod() === 'POST') {
-      $this->_sendChangeEmailVerification($emailVerifier, $user);
+      if ($this->isCsrfTokenValid(
+        'resend_email',
+        $request->getPayload()->getString('_token')
+      )) {
+        $this->_sendChangeEmailVerification($emailVerifier, $user);
+      }
     }
 
     return $this->render('user/change_email_verification.html.twig');
@@ -254,6 +267,34 @@ class UserController extends AbstractController
       'form' => $form,
       'photo' => $photo ? "$photosDir/$photo" : null
     ]);
+  }
+
+  #[Route('/user/cancel-email-change', name: 'app_user_cancel_email_change', methods: [ 'POST'])]
+  #[IsGranted('IS_AUTHENTICATED')]
+  public function cancelEmailChange(
+    Request $request,
+    EntityManagerInterface $entityManager
+  ): Response
+  {
+    /** @var User $user */
+    $user = $this->getUser();
+
+    if ($user->getNewEmail()) {
+      if ($this->isCsrfTokenValid(
+        'cancel_email_change',
+        $request->getPayload()->getString('_token')
+      )) {
+        try {
+          $user->setNewEmail(null);
+          $entityManager->persist($user);
+          $entityManager->flush();
+        } catch (Exception $e) {
+          return $this->redirectToRoute('app_email_change_verification');
+        }
+      }
+    }
+
+    return $this->redirectToRoute('app_user_my_account');
   }
 
   private function _renderUserHomePage(User $user) {

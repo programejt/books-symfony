@@ -24,7 +24,7 @@
         <div class="data-row-title">Password changed at</div>
         <div class="data-row-content">{{ user.passwordChangedAt ? user.passwordChangedAt.format('Y-m-d') : 'Never' }}</div>
       </div>
-      <div class="settings-buttons">
+      <div class="settings-buttons section">
         {% if not user.emailVerified %}
           <a href="{{ path('app_email_verification') }}" class="btn btn-primary">Verify email</a>
         {% endif %}
@@ -33,7 +33,7 @@
         <a href="{{ path('app_user_change_email') }}" class="btn btn-primary">Change email</a>
         <a href="{{ path('app_user_change_photo') }}" class="btn btn-primary">Change photo</a>
       </div>
-      <div class="settings-buttons">
+      <div class="settings-buttons section">
         <a href="{{ path('app_logout') }}" class="btn btn-secondary">Logout</a>
       </div>
     {% endif %}
