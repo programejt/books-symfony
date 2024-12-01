@@ -1,0 +1,29 @@
+:root {
+  --photo-size: 100px;
+}
+
+.user-signature {
+  display: block;
+  width: max-content;
+}
+
+.user-photo-container {
+  display: block;
+}
+
+.user-photo {
+  width: var(--photo-size);
+  height: var(--photo-size);;
+  object-fit: cover;
+  object-position: center;
+}
+
+.user-name {
+  display: block;
+}
+
+.settings-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

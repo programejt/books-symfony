@@ -3,22 +3,25 @@
 namespace App\Security;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use Symfony\Component\Mime\Address;
 
 class EmailVerifier
 {
   public function __construct(
     private VerifyEmailHelperInterface $verifyEmailHelper,
-    private MailerInterface $mailer,
-    private EntityManagerInterface $entityManager
+    private MailerInterface $mailer
   ) {}
 
-  public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void
+  public function sendEmailConfirmation(
+    string $verifyEmailRouteName,
+    User $user,
+    TemplatedEmail $email
+  ): void
   {
     $signatureComponents = $this->verifyEmailHelper->generateSignature(
       $verifyEmailRouteName,
@@ -36,16 +39,25 @@ class EmailVerifier
     $this->mailer->send($email);
   }
 
+  public function emailTemplate(string $email): TemplatedEmail
+  {
+    return (new TemplatedEmail())
+      ->from(new Address('mailer@symfony-books.com', 'Symfony Books'))
+      ->to($email);
+  }
+
   /**
    * @throws VerifyEmailExceptionInterface
    */
-  public function handleEmailConfirmation(Request $request, User $user): void
+  public function validateEmailConfirmationFromRequest(
+    Request $request,
+    User $user,
+  ): void
   {
-    $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
-
-    $user->setVerified(true);
-
-    $this->entityManager->persist($user);
-    $this->entityManager->flush();
+    $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
+      $request,
+      (string) $user->getId(),
+      (string) $user->getEmail()
+    );
   }
 }

@@ -26,6 +26,12 @@ security:
         path: app_logout
         # where to redirect after logout
         target: app_books_index
+      remember_me:
+        secret: '%kernel.secret%' # required
+        token_provider:
+          doctrine: true
+        lifetime: 604800
+      entry_point: 'form_login'
 
         # activate different ways to authenticate
         # https://symfony.com/doc/current/security.html#the-firewall

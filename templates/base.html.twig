@@ -25,17 +25,18 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto my-2 my-sm-0">
               <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_books_index') }}">Books</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {% if app.user %}
-                  {{ app.user.name }}
+                    {{ app.user.name }}
                   </a>
                   <ul class="dropdown-menu">
-                    {% if not app.user.isVerified() %}
+                    <li><a class="dropdown-item" href="{{ path('app_user_my_account') }}">Profile</a></li>
+                    {% if not app.user.emailVerified %}
                       <li><a class="dropdown-item" href="{{ path('app_email_verification') }}">Verify email</a></li>
                     {% endif %}
                     <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>

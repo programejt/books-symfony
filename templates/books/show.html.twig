@@ -8,12 +8,11 @@
 
 {% block body %}
   <header class="text-center">
-    <h1 class="h2">Book</h1>
-    <h2 class="h3"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light">{{ book.title }}</a></h2>
+    <h1 class="h2"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ book.title }}</a></h1>
   </header>
 
   {% if app.user %}
-    <div class="container mb-4 d-flex justify-content-center align-items-center gap-2">
+    <div class="container my-4 d-flex justify-content-center align-items-center gap-2">
       <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">Edit</a>
 
       {{ include('books/_delete_form.html.twig') }}
@@ -21,30 +20,30 @@
   {% endif %}
 
   <div class="container book-container content-container">
-    <div class="book-image-container">
+    <div class="data-row text-center">
       {% if book.photo %}
         <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="photo" class="img">
       {% endif %}
     </div>
-    <div class="book-info">
-      <div class="book-info-title">Title</div>
-      <div class="book-info-content">{{ book.title }}</div>
+    <div class="data-row">
+      <div class="data-row-title">Title</div>
+      <div class="data-row-content">{{ book.title }}</div>
     </div>
-    <div class="book-info">
-      <div class="book-info-title">Author</div>
-      <div class="book-info-content">{{ book.author }}</div>
+    <div class="data-row">
+      <div class="data-row-title">Author</div>
+      <div class="data-row-content">{{ book.author }}</div>
     </div>
-    <div class="book-info">
-      <div class="book-info-title">Year</div>
-      <div class="book-info-content">{{ book.year }}</div>
+    <div class="data-row">
+      <div class="data-row-title">Year</div>
+      <div class="data-row-content">{{ book.year }}</div>
     </div>
-    <div class="book-info">
-      <div class="book-info-title">Description</div>
-      <div class="book-info-content">{{ book.description }}</div>
+    <div class="data-row">
+      <div class="data-row-title">Description</div>
+      <div class="data-row-content">{{ book.description }}</div>
     </div>
-    <div class="book-info">
-      <div class="book-info-title">ISBN</div>
-      <div class="book-info-content">{{ book.isbn }}</div>
+    <div class="data-row">
+      <div class="data-row-title">ISBN</div>
+      <div class="data-row-content">{{ book.isbn }}</div>
     </div>
   </div>
 {% endblock %}

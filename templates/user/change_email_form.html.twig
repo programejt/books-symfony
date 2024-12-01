@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block body %}
+  {{ include('user/header.html.twig', {
+    'user': app.user
+  }) }}
+  <h2 class="h3 text-center mb-3">Change email</h2>
+
+  {{ form_start(form, {
+    'attr': {
+      'class': 'container content-container'
+    }
+  }) }}
+    <div class="errors">
+      {% for error in form.vars.errors %}
+        <div class="alert alert-danger">{{ error.getMessage() }}</div>
+      {% endfor %}
+    </div>
+    {{ include('forms/field.html.twig', {
+      'field': form.email
+    }) }}
+    {{ form_rest(form) }}
+    <div class="text-center">
+      <button class="btn btn-primary form-button">{{ button_label|default('Save') }}</button>
+    </div>
+  {{ form_end(form) }}
+{% endblock %}

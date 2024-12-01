@@ -16,6 +16,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use App\Event\BookAddEvent;
 use App\EventListener\BookAddEventListener;
+use App\Service\FileSystem;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/books', name: 'app_books_')]
 final class BooksController extends AbstractController
@@ -53,13 +56,12 @@ final class BooksController extends AbstractController
   }
 
   #[Route('/new', name: 'new', methods: ['GET', 'POST'], priority: 2)]
+  #[IsGranted('IS_AUTHENTICATED')]
   public function new(
     Request $request,
     EntityManagerInterface $entityManager,
     BookAddEventListener $listener
   ): Response {
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
     $book = new Book();
     $form = $this->createForm(BookType::class, $book);
     $form->handleRequest($request);
@@ -68,20 +70,20 @@ final class BooksController extends AbstractController
       $entityManager->persist($book);
       $bookOriginal = null;
 
-      $result = $this->store($form, $book, $bookOriginal, $entityManager);
-
-      if ($result) {
+      if ($this->store($form, $book, $bookOriginal, $entityManager)) {
         $dispatcher = new EventDispatcher();
 
         $dispatcher->addListener(BookAddEvent::NAME, [$listener, 'onBookAdd']);
         $dispatcher->dispatch(new BookAddEvent($book), BookAddEvent::NAME);
+
+        return $this->redirectToRoute(
+          'app_books_show',
+          ['id' => $book->getId()],
+          Response::HTTP_SEE_OTHER
+        );
       }
 
-      return $this->redirectToRoute(
-        'app_books_show',
-        ['id' => $book->getId()],
-        Response::HTTP_SEE_OTHER
-      );
+      $form->addError(new FormError('Error occured'));
     }
 
     return $this->render('books/new.html.twig', [
@@ -90,26 +92,26 @@ final class BooksController extends AbstractController
     ]);
   }
 
-  #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+  #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+  #[IsGranted('IS_AUTHENTICATED')]
   public function edit(
     Request $request,
     Book $book,
     EntityManagerInterface $entityManager
   ): Response {
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
     $bookOriginal = clone $book;
     $form = $this->createForm(BookType::class, $book);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $this->store($form, $book, $bookOriginal, $entityManager);
-
-      return $this->redirectToRoute(
-        'app_books_show',
-        ['id' => $book->getId()],
-        Response::HTTP_SEE_OTHER
-      );
+      if ($this->store($form, $book, $bookOriginal, $entityManager)) {
+        return $this->redirectToRoute(
+          'app_books_show',
+          ['id' => $book->getId()],
+          Response::HTTP_SEE_OTHER
+        );
+      }
+      $form->addError(new FormError('Error occured'));
     }
 
     return $this->render('books/edit.html.twig', [
@@ -118,14 +120,13 @@ final class BooksController extends AbstractController
     ]);
   }
 
-  #[Route('/{id}', name: 'delete', methods: ['POST'])]
+  #[Route('/{id}', name: 'delete', methods: ['POST'], requirements: ['id' => '\d+'])]
+  #[IsGranted('IS_AUTHENTICATED')]
   public function delete(
     Request $request,
     Book $book,
     EntityManagerInterface $entityManager
   ): Response {
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
     if ($this->isCsrfTokenValid(
       'delete' . $book->getId(),
       $request->getPayload()->getString('_token')
@@ -147,6 +148,7 @@ final class BooksController extends AbstractController
     ?Book &$bookOriginal,
     EntityManagerInterface &$entityManager
   ): bool {
+    /** @var Symfony\Component\HttpFoundation\File $newPhoto */
     $newPhoto = $form->get('photo')->getData();
     $deletePhoto = $form->has('deletePhoto') ? $form->get('deletePhoto')->getData() : false;
     $photo = $bookOriginal?->getPhoto();
@@ -163,10 +165,10 @@ final class BooksController extends AbstractController
       return false;
     }
 
-    $photoDir = $book->getSystemPhotosDir();
+    $photoDir = FileSystem::getDocumentRoot().$book->getPhotosDir();
 
     if ($photo && ($deletePhoto || $newPhoto)) {
-      $this->deletePhoto("$photoDir/$photo");
+      FileSystem::deleteFile("$photoDir/$photo");
     }
 
     if ($newPhoto) {
@@ -178,15 +180,5 @@ final class BooksController extends AbstractController
     }
 
     return true;
-  }
-
-  private function deletePhoto(string $photoFullPath): bool
-  {
-    $photoFullPath = str_replace(['..', '\\'], '', $photoFullPath);
-
-    if (file_exists($photoFullPath) && is_file($photoFullPath)) {
-      return unlink($photoFullPath);
-    }
-    return false;
   }
 }

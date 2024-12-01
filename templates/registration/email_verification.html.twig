@@ -6,7 +6,7 @@
   <article class="container content-container">
   <h1 class="text-center">Verify email</h1>
 
-  {% if app.user.isVerified() %}
+  {% if app.user.emailVerified %}
     <div class="alert alert-success" role="alert">Your email address has been verified.</div>
     <div class="text-center">
       <a href="{{ path('app_home') }}" class="btn btn-secondary">Go to home</a>
