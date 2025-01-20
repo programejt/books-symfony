@@ -19,7 +19,7 @@ use App\Service\FileSystem;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
   #[ORM\Id]
-  #[ORM\GeneratedValue]
+  #[ORM\GeneratedValue(strategy: "SEQUENCE")]
   #[ORM\Column]
   private ?int $id = null;
 
@@ -87,7 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function getRoles(): array
   {
     $roles = $this->roles;
-    // guarantee every user at least has ROLE_USER
+
     $roles[] = 'ROLE_USER';
 
     return array_unique($roles);

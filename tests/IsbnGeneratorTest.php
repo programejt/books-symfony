@@ -20,6 +20,6 @@ final class IsbnGeneratorTest extends WebTestCase
       $isbn
     );
 
-    self::assertTrue($isbn->message == null);
+    self::assertNull($isbn->message);
   }
 }

@@ -29,7 +29,7 @@ class RegistrationController extends AbstractController
     Request $request,
     UserPasswordHasherInterface $userPasswordHasher,
     EntityManagerInterface $entityManager,
-    Security $security
+    Security $security,
   ): Response
   {
     $user = new User();
@@ -37,7 +37,6 @@ class RegistrationController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      /** @var string $plainPassword */
       $plainPassword = $form->get('password')->getData();
 
       $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
@@ -59,7 +58,7 @@ class RegistrationController extends AbstractController
     ]);
   }
 
-  #[Route('/email/verification', name: 'app_email_verification')]
+  #[Route('/email/verification', name: 'app_email_verification', methods: ['GET', 'POST'])]
   #[isGranted('IS_AUTHENTICATED')]
   public function userEmailVerification(
     Request $request
@@ -80,7 +79,7 @@ class RegistrationController extends AbstractController
   public function verifyUserEmail(
     Request $request,
     EntityManagerInterface $entityManager,
-    TranslatorInterface $translator
+    TranslatorInterface $translator,
   ): Response
   {
     /** @var User $user */

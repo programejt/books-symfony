@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Controller;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
@@ -38,16 +38,22 @@ class RegistrationControllerTest extends WebTestCase
     self::assertResponseIsSuccessful();
     self::assertPageTitleContains('Register');
 
+    $password = 'password';
+
     $this->client->submitForm('Register', [
+      'registration_form[name]' => 'Test User',
       'registration_form[email]' => 'me@example.com',
-      'registration_form[plainPassword]' => 'password',
+      'registration_form[password][first]' => $password,
+      'registration_form[password][second]' => $password,
       'registration_form[agreeTerms]' => true,
     ]);
 
     // Ensure the response redirects after submitting the form, the user exists, and is not verified
     // self::assertResponseRedirects('/');  @TODO: set the appropriate path that the user is redirected to.
-    self::assertCount(1, $this->userRepository->findAll());
-    self::assertFalse(($user = $this->userRepository->findAll()[0])->isVerified());
+    $users = $this->userRepository->findAll();
+
+    self::assertCount(1, $users);
+    self::assertFalse(($user = $users[0])->emailVerified());
 
     // Ensure the verification email was sent
     // Use either assertQueuedEmailCount() || assertEmailCount() depending on your mailer setup
@@ -69,12 +75,12 @@ class RegistrationControllerTest extends WebTestCase
     $messageBody = $templatedEmail->getHtmlBody();
     self::assertIsString($messageBody);
 
-    preg_match('#(http://localhost/verify/email.+)">#', $messageBody, $resetLink);
+    preg_match('#(http://localhost/email/verify.+)">#', $messageBody, $resetLink);
 
     // "Click" the link and see if the user is verified
     $this->client->request('GET', $resetLink[1]);
     $this->client->followRedirect();
 
-    self::assertTrue(static::getContainer()->get(UserRepository::class)->findAll()[0]->isVerified());
+    self::assertTrue(static::getContainer()->get(UserRepository::class)->findAll()[0]->emailVerified());
   }
 }

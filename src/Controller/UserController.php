@@ -42,7 +42,7 @@ class UserController extends AbstractController
   #[IsGranted('IS_AUTHENTICATED')]
   public function changeName(
     Request $request,
-    EntityManagerInterface $entityManager
+    EntityManagerInterface $entityManager,
   ): Response
   {
     $form = $this->createForm(UserChangeNameFormType::class);
@@ -77,7 +77,7 @@ class UserController extends AbstractController
   public function changePassword(
     Request $request,
     UserPasswordHasherInterface $userPasswordHasher,
-    EntityManagerInterface $entityManager
+    EntityManagerInterface $entityManager,
   ): Response
   {
     $form = $this->createForm(UserChangePasswordFormType::class);
@@ -114,7 +114,7 @@ class UserController extends AbstractController
   public function changeEmail(
     Request $request,
     EntityManagerInterface $entityManager,
-    EmailVerifier $emailVerifier
+    EmailVerifier $emailVerifier,
   ): Response
   {
     /** @var User $user */
@@ -161,7 +161,7 @@ class UserController extends AbstractController
     Request $request,
     EntityManagerInterface $entityManager,
     EmailVerifier $emailVerifier,
-    TranslatorInterface $translator
+    TranslatorInterface $translator,
   ): Response
   {
     /** @var User $user */
@@ -194,7 +194,7 @@ class UserController extends AbstractController
   #[isGranted('IS_AUTHENTICATED')]
   public function userEmailVerification(
     Request $request,
-    EmailVerifier $emailVerifier
+    EmailVerifier $emailVerifier,
   ): Response
   {
     /** @var User $user */
@@ -216,7 +216,7 @@ class UserController extends AbstractController
   #[IsGranted('IS_AUTHENTICATED')]
   public function changePhoto(
     Request $request,
-    EntityManagerInterface $entityManager
+    EntityManagerInterface $entityManager,
   ): Response
   {
     $form = $this->createForm(UserChangePhotoFormType::class);
@@ -273,7 +273,7 @@ class UserController extends AbstractController
   #[IsGranted('IS_AUTHENTICATED')]
   public function cancelEmailChange(
     Request $request,
-    EntityManagerInterface $entityManager
+    EntityManagerInterface $entityManager,
   ): Response
   {
     /** @var User $user */
@@ -305,7 +305,7 @@ class UserController extends AbstractController
 
   private function _sendChangeEmailVerification(
     EmailVerifier $emailVerifier,
-    User $user
+    User $user,
   ): void
   {
     $emailVerifier->sendEmailConfirmation(

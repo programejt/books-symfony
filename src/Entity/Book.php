@@ -13,7 +13,7 @@ use App\Service\FileSystem;
 class Book
 {
   #[ORM\Id]
-  #[ORM\GeneratedValue]
+  #[ORM\GeneratedValue(strategy: "SEQUENCE")]
   #[ORM\Column]
   private ?int $id = null;
 
