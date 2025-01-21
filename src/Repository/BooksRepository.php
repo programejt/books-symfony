@@ -7,9 +7,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-/**
- * @extends ServiceEntityRepository<Books>
- */
 class BooksRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)
@@ -25,7 +22,8 @@ class BooksRepository extends ServiceEntityRepository
     $query = $this->createQueryBuilder('b');
 
     if ($titleOrAuthor) {
-      $query->where("LOWER(b.title) like :searchValue")
+      $query
+        ->where("LOWER(b.title) like :searchValue")
         ->orWhere("LOWER(b.author) like :searchValue")
         ->setParameter('searchValue', "%" . strtolower($titleOrAuthor) . "%");
     }
@@ -34,7 +32,8 @@ class BooksRepository extends ServiceEntityRepository
 
     $paginator = new Paginator($query, true);
 
-    $paginator->getQuery()
+    $paginator
+      ->getQuery()
       ->setFirstResult(($currentPage - 1) * $limit)
       ->setMaxResults($limit);
 

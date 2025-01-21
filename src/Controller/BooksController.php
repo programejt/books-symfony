@@ -26,9 +26,9 @@ final class BooksController extends AbstractController
   #[Route(name: 'index', methods: ['GET'])]
   public function index(
     Request $request,
-    BooksRepository $booksRepository
+    BooksRepository $booksRepository,
   ): Response {
-    $currentPage = (int) ($request->get('page') ?? 1);
+    $currentPage = (int) $request->get('page', 1);
     $searchValue = $request->get('book-title-or-author');
 
     if ($currentPage < 1) {
@@ -60,7 +60,7 @@ final class BooksController extends AbstractController
   public function new(
     Request $request,
     EntityManagerInterface $entityManager,
-    BookAddEventListener $listener
+    BookAddEventListener $listener,
   ): Response {
     $book = new Book();
     $form = $this->createForm(BookType::class, $book);
@@ -68,9 +68,8 @@ final class BooksController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       $entityManager->persist($book);
-      $bookOriginal = null;
 
-      if ($this->store($form, $book, $bookOriginal, $entityManager)) {
+      if ($this->store($form, $book, null, $entityManager)) {
         $dispatcher = new EventDispatcher();
 
         $dispatcher->addListener(BookAddEvent::NAME, [$listener, 'onBookAdd']);
@@ -97,7 +96,7 @@ final class BooksController extends AbstractController
   public function edit(
     Request $request,
     Book $book,
-    EntityManagerInterface $entityManager
+    EntityManagerInterface $entityManager,
   ): Response {
     $bookOriginal = clone $book;
     $form = $this->createForm(BookType::class, $book);
@@ -125,7 +124,7 @@ final class BooksController extends AbstractController
   public function delete(
     Request $request,
     Book $book,
-    EntityManagerInterface $entityManager
+    EntityManagerInterface $entityManager,
   ): Response {
     if ($this->isCsrfTokenValid(
       'delete' . $book->getId(),
@@ -143,10 +142,10 @@ final class BooksController extends AbstractController
   }
 
   private function store(
-    FormInterface &$form,
-    Book &$book,
-    ?Book &$bookOriginal,
-    EntityManagerInterface &$entityManager
+    FormInterface $form,
+    Book $book,
+    ?Book $bookOriginal,
+    EntityManagerInterface $entityManager,
   ): bool {
     /** @var Symfony\Component\HttpFoundation\File $newPhoto */
     $newPhoto = $form->get('photo')->getData();

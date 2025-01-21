@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Controller;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -30,6 +30,8 @@ class LoginControllerTest extends WebTestCase
     $passwordHasher = $container->get('security.user_password_hasher');
 
     $user = (new User())->setEmail('email@example.com');
+    $user->setName('Test User');
+    $user->setCreatedAt(new \DateTime());
     $user->setPassword($passwordHasher->hashPassword($user, 'password'));
 
     $em->persist($user);
@@ -74,7 +76,7 @@ class LoginControllerTest extends WebTestCase
       '_password' => 'password',
     ]);
 
-    self::assertResponseRedirects('/');
+    self::assertResponseRedirects('/books');
     $this->client->followRedirect();
 
     self::assertSelectorNotExists('.alert-danger');
