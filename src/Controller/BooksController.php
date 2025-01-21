@@ -87,7 +87,7 @@ final class BooksController extends AbstractController
 
     return $this->render('books/new.html.twig', [
       'book' => $book,
-      'form' => $form
+      'form' => $form,
     ]);
   }
 
@@ -115,7 +115,7 @@ final class BooksController extends AbstractController
 
     return $this->render('books/edit.html.twig', [
       'book' => $bookOriginal,
-      'form' => $form
+      'form' => $form,
     ]);
   }
 

@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Book;
+use App\Entity\Author;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -21,7 +23,11 @@ class BookType extends AbstractType
   {
     $builder
       ->add('title')
-      ->add('author')
+      ->add('authors', EntityType::class, [
+        'class' => Author::class,
+        'multiple' => true,
+        'by_reference' => false,
+      ])
       ->add('description', TextareaType::class)
       ->add('year')
       ->add('isbn')
