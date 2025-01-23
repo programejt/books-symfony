@@ -53,6 +53,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column(length: 100, nullable: true)]
   private ?string $newEmail = null;
 
+  public function __construct() {
+    $this->createdAt = new \DateTime();
+  }
+
   public function getId(): ?int
   {
     return $this->id;
@@ -161,12 +165,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function getCreatedAt(): ?\DateTimeInterface
   {
     return $this->createdAt;
-  }
-
-  public function setCreatedAt(\DateTimeInterface $createdAt): static
-  {
-    $this->createdAt = $createdAt;
-    return $this;
   }
 
   public function getPasswordChangedAt(): ?\DateTimeInterface

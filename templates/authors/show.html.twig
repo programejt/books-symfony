@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ author }}{% endblock %}
+
+{% block stylesheets %}
+  <link href="{{ asset('styles/author.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+  <header class="text-center">
+    <h1 class="h2"><a href="{{ path('app_authors_show', {'id': author.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ author }}</a></h1>
+  </header>
+
+  {% if app.user %}
+    <div class="container my-4 d-flex justify-content-center align-items-center gap-2">
+      <a href="{{ path('app_authors_edit', {'id': author.id}) }}" class="btn btn-secondary">Edit</a>
+
+      {{ include('authors/_delete_form.html.twig') }}
+    </div>
+  {% endif %}
+
+  <div class="container author-container content-container">
+    <div class="data-row">
+      <div class="data-row-title">Name</div>
+      <div class="data-row-content">{{ author.name }}</div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-title">Surname</div>
+      <div class="data-row-content">{{ author.surname }}</div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-title">Books amount</div>
+      <div class="data-row-content">{{ author.books.count() }}</div>
+    </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <h2 class="text-center">Books</h2>
+    <div class="row gap-3 justify-content-center">
+      {{ include('books/cards.html.twig', {'books': author.books}) }}
+    </div>
+  </div>
+{% endblock %}

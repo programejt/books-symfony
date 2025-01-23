@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Form\BookType;
-use App\Repository\BooksRepository;
+use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -26,7 +26,7 @@ final class BooksController extends AbstractController
   #[Route(name: 'index', methods: ['GET'])]
   public function index(
     Request $request,
-    BooksRepository $booksRepository,
+    BookRepository $bookRepository,
   ): Response {
     $currentPage = (int) $request->get('page', 1);
     $searchValue = $request->get('book-title-or-author');
@@ -37,7 +37,7 @@ final class BooksController extends AbstractController
 
     $limit = 12;
 
-    $books = $booksRepository->findPaginated($searchValue, $currentPage, $limit);
+    $books = $bookRepository->findPaginated($searchValue, $currentPage, $limit);
 
     return $this->render('books/index.html.twig', [
       'searchValue' => $searchValue,

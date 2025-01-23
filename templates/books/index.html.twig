@@ -13,25 +13,7 @@
 
     <div class="container-fluid">
       <div class="row gap-3 justify-content-center">
-        {% for book in books %}
-          <div class="card col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card-img text-center">
-              {% if book.photo %}
-                <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="book photo" class="img">
-              {% endif %}
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{ book.title }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ book.getAuthorsNames() }}</h6>
-              <p class="card-text">{{ book.year }}</p>
-              <div class="text-center">
-                <a href="{{ path('app_books_show', {'id': book.id}) }}" class="btn btn-primary w-100">Details</a>
-              </div>
-            </div>
-          </div>
-        {% else %}
-          <div class="text-center">No books found</div>
-        {% endfor %}
+        {{ include('books/cards.html.twig', {'books': books}) }}
       </div>
     </div>
 

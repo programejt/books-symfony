@@ -31,7 +31,7 @@
     </div>
     <div class="data-row">
       <div class="data-row-title">Authors</div>
-      <div class="data-row-content">{{ book.getAuthorsNames() }}</div>
+      <div class="data-row-content">{{ include('authors/names.html.twig', {'authors': book.authors}) }}</div>
     </div>
     <div class="data-row">
       <div class="data-row-title">Year</div>

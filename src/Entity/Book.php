@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\BooksRepository;
+use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\FileSystem;
 
-#[ORM\Entity(repositoryClass: BooksRepository::class)]
+#[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\Table(name: 'books')]
 class Book
 {

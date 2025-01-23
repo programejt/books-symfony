@@ -7,7 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class BooksRepository extends ServiceEntityRepository
+class BookRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)
   {
