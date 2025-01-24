@@ -1,15 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New author{% endblock %}
+{% block title %}Add new author{% endblock %}
 
 {% block body %}
   <header class="text-center">
     <h1 class="h2">Add new author</h1>
   </header>
 
-  {{ include('authors/_form.html.twig') }}
-
-  <div class="buttons-container">
-    <a href="{{ path('app_authors_index') }}" class="btn btn-secondary form-button">Back to list</a>
-  </div>
+  {{ include(
+    'authors/_form.html.twig',
+    {
+      'submitButtonLabel': 'Add',
+      'cancelButtonHref': path('app_authors_index')
+    }
+  )}}
 {% endblock %}

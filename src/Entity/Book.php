@@ -9,9 +9,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\FileSystem;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\Table(name: 'books')]
+#[UniqueEntity(fields: 'isbn', message: 'There is already a book with this Isbn')]
 class Book
 {
   #[ORM\Id]
@@ -32,7 +34,7 @@ class Book
     min: 3,
     max: 255
   )]
-  #[ORM\Column(length: 255)]
+  #[ORM\Column(length: 3000)]
   private ?string $description = null;
 
   #[Assert\NotBlank]
@@ -46,7 +48,7 @@ class Book
     type: Assert\Isbn::ISBN_13,
     message: 'ISBN is not valid.'
   )]
-  #[ORM\Column(type: Types::BIGINT)]
+  #[ORM\Column(type: Types::BIGINT, unique: true)]
   private ?int $isbn = null;
 
   #[Assert\Image(
@@ -67,6 +69,10 @@ class Book
   /**
    * @var Collection<int, Author>
    */
+  #[Assert\Count(
+    min: 1,
+    minMessage: 'You must specify at least one author',
+  )]
   #[ORM\ManyToMany(targetEntity: Author::class, mappedBy:
   'books', cascade: ['persist', 'remove'])]
   #[ORM\JoinTable(name: "author_book")]

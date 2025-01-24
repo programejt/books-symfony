@@ -1,0 +1,14 @@
+.form-buttons {
+  text-align: center;
+}
+
+.form-buttons.sticky {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+}
+
+.form-button {
+  width: 200px;
+  margin-bottom: 10px;
+}

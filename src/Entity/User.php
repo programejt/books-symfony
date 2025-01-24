@@ -14,8 +14,8 @@ use App\Service\FileSystem;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['name'], message: 'There is already an account with this name')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: 'name', message: 'There is already an account with this name')]
+#[UniqueEntity(fields: 'email', message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
   #[ORM\Id]
@@ -70,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setEmail(string $email): static
   {
     $this->email = $email;
+
     return $this;
   }
 
@@ -103,6 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setRoles(array $roles): static
   {
     $this->roles = $roles;
+
     return $this;
   }
 
@@ -117,6 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setPassword(string $password): static
   {
     $this->password = $password;
+
     return $this;
   }
 
@@ -137,6 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setName(string $name): static
   {
     $this->name = $name;
+
     return $this;
   }
 
@@ -148,6 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setEmailVerified(bool $emailVerified): static
   {
     $this->emailVerified = $emailVerified;
+
     return $this;
   }
 
@@ -159,6 +164,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setPhoto(?string $photo): static
   {
     $this->photo = $photo;
+
     return $this;
   }
 
@@ -175,6 +181,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setPasswordChangedAt(?\DateTimeInterface $passwordChangedAt): static
   {
     $this->passwordChangedAt = $passwordChangedAt;
+
     return $this;
   }
 
@@ -191,6 +198,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setNewEmail(?string $newEmail): static
   {
     $this->newEmail = $newEmail;
+
     return $this;
   }
 }

@@ -20,20 +20,20 @@
     <header id="main-header">
       <nav class="navbar navbar-expand-sm">
         <div class="container-fluid">
-          <!-- <a class="navbar-brand" href="{{ path('app_books_index') }}">Books</a> -->
+          {# <!-- <a class="navbar-brand" href="{{ path('app_books_index') }}">Books</a> --> #}
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto my-2 my-sm-0">
               <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_books_index') }}">Books</a>
+                <a class="nav-link {% if app.request.attributes.get('_route') == 'app_books_index' %}active{% endif %}" href="{{ path('app_books_index') }}">Books</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_authors_index') }}">Authors</a>
+                <a class="nav-link {% if app.request.attributes.get('_route') == 'app_authors_index' %}active{% endif %}" href="{{ path('app_authors_index') }}">Authors</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle {% if app.request.attributes.get('_route') == 'app_user_my_account' %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {% if app.user %}
                     {{ app.user.name }}
                   </a>

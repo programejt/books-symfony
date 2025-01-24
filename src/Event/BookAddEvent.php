@@ -9,8 +9,9 @@ class BookAddEvent extends Event
 {
     public const NAME = 'book.add';
 
-    public function __construct(private Book $book)
-    {}
+    public function __construct(
+      private Book $book
+    ) {}
 
     public function getBook(): Book {
       return $this->book;

@@ -26,10 +26,13 @@ class BookType extends AbstractType
       ->add('authors', EntityType::class, [
         'class' => Author::class,
         'multiple' => true,
-        'by_reference' => false,
+        'expanded' => true,
+        'by_reference' => false
       ])
       ->add('description', TextareaType::class)
-      ->add('year')
+      ->add('year', options: [
+        'empty_data' => 2025
+      ])
       ->add('isbn')
       ->add('photo', FileType::class, [
         'data_class' => null,

@@ -1,5 +1,5 @@
 {% block stylesheets %}
-  <link href="{{ asset('styles/author-form.css') }}" rel="stylesheet">
+  <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
 {% endblock %}
 
 {{ form_start(form, {
@@ -20,7 +20,5 @@
     'field': form.surname
   }) }}
   {{ form_rest(form) }}
-  <div class="text-center">
-    <button class="btn btn-primary form-button">{{ button_label|default('Save') }}</button>
-  </div>
+  {{ include('forms/form_buttons.html.twig') }}
 {{ form_end(form) }}

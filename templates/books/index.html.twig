@@ -2,12 +2,16 @@
 
 {% block title %}Books{% endblock %}
 
+{# {% block stylesheets %}
+  <link href="{{ asset('styles/book-card.css') }}" rel="stylesheet">
+{% endblock %} #}
+
 {% block body %}
     <h1 class="h2 text-center">Books</h1>
 
     {% if app.user %}
       <div class="text-center my-4">
-        <a href="{{ path('app_books_new') }}" class="btn btn-success">Create new</a>
+        <a href="{{ path('app_books_new') }}" class="btn btn-success">Add new</a>
       </div>
     {% endif %}
 

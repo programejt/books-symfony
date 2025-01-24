@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+  <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
@@ -26,8 +30,8 @@
       <input type="checkbox" name="_remember_me" id="_remember_me" class="form-check-input">
     </div>
 
-    <div class="buttons-container text-center">
-      <button class="btn btn-lg btn-primary" type="submit">
+    <div class="form-buttons">
+      <button class="btn btn-lg btn-primary form-button" type="submit">
         Sign in
       </button>
     </div>

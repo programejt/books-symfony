@@ -72,7 +72,7 @@ final class BooksController extends AbstractController
       if ($this->store($form, $book, null, $entityManager)) {
         $dispatcher = new EventDispatcher();
 
-        $dispatcher->addListener(BookAddEvent::NAME, [$listener, 'onBookAdd']);
+        $dispatcher->addListener(BookAddEvent::NAME, $listener);
         $dispatcher->dispatch(new BookAddEvent($book), BookAddEvent::NAME);
 
         return $this->redirectToRoute(
