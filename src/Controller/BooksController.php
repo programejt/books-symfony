@@ -29,7 +29,7 @@ final class BooksController extends AbstractController
     BookRepository $bookRepository,
   ): Response {
     $currentPage = (int) $request->get('page', 1);
-    $searchValue = $request->get('book-title-or-author');
+    $searchValue = $request->get('search');
 
     if ($currentPage < 1) {
       $currentPage = 1;
@@ -154,7 +154,7 @@ final class BooksController extends AbstractController
 
     $book->setPhoto(match (true) {
       $deletePhoto => null,
-      $newPhoto != null => 'book' . '-' . bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
+      $newPhoto !== null => 'book' . '-' . bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
       default => $photo
     });
 

@@ -16,7 +16,6 @@ class AuthorsFixtures extends Fixture
       $author->setSurname("Name $i");
 
       $manager->persist($author);
-
       $manager->flush();
 
       $this->addReference('AUTHOR'.$i, $author);

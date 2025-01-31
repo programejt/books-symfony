@@ -24,7 +24,7 @@ class Author
   /**
    * @var Collection<int, Book>
    */
-  #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'authors', cascade: ['persist', 'remove'])]
+  #[ORM\ManyToMany(targetEntity: Book::class, cascade: ['persist'])]
   private Collection $books;
 
   public function __construct()
@@ -80,7 +80,7 @@ class Author
   {
     if (!$this->books->contains($book)) {
       $this->books->add($book);
-      $book->addAuthor($this);
+      // $book->addAuthor($this);
     }
 
     return $this;
@@ -88,7 +88,9 @@ class Author
 
   public function removeBook(Book $book): static
   {
-    $this->books->removeElement($book);
+    if ($this->books->removeElement($book)) {
+      // $book->removeAuthor($this);
+    }
 
     return $this;
   }

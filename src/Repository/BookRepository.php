@@ -19,12 +19,14 @@ class BookRepository extends ServiceEntityRepository
     int $currentPage = 1,
     int $limit = 10
   ): Paginator {
-    $query = $this->createQueryBuilder('b');
+    $query = $this
+      ->createQueryBuilder('b');
 
     if ($titleOrAuthor) {
       $query
-        ->where("LOWER(b.title) like :searchValue")
-        ->orWhere("LOWER(b.author) like :searchValue")
+        ->innerJoin('b.authors', 'a')
+        ->where("LOWER(b.title) LIKE :searchValue")
+        ->orWhere("CONCAT(LOWER(a.name), ' ', LOWER(a.surname)) LIKE :searchValue")
         ->setParameter('searchValue', "%" . strtolower($titleOrAuthor) . "%");
     }
 

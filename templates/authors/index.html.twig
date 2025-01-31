@@ -29,15 +29,16 @@
       </div>
     </div>
 
-    <div class="text-center my-5">
-      <a href="{{ path('app_authors_index', {
+    {{ include('pagination.html.twig', {
+      'currentPage': currentPage,
+      'pagesCount': pagesCount,
+      'prevUrl': path('app_authors_index', {
         'page': currentPage - 1,
-        'author-title-or-author': searchValue
-      }) }}" class="btn btn-secondary{{ currentPage > 1 ? '' : ' disabled' }}">Previous page</a>
-      <span>{{ currentPage }} / {{ pagesCount }}</span>
-      <a href="{{ path('app_authors_index', {
+        'search': searchValue
+      }),
+      'nextUrl': path('app_authors_index', {
         'page': currentPage + 1,
-        'author-title-or-author': searchValue
-      }) }}" class="btn btn-secondary{{ currentPage < pagesCount ? '' : ' disabled' }}">Next page</a>
-    </div>
+        'search': searchValue
+      })
+    }) }}
 {% endblock %}

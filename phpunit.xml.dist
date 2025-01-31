@@ -12,9 +12,14 @@
         <env name="APP_DEBUG" value="1"/>
     </php>
 
-    <coverage includeUncoveredFiles="true"
-          pathCoverage="false"
-          ignoreDeprecatedCodeUnits="true"
-          disableCodeCoverageIgnore="true">
+    <coverage
+        includeUncoveredFiles="true"
+        pathCoverage="false"
+        ignoreDeprecatedCodeUnits="true"
+        disableCodeCoverageIgnore="true">
     </coverage>
+
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
 </phpunit>

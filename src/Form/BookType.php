@@ -13,15 +13,35 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class BookType extends AbstractType
 {
   public function buildForm(
     FormBuilderInterface $builder,
-    array $options
+    array $options,
   ): void
   {
     $builder
+      ->add('photo', FileType::class, [
+        'data_class' => null,
+        'required' => false,
+        'mapped' => false,
+        'constraints' => [
+          new Assert\Image(
+            maxSize: '5m',
+            mimeTypes: [
+              'image/jpg',
+              'image/jpeg',
+              'image/png',
+              'image/webp',
+              'image/avif',
+              'image/heif',
+            ],
+            mimeTypesMessage: 'Please upload a valid image'
+          )
+        ],
+      ])
       ->add('title')
       ->add('authors', EntityType::class, [
         'class' => Author::class,
@@ -29,15 +49,11 @@ class BookType extends AbstractType
         'expanded' => true,
         'by_reference' => false
       ])
-      ->add('description', TextareaType::class)
       ->add('year', options: [
         'empty_data' => 2025
       ])
       ->add('isbn')
-      ->add('photo', FileType::class, [
-        'data_class' => null,
-        'required' => false
-      ]);
+      ->add('description', TextareaType::class);
 
     $builder->addEventListener(
       FormEvents::PRE_SET_DATA,
@@ -45,12 +61,16 @@ class BookType extends AbstractType
         $book = $event->getData();
         $form = $event->getForm();
 
-        if ($book && null != $book->getPhoto()) {
-          $form->add('deletePhoto', CheckboxType::class, [
-            'mapped' => false,
-            'required' => false,
-            'label' => 'Delete photo'
-          ]);
+        if ($book?->getPhoto()) {
+          $form->add(
+            'deletePhoto',
+            CheckboxType::class,
+            [
+              'mapped' => false,
+              'required' => false,
+              'label' => 'Delete photo'
+            ],
+          );
         }
       }
     );

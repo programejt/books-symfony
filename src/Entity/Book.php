@@ -51,18 +51,6 @@ class Book
   #[ORM\Column(type: Types::BIGINT, unique: true)]
   private ?int $isbn = null;
 
-  #[Assert\Image(
-    maxSize: '5m',
-    mimeTypes: [
-      'image/jpg',
-      'image/jpeg',
-      'image/png',
-      'image/webp',
-      'image/avif',
-      'image/heif'
-    ],
-    mimeTypesMessage: 'Please upload a valid image'
-  )]
   #[ORM\Column(length: 255, nullable: true)]
   private ?string $photo = null;
 
@@ -73,11 +61,21 @@ class Book
     min: 1,
     minMessage: 'You must specify at least one author',
   )]
-  #[ORM\ManyToMany(targetEntity: Author::class, mappedBy:
-  'books', cascade: ['persist', 'remove'])]
+  #[ORM\ManyToMany(
+    targetEntity: Author::class,
+    cascade: ['persist'],
+  )]
   #[ORM\JoinTable(name: "author_book")]
-  #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id")]
-  #[ORM\InverseJoinColumn(name: "book_id", referencedColumnName: "id")]
+  #[ORM\JoinColumn(
+    name: "book_id",
+    referencedColumnName: "id",
+    onDelete: 'cascade',
+  )]
+  #[ORM\InverseJoinColumn(
+    name: "author_id",
+    referencedColumnName: "id",
+    onDelete: 'cascade',
+  )]
   private Collection $authors;
 
   public function __construct()
@@ -186,7 +184,7 @@ class Book
   {
     if (!$this->authors->contains($author)) {
       $this->authors->add($author);
-      $author->addBook($this);
+      // $author->addBook($this);
     }
 
     return $this;
@@ -195,7 +193,7 @@ class Book
   public function removeAuthor(Author $author): static
   {
     if ($this->authors->removeElement($author)) {
-      $author->removeBook($this);
+      // $author->removeBook($this);
     }
 
     return $this;

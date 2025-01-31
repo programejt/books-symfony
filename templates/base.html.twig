@@ -55,7 +55,7 @@
               </li>
             </ul>
             <form action="{{ path('app_books_index') }}" method="get" class="d-flex" role="search">
-              <input class="form-control me-2" type="search" name="book-title-or-author" placeholder="Search books" aria-label="Search" value="{{ searchValue ?? '' }}"">
+              <input class="form-control me-2" type="search" name="search" placeholder="Search books" aria-label="Search" value="{{ searchValue ?? '' }}">
               <button class="btn btn-success" type="submit">Search</button>
             </form>
           </div>
