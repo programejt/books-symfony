@@ -59,7 +59,9 @@ class Book
    */
   #[Assert\Count(
     min: 1,
+    max: 6,
     minMessage: 'You must specify at least one author',
+    maxMessage: 'You must specify no more than 6 authors',
   )]
   #[ORM\ManyToMany(
     targetEntity: Author::class,

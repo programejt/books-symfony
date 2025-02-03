@@ -65,6 +65,19 @@ img {
   justify-content: center;
 }
 
+.card-main-link {
+  text-decoration: none;
+}
+
+.card-main-link:focus-visible,
+.card-main-link:hover {
+  background-color: #343b42;
+}
+
+.card-main-link:active {
+  background-color: #373f46;
+}
+
 .img {
   border-radius: 10px;
 }

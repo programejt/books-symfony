@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use App\Service\UserFormFields;
+use App\Service\FormConstraints;
 
 class UserChangePhotoFormType extends AbstractType
 {
@@ -27,7 +27,9 @@ class UserChangePhotoFormType extends AbstractType
     $builder
       ->add('photo', FileType::class, [
         'required' => false,
-        'constraints' => UserFormFields::getPhotoConstraints()
+        'constraints' => [
+          FormConstraints::getForPhoto()
+        ]
       ])
     ;
 

@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Service\FormConstraints;
 
 class BookType extends AbstractType
 {
@@ -28,18 +28,7 @@ class BookType extends AbstractType
         'required' => false,
         'mapped' => false,
         'constraints' => [
-          new Assert\Image(
-            maxSize: '5m',
-            mimeTypes: [
-              'image/jpg',
-              'image/jpeg',
-              'image/png',
-              'image/webp',
-              'image/avif',
-              'image/heif',
-            ],
-            mimeTypesMessage: 'Please upload a valid image'
-          )
+          FormConstraints::getForPhoto()
         ],
       ])
       ->add('title')
