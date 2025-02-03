@@ -31,7 +31,7 @@ security:
         token_provider:
           doctrine: true
         lifetime: 604800
-      entry_point: 'form_login'
+      entry_point: form_login
 
         # activate different ways to authenticate
         # https://symfony.com/doc/current/security.html#the-firewall

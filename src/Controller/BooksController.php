@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Form\BookType;
-use App\Repository\BooksRepository;
+use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -26,10 +26,10 @@ final class BooksController extends AbstractController
   #[Route(name: 'index', methods: ['GET'])]
   public function index(
     Request $request,
-    BooksRepository $booksRepository,
+    BookRepository $bookRepository,
   ): Response {
     $currentPage = (int) $request->get('page', 1);
-    $searchValue = $request->get('book-title-or-author');
+    $searchValue = $request->get('search');
 
     if ($currentPage < 1) {
       $currentPage = 1;
@@ -37,7 +37,7 @@ final class BooksController extends AbstractController
 
     $limit = 12;
 
-    $books = $booksRepository->findPaginated($searchValue, $currentPage, $limit);
+    $books = $bookRepository->findPaginated($searchValue, $currentPage, $limit);
 
     return $this->render('books/index.html.twig', [
       'searchValue' => $searchValue,
@@ -72,7 +72,7 @@ final class BooksController extends AbstractController
       if ($this->store($form, $book, null, $entityManager)) {
         $dispatcher = new EventDispatcher();
 
-        $dispatcher->addListener(BookAddEvent::NAME, [$listener, 'onBookAdd']);
+        $dispatcher->addListener(BookAddEvent::NAME, $listener);
         $dispatcher->dispatch(new BookAddEvent($book), BookAddEvent::NAME);
 
         return $this->redirectToRoute(
@@ -87,7 +87,7 @@ final class BooksController extends AbstractController
 
     return $this->render('books/new.html.twig', [
       'book' => $book,
-      'form' => $form
+      'form' => $form,
     ]);
   }
 
@@ -115,7 +115,7 @@ final class BooksController extends AbstractController
 
     return $this->render('books/edit.html.twig', [
       'book' => $bookOriginal,
-      'form' => $form
+      'form' => $form,
     ]);
   }
 
@@ -154,7 +154,7 @@ final class BooksController extends AbstractController
 
     $book->setPhoto(match (true) {
       $deletePhoto => null,
-      $newPhoto != null => 'book' . '-' . bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
+      $newPhoto !== null => 'book' . '-' . bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
       default => $photo
     });
 

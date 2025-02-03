@@ -2,48 +2,35 @@
 
 {% block title %}Books{% endblock %}
 
+{# {% block stylesheets %}
+  <link href="{{ asset('styles/book-card.css') }}" rel="stylesheet">
+{% endblock %} #}
+
 {% block body %}
     <h1 class="h2 text-center">Books</h1>
 
     {% if app.user %}
-    <div class="text-center my-4">
-      <a href="{{ path('app_books_new') }}" class="btn btn-success">Create new</a>
-    </div>
+      <div class="text-center my-4">
+        <a href="{{ path('app_books_new') }}" class="btn btn-success">Add new</a>
+      </div>
     {% endif %}
 
     <div class="container-fluid">
       <div class="row gap-3 justify-content-center">
-        {% for book in books %}
-          <div class="card col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card-img text-center">
-              {% if book.photo %}
-                <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="book photo" class="img">
-              {% endif %}
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{ book.title }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ book.author }}</h6>
-              <p class="card-text">{{ book.year }}</p>
-              <div class="text-center">
-                <a href="{{ path('app_books_show', {'id': book.id}) }}" class="btn btn-primary w-100">Details</a>
-              </div>
-            </div>
-          </div>
-        {% else %}
-          <div class="text-center">No books found</div>
-        {% endfor %}
+        {{ include('books/cards.html.twig', {'books': books}) }}
       </div>
     </div>
 
-    <div class="text-center my-5">
-      <a href="{{ path('app_books_index', {
-          'page': currentPage - 1,
-          'book-title-or-author': searchValue
-      }) }}" class="btn btn-secondary{{ currentPage > 1 ? '' : ' disabled' }}">Previous page</a>
-      <span>{{ currentPage }} / {{ pagesCount }}</span>
-      <a href="{{ path('app_books_index', {
+    {{ include('pagination.html.twig', {
+      'currentPage': currentPage,
+      'pagesCount': pagesCount,
+      'prevUrl': path('app_books_index', {
+        'page': currentPage - 1,
+        'search': searchValue
+      }),
+      'nextUrl': path('app_books_index', {
         'page': currentPage + 1,
-        'book-title-or-author': searchValue
-      }) }}" class="btn btn-secondary{{ currentPage < pagesCount ? '' : ' disabled' }}">Next page</a>
-    </div>
+        'search': searchValue
+      })
+    }) }}
 {% endblock %}

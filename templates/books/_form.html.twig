@@ -1,10 +1,10 @@
 {% block stylesheets %}
-  <link href="{{ asset('styles/book-form.css') }}" rel="stylesheet">
+  <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
 {% endblock %}
 
 {{ form_start(form, {
   'attr': {
-    'id': 'book-form',
+    'id': 'form',
     'class': 'container content-container'
   }
 }) }}
@@ -30,11 +30,14 @@
   {{ include('forms/field.html.twig', {
     'field': form.title
   }) }}
-  {{ include('forms/field.html.twig', {
-    'field': form.author
+  {{ include('forms/select_multiple.html.twig', {
+    'field': form.authors
   }) }}
   {{ include('forms/field.html.twig', {
     'field': form.year
+  }) }}
+  {{ include('forms/field.html.twig', {
+    'field': form.isbn
   }) }}
   {{ include('forms/field.html.twig', {
     'field': form.description,
@@ -42,11 +45,7 @@
       'rows': 6
     }
   }) }}
-  {{ include('forms/field.html.twig', {
-    'field': form.isbn
-  }) }}
+  {% do form.authors.setRendered() %}
   {{ form_rest(form) }}
-  <div class="text-center">
-    <button class="btn btn-primary form-button">{{ button_label|default('Save') }}</button>
-  </div>
+  {{ include('forms/form_buttons.html.twig') }}
 {{ form_end(form) }}

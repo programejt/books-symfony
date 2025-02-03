@@ -41,14 +41,12 @@ class RegistrationController extends AbstractController
 
       $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
-      $user->setCreatedAt(new \DateTime());
-
       $entityManager->persist($user);
       $entityManager->flush();
 
       $this->_sendVerificationEmail($user);
 
-      $security->login($user, 'form_login');
+      $security->login($user, 'debug.security.authenticator.form_login.main');
 
       return $this->redirectToRoute('app_email_verification');
     }

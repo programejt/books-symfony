@@ -1,0 +1,14 @@
+{% extends 'forms/field_template.html.twig' %}
+
+{% set selectedValues = field.vars.value %}
+
+{% block formWidget %}
+  <div id="{{ field.vars.id }}" class="form-control {{ (field_errors(field)|length ? 'is-invalid' : '') }}" style="max-height: 280px; overflow: auto;">
+    {% for label, value in field_choices(field) %}
+      <label style="display: block; font-size: 18px;">
+        <input type="checkbox" name="{{ field_name(field) }}[]" value="{{ value }}" {% if value in selectedValues %}checked{% endif %}>
+        {{ label }}
+      </label>
+    {% endfor %}
+  </div>
+{% endblock %}

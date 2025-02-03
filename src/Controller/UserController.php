@@ -148,8 +148,6 @@ class UserController extends AbstractController
       }
     }
 
-    dump($form->getErrors());
-
     return $this->render('user/change_email_form.html.twig', [
       'form' => $form,
     ]);

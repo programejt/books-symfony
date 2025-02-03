@@ -9,11 +9,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20241110172456 extends AbstractMigration
 {
-  public function getDescription(): string
-  {
-    return '';
-  }
-
   public function up(Schema $schema): void
   {
     $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');

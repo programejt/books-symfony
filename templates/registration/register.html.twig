@@ -2,6 +2,10 @@
 
 {% block title %}Register{% endblock %}
 
+{% block stylesheets %}
+  <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
   {% for flash_error in app.flashes('verify_email_error') %}
     <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
@@ -35,8 +39,8 @@
         'class': 'form-check-input'
       }
     }) }}
-    <div class="buttons-container text-center">
-      <button type="submit" class="btn btn-primary btn-lg">Register</button>
+    <div class="form-buttons">
+      <button type="submit" class="btn btn-primary btn-lg form-button">Register</button>
     </div>
   {{ form_end(registrationForm) }}
 {% endblock %}

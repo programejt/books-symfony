@@ -1,0 +1,9 @@
+{% if pagesCount < 1 %}
+  {% set pagesCount = 1 %}
+{% endif %}
+
+<div class="text-center my-5 pagination-container">
+  <a href="{{ prevUrl }}" class="btn btn-secondary{{ currentPage > 1 ? '' : ' disabled' }}">Previous page</a>
+  <span>{{ currentPage }} / {{ pagesCount }}</span>
+  <a href="{{ nextUrl }}" class="btn btn-secondary{{ currentPage < pagesCount ? '' : ' disabled' }}">Next page</a>
+</div>

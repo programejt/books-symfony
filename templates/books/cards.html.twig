@@ -1,0 +1,22 @@
+{% block stylesheets %}
+  <link href="{{ asset('styles/book-card.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% for book in books %}
+  <div class="card book-card col-12 col-sm-6 col-md-4 col-lg-3">
+    <div class="card-body">
+      <a href="{{ path('app_books_show', {'id': book.id}) }}" class="d-block text-center btn card-main-link">
+        <span class="d-block card-img">
+          {% if book.photo %}
+            <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="book photo" class="img">
+          {% endif %}
+        </span>
+        <span class="d-block h5 card-title">{{ book.title }}</span>
+      </a>
+      <h6 class="card-subtitle mb-2 text-muted">{{ include('authors/names.html.twig', {'authors': book.authors}) }}</h6>
+      <p class="card-text">{{ book.year }} year</p>
+    </div>
+  </div>
+{% else %}
+  <div class="text-center">No books found</div>
+{% endfor %}

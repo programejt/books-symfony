@@ -9,11 +9,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20241122132737 extends AbstractMigration
 {
-  public function getDescription(): string
-  {
-    return '';
-  }
-
   public function up(Schema $schema): void
   {
     $this->addSql('ALTER TABLE "user" ADD new_email VARCHAR(100) DEFAULT NULL');

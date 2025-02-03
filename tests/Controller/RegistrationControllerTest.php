@@ -60,7 +60,7 @@ class RegistrationControllerTest extends WebTestCase
     // self::assertQueuedEmailCount(1);
     self::assertEmailCount(1);
 
-    self::assertCount(1, $messages = $this->getMailerMessages());
+    self::assertCount(2, $messages = $this->getMailerMessages());
     self::assertEmailAddressContains($messages[0], 'from', 'mailer@symfony-books.com');
     self::assertEmailAddressContains($messages[0], 'to', 'me@example.com');
     self::assertEmailTextBodyContains($messages[0], 'This link will expire in 1 hour.');
