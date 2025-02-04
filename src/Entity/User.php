@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Service\FileSystem;
+use App\Enum\UserRole;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -26,11 +27,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column(length: 180)]
   private ?string $email = null;
 
-  /**
-   * @var list<string> The user roles
-   */
-  #[ORM\Column]
-  private array $roles = [];
+  #[ORM\Column(type: 'string', length: 50, enumType: UserRole::class)]
+  private UserRole $role = UserRole::User;
 
   #[ORM\Column]
   private ?string $password = null;
@@ -87,25 +85,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   /**
    * @see UserInterface
    *
-   * @return list<string>
+   * @return list<UserRole>
    */
   public function getRoles(): array
   {
-    $roles = $this->roles;
-
-    $roles[] = 'ROLE_USER';
-
-    return array_unique($roles);
-  }
-
-  /**
-   * @param list<string> $roles
-   */
-  public function setRoles(array $roles): static
-  {
-    $this->roles = $roles;
-
-    return $this;
+    return [$this->role->value];
   }
 
   /**
@@ -198,6 +182,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function setNewEmail(?string $newEmail): static
   {
     $this->newEmail = $newEmail;
+
+    return $this;
+  }
+
+  public function getRole(): UserRole
+  {
+    return $this->role;
+  }
+
+  public function setRole(UserRole $role): static
+  {
+    $this->role = $role;
 
     return $this;
   }

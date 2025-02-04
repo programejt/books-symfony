@@ -36,10 +36,10 @@ class BookType extends AbstractType
         'class' => Author::class,
         'multiple' => true,
         'expanded' => true,
-        'by_reference' => false
+        'by_reference' => false,
       ])
       ->add('year', options: [
-        'empty_data' => 2025
+        'empty_data' => 2025,
       ])
       ->add('isbn')
       ->add('description', TextareaType::class);
@@ -57,7 +57,7 @@ class BookType extends AbstractType
             [
               'mapped' => false,
               'required' => false,
-              'label' => 'Delete photo'
+              'label' => 'Delete photo',
             ],
           );
         }

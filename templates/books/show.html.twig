@@ -11,7 +11,7 @@
     <h1 class="h2"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ book.title }}</a></h1>
   </header>
 
-  {% if app.user %}
+  {% if app.user and app.user.role is same as(enum('App\\Enum\\UserRole').Admin) %}
     <div class="container my-4 d-flex justify-content-center align-items-center gap-2">
       <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">Edit</a>
 

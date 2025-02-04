@@ -23,22 +23,23 @@ use Exception;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+#[Route('/user', name: 'app_user_')]
 class UserController extends AbstractController
 {
-  #[Route('/user/my-account', name: 'app_user_my_account')]
+  #[Route('/my-account', name: 'my_account')]
   #[IsGranted('IS_AUTHENTICATED')]
   public function myAccount(): Response
   {
     return $this->_renderUserHomePage($this->getUser());
   }
 
-  #[Route('/user/{user}', name: 'app_user', requirements: ['user' => '\d+'])]
+  #[Route('/{user}', name: 'show', requirements: ['user' => '\d+'])]
   public function index(User $user): Response
   {
     return $this->_renderUserHomePage($user);
   }
 
-  #[Route('/user/change-name', name: 'app_user_change_name')]
+  #[Route('/change-name', name: 'change_name')]
   #[IsGranted('IS_AUTHENTICATED')]
   public function changeName(
     Request $request,
@@ -61,7 +62,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_user_my_account');
+        return $this->redirectToRoute('my_account');
       } else {
         $nameField->addError(new FormError('You typed the same name as you already have'));
       }
@@ -72,7 +73,7 @@ class UserController extends AbstractController
     ]);
   }
 
-  #[Route('/user/change-password', name: 'app_user_change_password', methods: ['GET', 'POST'])]
+  #[Route('/change-password', name: 'change_password', methods: ['GET', 'POST'])]
   #[IsGranted('IS_AUTHENTICATED')]
   public function changePassword(
     Request $request,
@@ -98,7 +99,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_user_my_account');
+        return $this->redirectToRoute('my_account');
       }
 
       $password->addError(new FormError('Current password is not valid'));
@@ -109,7 +110,7 @@ class UserController extends AbstractController
     ]);
   }
 
-  #[Route('/user/change-email', name: 'app_user_change_email')]
+  #[Route('/change-email', name: 'change_email')]
   #[IsGranted('IS_AUTHENTICATED')]
   public function changeEmail(
     Request $request,
@@ -153,7 +154,7 @@ class UserController extends AbstractController
     ]);
   }
 
-  #[Route('/user/set-new-email', name: 'app_user_set_new_email')]
+  #[Route('/set-new-email', name: 'set_new_email')]
   #[IsGranted('IS_AUTHENTICATED')]
   public function setNewEmail(
     Request $request,
@@ -210,7 +211,7 @@ class UserController extends AbstractController
     return $this->render('user/change_email_verification.html.twig');
   }
 
-  #[Route('/user/change-photo', name: 'app_user_change_photo', methods: ['GET', 'POST'])]
+  #[Route('/change-photo', name: 'change_photo', methods: ['GET', 'POST'])]
   #[IsGranted('IS_AUTHENTICATED')]
   public function changePhoto(
     Request $request,
@@ -257,7 +258,7 @@ class UserController extends AbstractController
       }
 
       if (! count($form->getErrors())) {
-        return $this->redirectToRoute('app_user_my_account');
+        return $this->redirectToRoute('my_account');
       }
     }
 
@@ -267,7 +268,7 @@ class UserController extends AbstractController
     ]);
   }
 
-  #[Route('/user/cancel-email-change', name: 'app_user_cancel_email_change', methods: [ 'POST'])]
+  #[Route('/cancel-email-change', name: 'cancel_email_change', methods: [ 'POST'])]
   #[IsGranted('IS_AUTHENTICATED')]
   public function cancelEmailChange(
     Request $request,
@@ -292,7 +293,7 @@ class UserController extends AbstractController
       }
     }
 
-    return $this->redirectToRoute('app_user_my_account');
+    return $this->redirectToRoute('my_account');
   }
 
   private function _renderUserHomePage(User $user) {
@@ -307,7 +308,7 @@ class UserController extends AbstractController
   ): void
   {
     $emailVerifier->sendEmailConfirmation(
-      'app_user_set_new_email',
+      'set_new_email',
       $user,
       $emailVerifier->emailTemplate((string) $user->getEmail())
         ->subject('Please Confirm your Change Email request')

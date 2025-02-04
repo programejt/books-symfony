@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Enum\UserRole;
 
 #[Route('/authors', name: 'app_authors_')]
 final class AuthorsController extends AbstractController
@@ -50,7 +51,7 @@ final class AuthorsController extends AbstractController
   }
 
   #[Route('/new', name: 'new', methods: ['GET', 'POST'], priority: 2)]
-  #[IsGranted('IS_AUTHENTICATED')]
+  #[IsGranted(UserRole::Admin->value)]
   public function new(
     Request $request,
     EntityManagerInterface $entityManager,
@@ -81,7 +82,7 @@ final class AuthorsController extends AbstractController
   }
 
   #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
-  #[IsGranted('IS_AUTHENTICATED')]
+  #[IsGranted(UserRole::Admin->value)]
   public function edit(
     Request $request,
     Author $author,
@@ -112,7 +113,7 @@ final class AuthorsController extends AbstractController
   }
 
   #[Route('/{id}', name: 'delete', methods: ['POST'], requirements: ['id' => '\d+'])]
-  #[IsGranted('IS_AUTHENTICATED')]
+  #[IsGranted(UserRole::Admin->value)]
   public function delete(
     Request $request,
     Author $author,

@@ -24,7 +24,11 @@ class Author
   /**
    * @var Collection<int, Book>
    */
-  #[ORM\ManyToMany(targetEntity: Book::class, cascade: ['persist'])]
+  #[ORM\ManyToMany(
+    targetEntity: Book::class,
+    mappedBy: 'authors',
+    cascade: ['persist'],
+  )]
   private Collection $books;
 
   public function __construct()

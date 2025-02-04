@@ -5,7 +5,7 @@
 {% block body %}
     <h1 class="h2 text-center">Authors</h1>
 
-    {% if app.user %}
+    {% if app.user and app.user.role is same as(enum('App\\Enum\\UserRole').Admin) %}
       <div class="text-center my-4">
         <a href="{{ path('app_authors_new') }}" class="btn btn-success">Add new</a>
       </div>
