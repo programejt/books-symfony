@@ -19,6 +19,7 @@ use App\EventListener\BookAddEventListener;
 use App\Service\FileSystem;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Enum\UserRole;
 
 #[Route('/books', name: 'app_books_')]
 final class BooksController extends AbstractController
@@ -56,7 +57,7 @@ final class BooksController extends AbstractController
   }
 
   #[Route('/new', name: 'new', methods: ['GET', 'POST'], priority: 2)]
-  #[IsGranted('IS_AUTHENTICATED')]
+  #[IsGranted(UserRole::Moderator->value)]
   public function new(
     Request $request,
     EntityManagerInterface $entityManager,
@@ -92,7 +93,7 @@ final class BooksController extends AbstractController
   }
 
   #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
-  #[IsGranted('IS_AUTHENTICATED')]
+  #[IsGranted(UserRole::Moderator->value)]
   public function edit(
     Request $request,
     Book $book,
@@ -120,7 +121,7 @@ final class BooksController extends AbstractController
   }
 
   #[Route('/{id}', name: 'delete', methods: ['POST'], requirements: ['id' => '\d+'])]
-  #[IsGranted('IS_AUTHENTICATED')]
+  #[IsGranted(UserRole::Moderator->value)]
   public function delete(
     Request $request,
     Book $book,

@@ -42,6 +42,9 @@
                     {% if not app.user.emailVerified %}
                       <li><a class="dropdown-item" href="{{ path('app_email_verification') }}">Verify email</a></li>
                     {% endif %}
+                    {% if app.user.role is same as(enum('App\\Enum\\UserRole').Admin) %}
+                      <li><a class="dropdown-item" href="{{ path('app_admin_panel') }}">Admin panel</a></li>
+                    {% endif %}
                     <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
                   </ul>
                 {% else %}

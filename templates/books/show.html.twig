@@ -2,16 +2,12 @@
 
 {% block title %}{{ book.title }}{% endblock %}
 
-{% block stylesheets %}
-  <link href="{{ asset('styles/book.css') }}" rel="stylesheet">
-{% endblock %}
-
 {% block body %}
   <header class="text-center">
     <h1 class="h2"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ book.title }}</a></h1>
   </header>
 
-  {% if app.user %}
+  {% if is_granted(enum('App\\Enum\\UserRole').Moderator.value) %}
     <div class="container my-4 d-flex justify-content-center align-items-center gap-2">
       <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">Edit</a>
 

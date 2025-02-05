@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\Book;
 use App\Entity\Author;
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Service\IsbnGenerator;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,13 +46,16 @@ final class BookControllerTest extends WebTestCase
     $this->manager->flush();
 
     $user = new User();
-    $user->setName('testUser');
-    $user->setEmail('testUser@symfonybooks.com');
-    $user->setPassword('passwrd');
+    $user
+      ->setName('testUser')
+      ->setEmail('testUser@symfonybooks.com')
+      ->setRole(UserRole::Moderator)
+      ->setPassword('passwrd');
 
     $author = new Author;
-    $author->setName('Jack');
-    $author->setSurname('Moon');
+    $author
+      ->setName('Jack')
+      ->setSurname('Moon');
 
     $this->manager->persist($user);
     $this->manager->persist($author);
@@ -69,7 +73,6 @@ final class BookControllerTest extends WebTestCase
     self::assertResponseStatusCodeSame(200);
     self::assertPageTitleContains('Books');
 
-    // Use the $crawler to perform additional assertions e.g.
     // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
   }
 

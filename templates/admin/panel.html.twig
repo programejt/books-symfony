@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin panel{% endblock %}
+
+{% block stylesheets %}
+  <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+  <h1 class="h2 text-center">Admin panel</h1>
+  <h2 class="h3 text-center">Change user role</h2>
+
+  {{ form_start(form, {
+    'attr': {
+      'id': 'admin-panel-form',
+      'class': 'container content-container'
+    }
+  }) }}
+    <div class="errors">
+      {% for error in form.vars.errors %}
+        <div class="alert alert-danger">{{ error.getMessage() }}</div>
+      {% endfor %}
+    </div>
+    {{ include('forms/field.html.twig', {
+      'field': form.user
+    }) }}
+    {{ include('forms/field.html.twig', {
+      'field': form.role
+    }) }}
+    {{ form_rest(form) }}
+    {{ include('forms/form_buttons.html.twig', {
+      'submitButtonLabel': 'Update',
+      'cancelButtonHref': path('app_user_my_account')
+    }) }}
+  {{ form_end(form) }}
+{% endblock %}

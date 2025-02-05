@@ -21,6 +21,10 @@
         <div class="data-row-content">{{ user.email }}</div>
       </div>
       <div class="data-row">
+        <div class="data-row-title">Role</div>
+        <div class="data-row-content">{{ user.role.toRoleName() }}</div>
+      </div>
+      <div class="data-row">
         <div class="data-row-title">Password changed at</div>
         <div class="data-row-content">{{ user.passwordChangedAt ? user.passwordChangedAt.format('Y-m-d') : 'Never' }}</div>
       </div>

@@ -65,6 +65,7 @@ class Book
   )]
   #[ORM\ManyToMany(
     targetEntity: Author::class,
+    inversedBy: 'books',
     cascade: ['persist'],
   )]
   #[ORM\JoinTable(name: "author_book")]

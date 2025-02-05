@@ -2,35 +2,29 @@
 
 {% block title %}Books{% endblock %}
 
-{# {% block stylesheets %}
-  <link href="{{ asset('styles/book-card.css') }}" rel="stylesheet">
-{% endblock %} #}
-
 {% block body %}
-    <h1 class="h2 text-center">Books</h1>
+  <h1 class="h2 text-center">Books</h1>
 
-    {% if app.user %}
-      <div class="text-center my-4">
-        <a href="{{ path('app_books_new') }}" class="btn btn-success">Add new</a>
-      </div>
-    {% endif %}
-
-    <div class="container-fluid">
-      <div class="row gap-3 justify-content-center">
-        {{ include('books/cards.html.twig', {'books': books}) }}
-      </div>
+  {% if is_granted(enum('App\\Enum\\UserRole').Moderator.value) %}
+    <div class="text-center my-4">
+      <a href="{{ path('app_books_new') }}" class="btn btn-success">Add new</a>
     </div>
+  {% endif %}
 
-    {{ include('pagination.html.twig', {
-      'currentPage': currentPage,
-      'pagesCount': pagesCount,
-      'prevUrl': path('app_books_index', {
-        'page': currentPage - 1,
-        'search': searchValue
-      }),
-      'nextUrl': path('app_books_index', {
-        'page': currentPage + 1,
-        'search': searchValue
-      })
-    }) }}
+  <div class="container-fluid">
+    <div class="row gap-3 justify-content-center">{{ include('books/cards.html.twig', {books: books}) }}</div>
+  </div>
+
+  {{ include('pagination.html.twig', {
+    currentPage: currentPage,
+    pagesCount: pagesCount,
+    prevUrl: path('app_books_index', {
+      page: currentPage - 1,
+      search: searchValue,
+    }),
+    nextUrl: path('app_books_index', {
+      page: currentPage + 1,
+      search: searchValue,
+    }),
+  }) }}
 {% endblock %}
