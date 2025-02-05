@@ -21,23 +21,25 @@ class AdminController extends AbstractController
   public function changeUserRole(
     Request $request,
     EntityManagerInterface $entityManager,
-  ): Response
-  {
+  ): Response {
     $form = $this->createForm(ChangeUserRoleType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      /** @var UserRole $role */
       $role = $form->get('role')->getData();
+
+      /** @var User $user */
       $user = $form->get('user')->getData();
 
-      if ($user !== $this->getUser()) {
+      if ($role !== $user->getRole()) {
         $user->setRole($role);
 
         $entityManager->persist($user);
         $entityManager->flush();
-
-        return $this->redirectToRoute('app_user_my_account');
       }
+
+      return $this->redirectToRoute('app_user_my_account');
     }
 
     return $this->render('admin/panel.html.twig', [

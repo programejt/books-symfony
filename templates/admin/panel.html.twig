@@ -2,13 +2,13 @@
 
 {% block title %}Admin panel{% endblock %}
 
-{# {% block stylesheets %}
-  <link href="{{ asset('styles/book-card.css') }}" rel="stylesheet">
-{% endblock %} #}
+{% block stylesheets %}
+  <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
-    <h1 class="h2 text-center">Admin panel</h1>
-    <h2 class="h3 text-center">Change user role</h2>
+  <h1 class="h2 text-center">Admin panel</h1>
+  <h2 class="h3 text-center">Change user role</h2>
 
   {{ form_start(form, {
     'attr': {

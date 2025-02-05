@@ -38,9 +38,7 @@ class BookType extends AbstractType
         'expanded' => true,
         'by_reference' => false,
       ])
-      ->add('year', options: [
-        'empty_data' => 2025,
-      ])
+      ->add('year')
       ->add('isbn')
       ->add('description', TextareaType::class);
 

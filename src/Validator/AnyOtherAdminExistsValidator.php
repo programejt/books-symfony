@@ -6,7 +6,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use App\Enum\UserRole;
 
 class AnyOtherAdminExistsValidator extends ConstraintValidator
@@ -16,8 +15,10 @@ class AnyOtherAdminExistsValidator extends ConstraintValidator
   ) {
   }
 
-  public function validate(mixed $value, Constraint $constraint): void
-  {
+  public function validate(
+    mixed $value,
+    Constraint $constraint,
+  ): void {
     if (!$constraint instanceof AnyOtherAdminExists) {
       throw new UnexpectedTypeException($constraint, AnyOtherAdminExists::class);
     }
