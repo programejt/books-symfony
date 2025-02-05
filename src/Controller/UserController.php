@@ -62,7 +62,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('my_account');
+        return $this->redirectToRoute('app_user_my_account');
       } else {
         $nameField->addError(new FormError('You typed the same name as you already have'));
       }
@@ -99,7 +99,7 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('my_account');
+        return $this->redirectToRoute('app_user_my_account');
       }
 
       $password->addError(new FormError('Current password is not valid'));
@@ -123,7 +123,7 @@ class UserController extends AbstractController
     $newEmail = $user->getNewEmail();
 
     if ($newEmail) {
-      return $this->redirectToRoute('app_email_change_verification');
+      return $this->redirectToRoute('app_user_email_change_verification');
     }
 
     $form = $this->createForm(UserChangeEmailFormType::class);
@@ -143,7 +143,7 @@ class UserController extends AbstractController
           $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_email_change_verification');
+        return $this->redirectToRoute('app_user_email_change_verification');
       } else {
         $emailField->addError(new FormError('You typed the same email as you already have'));
       }
@@ -170,7 +170,7 @@ class UserController extends AbstractController
     if (! $newEmail) {
       $this->addFlash('change_email_error', $translator->trans('empty_new_email'));
 
-      return $this->redirectToRoute('app_email_change_verification');
+      return $this->redirectToRoute('app_user_email_change_verification');
     }
 
     try {
@@ -186,10 +186,10 @@ class UserController extends AbstractController
       $this->addFlash('change_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
     }
 
-    return $this->redirectToRoute('app_email_change_verification');
+    return $this->redirectToRoute('app_user_email_change_verification');
   }
 
-  #[Route('/email/change-verification', name: 'app_email_change_verification')]
+  #[Route('/email/change-verification', name: 'email_change_verification')]
   #[isGranted('IS_AUTHENTICATED')]
   public function userEmailVerification(
     Request $request,
@@ -258,7 +258,7 @@ class UserController extends AbstractController
       }
 
       if (! count($form->getErrors())) {
-        return $this->redirectToRoute('my_account');
+        return $this->redirectToRoute('app_user_my_account');
       }
     }
 
@@ -288,12 +288,12 @@ class UserController extends AbstractController
           $entityManager->persist($user);
           $entityManager->flush();
         } catch (Exception $e) {
-          return $this->redirectToRoute('app_email_change_verification');
+          return $this->redirectToRoute('app_user_email_change_verification');
         }
       }
     }
 
-    return $this->redirectToRoute('my_account');
+    return $this->redirectToRoute('app_user_my_account');
   }
 
   private function _renderUserHomePage(User $user) {
@@ -308,7 +308,7 @@ class UserController extends AbstractController
   ): void
   {
     $emailVerifier->sendEmailConfirmation(
-      'set_new_email',
+      'app_user_set_new_email',
       $user,
       $emailVerifier->emailTemplate((string) $user->getEmail())
         ->subject('Please Confirm your Change Email request')
