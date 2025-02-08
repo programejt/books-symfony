@@ -16,9 +16,9 @@ class FormConstraints
         'image/png',
         'image/webp',
         'image/avif',
-        'image/heif'
+        'image/heif',
       ],
-      mimeTypesMessage: 'Please upload a valid image'
+      mimeTypesMessage: 'Please upload a valid image',
     );
   }
 }

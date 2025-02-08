@@ -8,7 +8,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class RegistrationControllerTest extends WebTestCase
+final class RegistrationControllerTest extends WebTestCase
 {
   private KernelBrowser $client;
   private UserRepository $userRepository;

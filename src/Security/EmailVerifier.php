@@ -14,15 +14,14 @@ class EmailVerifier
 {
   public function __construct(
     private VerifyEmailHelperInterface $verifyEmailHelper,
-    private MailerInterface $mailer
+    private MailerInterface $mailer,
   ) {}
 
   public function sendEmailConfirmation(
     string $verifyEmailRouteName,
     User $user,
-    TemplatedEmail $email
-  ): void
-  {
+    TemplatedEmail $email,
+  ): void {
     $signatureComponents = $this->verifyEmailHelper->generateSignature(
       $verifyEmailRouteName,
       (string) $user->getId(),
@@ -52,12 +51,11 @@ class EmailVerifier
   public function validateEmailConfirmationFromRequest(
     Request $request,
     User $user,
-  ): void
-  {
+  ): void {
     $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
       $request,
       (string) $user->getId(),
-      (string) $user->getEmail()
+      (string) $user->getEmail(),
     );
   }
 }

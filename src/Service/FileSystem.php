@@ -8,8 +8,7 @@ class FileSystem
 
   public static function deleteFile(
     string $filePath
-  ): bool
-  {
+  ): bool {
     $filePath = self::escapePath($filePath);
 
     if (file_exists($filePath) && is_file($filePath)) {
@@ -29,8 +28,7 @@ class FileSystem
 
   private static function escapePath(
     string $path
-  ): string
-  {
+  ): string {
     return str_replace(['..', '\\'], '', $path);
   }
 }

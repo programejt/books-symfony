@@ -44,8 +44,7 @@ class UserController extends AbstractController
   public function changeName(
     Request $request,
     EntityManagerInterface $entityManager,
-  ): Response
-  {
+  ): Response {
     $form = $this->createForm(UserChangeNameFormType::class);
     $form->handleRequest($request);
 
@@ -79,8 +78,7 @@ class UserController extends AbstractController
     Request $request,
     UserPasswordHasherInterface $userPasswordHasher,
     EntityManagerInterface $entityManager,
-  ): Response
-  {
+  ): Response {
     $form = $this->createForm(UserChangePasswordFormType::class);
     $form->handleRequest($request);
 
@@ -116,8 +114,7 @@ class UserController extends AbstractController
     Request $request,
     EntityManagerInterface $entityManager,
     EmailVerifier $emailVerifier,
-  ): Response
-  {
+  ): Response {
     /** @var User $user */
     $user = $this->getUser();
     $newEmail = $user->getNewEmail();
@@ -161,8 +158,7 @@ class UserController extends AbstractController
     EntityManagerInterface $entityManager,
     EmailVerifier $emailVerifier,
     TranslatorInterface $translator,
-  ): Response
-  {
+  ): Response {
     /** @var User $user */
     $user = $this->getUser();
     $newEmail = $user->getNewEmail();
@@ -194,8 +190,7 @@ class UserController extends AbstractController
   public function userEmailVerification(
     Request $request,
     EmailVerifier $emailVerifier,
-  ): Response
-  {
+  ): Response {
     /** @var User $user */
     $user = $this->getUser();
 
@@ -216,8 +211,7 @@ class UserController extends AbstractController
   public function changePhoto(
     Request $request,
     EntityManagerInterface $entityManager,
-  ): Response
-  {
+  ): Response {
     $form = $this->createForm(UserChangePhotoFormType::class);
     $form->handleRequest($request);
 
@@ -273,8 +267,7 @@ class UserController extends AbstractController
   public function cancelEmailChange(
     Request $request,
     EntityManagerInterface $entityManager,
-  ): Response
-  {
+  ): Response {
     /** @var User $user */
     $user = $this->getUser();
 
@@ -305,8 +298,7 @@ class UserController extends AbstractController
   private function _sendChangeEmailVerification(
     EmailVerifier $emailVerifier,
     User $user,
-  ): void
-  {
+  ): void {
     $emailVerifier->sendEmailConfirmation(
       'app_user_set_new_email',
       $user,

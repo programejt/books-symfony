@@ -4,7 +4,8 @@ namespace App\Service;
 
 class IsbnGenerator
 {
-  public static function generate(): int {
+  public static function generate(): int
+  {
     $isbn = (string) rand(978, 979);
 
     $countryCodes = [

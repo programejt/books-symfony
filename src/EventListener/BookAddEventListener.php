@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 #[AsEventListener]
 final class BookAddEventListener {
   public function __construct(
-    private LoggerInterface $booksLogger
+    private LoggerInterface $booksLogger,
   ) {}
 
   public function __invoke(BookAddEvent $event): void
