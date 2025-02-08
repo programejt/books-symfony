@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Enum;
+namespace Test\Enum;
 
 use App\Enum\UserRole;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

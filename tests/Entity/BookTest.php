@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Entity;
+namespace Test\Entity;
 
 use App\Entity\Author;
 use App\Entity\Book;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Test\Service;
+namespace Test\Service;
 
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

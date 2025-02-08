@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Service;
+namespace Test\Service;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
