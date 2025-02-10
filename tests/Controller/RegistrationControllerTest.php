@@ -41,11 +41,11 @@ final class RegistrationControllerTest extends WebTestCase
     $password = 'password';
 
     $this->client->submitForm('Register', [
-      'registration_form[name]' => 'Test User',
-      'registration_form[email]' => 'me@example.com',
-      'registration_form[password][first]' => $password,
-      'registration_form[password][second]' => $password,
-      'registration_form[agreeTerms]' => true,
+      'registration[name]' => 'Test User',
+      'registration[email]' => 'me@example.com',
+      'registration[password][first]' => $password,
+      'registration[password][second]' => $password,
+      'registration[agreeTerms]' => true,
     ]);
 
     // Ensure the response redirects after submitting the form, the user exists, and is not verified

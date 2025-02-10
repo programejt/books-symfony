@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\RegistrationType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +20,7 @@ use Symfony\Component\ExpressionLanguage\Expression;
 class RegistrationController extends AbstractController
 {
   public function __construct(
-    private EmailVerifier $emailVerifier
+    private readonly EmailVerifier $emailVerifier,
   ) {}
 
   #[IsGranted(new Expression('! is_authenticated()'))]
@@ -30,10 +30,9 @@ class RegistrationController extends AbstractController
     UserPasswordHasherInterface $userPasswordHasher,
     EntityManagerInterface $entityManager,
     Security $security,
-  ): Response
-  {
+  ): Response {
     $user = new User();
-    $form = $this->createForm(RegistrationFormType::class, $user);
+    $form = $this->createForm(RegistrationType::class, $user);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -60,8 +59,7 @@ class RegistrationController extends AbstractController
   #[isGranted('IS_AUTHENTICATED')]
   public function userEmailVerification(
     Request $request
-  ): Response
-  {
+  ): Response {
     /** @var User $user */
     $user = $this->getUser();
 
@@ -78,8 +76,7 @@ class RegistrationController extends AbstractController
     Request $request,
     EntityManagerInterface $entityManager,
     TranslatorInterface $translator,
-  ): Response
-  {
+  ): Response {
     /** @var User $user */
     $user = $this->getUser();
 

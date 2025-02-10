@@ -11,17 +11,17 @@ final class UserRoleTest extends WebTestCase
   {
     $this->assertSame(
       UserRole::from('ROLE_ADMIN'),
-      UserRole::Admin
+      UserRole::Admin,
     );
 
     $this->assertSame(
       UserRole::from('ROLE_MODERATOR'),
-      UserRole::Moderator
+      UserRole::Moderator,
     );
 
     $this->assertSame(
       UserRole::from('ROLE_USER'),
-      UserRole::User
+      UserRole::User,
     );
 
     $this->expectException(\ValueError::class);

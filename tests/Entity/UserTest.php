@@ -51,6 +51,30 @@ final class UserTest extends WebTestCase
       [UserRole::Moderator->value],
       $user->getRoles()
     );
+
+    $user->setRole(UserRole::Admin);
+
+    $this->assertSame(
+      UserRole::Admin,
+      $user->getRole()
+    );
+
+    $this->assertSame(
+      [UserRole::Admin->value],
+      $user->getRoles()
+    );
+
+    $user->setRole(UserRole::User);
+
+    $this->assertSame(
+      UserRole::User,
+      $user->getRole()
+    );
+
+    $this->assertSame(
+      [UserRole::User->value],
+      $user->getRoles()
+    );
   }
 
   public function testEmail(): void

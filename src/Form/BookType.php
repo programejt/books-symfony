@@ -13,22 +13,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use App\Service\FormConstraints;
+use App\Validator\ImageRequirements;
 
 class BookType extends AbstractType
 {
   public function buildForm(
     FormBuilderInterface $builder,
     array $options,
-  ): void
-  {
+  ): void {
     $builder
       ->add('photo', FileType::class, [
         'data_class' => null,
         'required' => false,
         'mapped' => false,
         'constraints' => [
-          FormConstraints::getForPhoto()
+          new ImageRequirements,
         ],
       ])
       ->add('title')

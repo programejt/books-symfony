@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Change photo{% endblock %}
+
 {% block stylesheets %}
+  <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
@@ -19,7 +22,7 @@
       {% endfor %}
     </div>
     {% if photo %}
-      <div class="user-image-container mb-3">
+      <div class="user-image-container text-center mb-3">
         <img src="{{ asset(photo) }}" alt="photo" class="img">
       </div>
       {{ include('forms/field.html.twig', {
@@ -33,8 +36,9 @@
       'field': form.photo
     }) }}
     {{ form_rest(form) }}
-    <div class="text-center">
-      <button class="btn btn-primary form-button">{{ button_label|default('Save') }}</button>
-    </div>
+    {{ include('forms/form_buttons.html.twig', {
+      'submitButtonLabel': 'Save',
+      'cancelButtonHref': path('app_user_my_account')
+    }) }}
   {{ form_end(form) }}
 {% endblock %}

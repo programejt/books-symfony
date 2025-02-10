@@ -9,10 +9,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Entity\User;
-use App\Form\UserChangeNameFormType;
-use App\Form\UserChangePasswordFormType;
-use App\Form\UserChangeEmailFormType;
-use App\Form\UserChangePhotoFormType;
+use App\Form\UserChangeNameType;
+use App\Form\UserChangePasswordType;
+use App\Form\UserChangeEmailType;
+use App\Form\UserChangePhotoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Form\FormError;
@@ -45,13 +45,12 @@ class UserController extends AbstractController
     Request $request,
     EntityManagerInterface $entityManager,
   ): Response {
-    $form = $this->createForm(UserChangeNameFormType::class);
+    $form = $this->createForm(UserChangeNameType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       $nameField = $form->get('name');
       $name = $nameField->getData();
-
       /** @var User $user */
       $user = $this->getUser();
 
@@ -79,7 +78,7 @@ class UserController extends AbstractController
     UserPasswordHasherInterface $userPasswordHasher,
     EntityManagerInterface $entityManager,
   ): Response {
-    $form = $this->createForm(UserChangePasswordFormType::class);
+    $form = $this->createForm(UserChangePasswordType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -123,7 +122,7 @@ class UserController extends AbstractController
       return $this->redirectToRoute('app_user_email_change_verification');
     }
 
-    $form = $this->createForm(UserChangeEmailFormType::class);
+    $form = $this->createForm(UserChangeEmailType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -212,7 +211,7 @@ class UserController extends AbstractController
     Request $request,
     EntityManagerInterface $entityManager,
   ): Response {
-    $form = $this->createForm(UserChangePhotoFormType::class);
+    $form = $this->createForm(UserChangePhotoType::class);
     $form->handleRequest($request);
 
     /** @var User $user */

@@ -58,6 +58,11 @@ img {
   padding: 8px;
 }
 
+.card-title {
+  font-size: 19px;
+  margin-bottom: 0;
+}
+
 .card-img {
   height: 140px;
   display: flex;

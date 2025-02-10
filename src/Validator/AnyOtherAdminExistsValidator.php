@@ -11,9 +11,8 @@ use App\Enum\UserRole;
 class AnyOtherAdminExistsValidator extends ConstraintValidator
 {
   public function __construct(
-    private UserRepository $userRepository,
-  ) {
-  }
+    private readonly UserRepository $userRepository,
+  ) {}
 
   public function validate(
     mixed $value,

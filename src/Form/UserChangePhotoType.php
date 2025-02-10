@@ -11,24 +11,23 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use App\Service\FormConstraints;
+use App\Validator\ImageRequirements;
 
-class UserChangePhotoFormType extends AbstractType
+class UserChangePhotoType extends AbstractType
 {
   public function __construct(
-    private Security $security
+    private readonly Security $security,
   ) {}
 
   public function buildForm(
     FormBuilderInterface $builder,
-    array $options
-  ): void
-  {
+    array $options,
+  ): void {
     $builder
       ->add('photo', FileType::class, [
         'required' => false,
         'constraints' => [
-          FormConstraints::getForPhoto()
+          new ImageRequirements,
         ]
       ])
     ;
@@ -40,16 +39,17 @@ class UserChangePhotoFormType extends AbstractType
         $user = $this->security->getUser();
         $form = $event->getForm();
 
-        if (null != $user->getPhoto()) {
+        if ($user->getPhoto()) {
           $form->add('deletePhoto', CheckboxType::class, [
             'required' => false,
             'label' => 'Delete photo'
           ]);
         }
-      }
+      },
     );
   }
 
   public function configureOptions(OptionsResolver $resolver): void
-  {}
+  {
+  }
 }

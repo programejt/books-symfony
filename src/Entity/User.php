@@ -13,10 +13,30 @@ use App\Enum\UserRole;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name'])]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: 'name', message: 'There is already an account with this name')]
-#[UniqueEntity(fields: 'email', message: 'There is already an account with this email')]
+#[ORM\UniqueConstraint(
+  name: 'UNIQ_IDENTIFIER_NAME',
+  fields: ['name'],
+)]
+#[ORM\UniqueConstraint(
+  name: 'UNIQ_IDENTIFIER_EMAIL',
+  fields: ['email'],
+)]
+#[ORM\UniqueConstraint(
+  name: 'UNIQ_IDENTIFIER_NEW_EMAIL',
+  fields: ['newEmail'],
+)]
+#[UniqueEntity(
+  fields: 'name',
+  message: 'There is already an account with this name',
+)]
+#[UniqueEntity(
+  fields: 'email',
+  message: 'There is already an account with this email',
+)]
+#[UniqueEntity(
+  fields: 'newEmail',
+  message: 'There is already an account with this email',
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
   #[ORM\Id]
@@ -24,17 +44,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column]
   private ?int $id = null;
 
+  #[ORM\Column(length: 60)]
+  private ?string $name = null;
+
   #[ORM\Column(length: 180)]
   private ?string $email = null;
-
-  #[ORM\Column(type: 'string', length: 50, enumType: UserRole::class)]
-  private UserRole $role = UserRole::User;
 
   #[ORM\Column]
   private ?string $password = null;
 
-  #[ORM\Column(length: 60)]
-  private ?string $name = null;
+  #[ORM\Column(type: 'string', length: 50, enumType: UserRole::class)]
+  private UserRole $role = UserRole::User;
 
   #[ORM\Column]
   private bool $emailVerified = false;
@@ -58,6 +78,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   public function getId(): ?int
   {
     return $this->id;
+  }
+
+  public function getName(): ?string
+  {
+    return $this->name;
+  }
+
+  public function setName(string $name): static
+  {
+    $this->name = $name;
+
+    return $this;
   }
 
   public function getEmail(): ?string
@@ -114,18 +146,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   {
     // If you store any temporary, sensitive data on the user, clear it here
     // $this->plainPassword = null;
-  }
-
-  public function getName(): ?string
-  {
-    return $this->name;
-  }
-
-  public function setName(string $name): static
-  {
-    $this->name = $name;
-
-    return $this;
   }
 
   public function emailVerified(): bool

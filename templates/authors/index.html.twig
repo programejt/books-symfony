@@ -16,8 +16,8 @@
       {% for author in authors %}
         <div class="card col-12 col-sm-6 col-md-4 col-lg-3">
           <div class="card-body">
-            <a href="{{ path('app_authors_show', { id: author.id }) }}" class="d-block h5 card-title text-center btn card-main-link">{{ author }}</a>
-            <p class="card-text text-muted">{{ author.books.count() }} book(s)</p>
+            <a href="{{ path('app_authors_show', { id: author.id }) }}" class="d-block card-title text-center btn card-main-link">{{ author }}</a>
+            <p class="card-text h6 text-muted">{{ author.books.count() }} book(s)</p>
           </div>
         </div>
       {% else %}

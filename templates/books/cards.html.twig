@@ -11,10 +11,10 @@
             <img src="{{ asset('assets/images/books/'~book.id~'/'~book.photo) }}" alt="book photo" class="img">
           {% endif %}
         </span>
-        <span class="d-block h5 card-title">{{ book.title }}</span>
+        <span class="d-block card-title">{{ book.title }}</span>
       </a>
-      <h6 class="card-subtitle mb-2 text-muted">{{ include('authors/names.html.twig', {'authors': book.authors}) }}</h6>
-      <p class="card-text">{{ book.year }} year</p>
+      <p class="card-subtitle h6 mb-2 text-muted">{{ include('authors/names.html.twig', {'authors': book.authors}) }}</p>
+      <p class="card-text h6 text-muted">{{ book.year }} year</p>
     </div>
   </div>
 {% else %}

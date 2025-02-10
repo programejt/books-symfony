@@ -10,7 +10,7 @@ class BookAddEvent extends Event
   public const NAME = 'book.add';
 
   public function __construct(
-    private Book $book,
+    private readonly Book $book,
   ) {}
 
   public function getBook(): Book
