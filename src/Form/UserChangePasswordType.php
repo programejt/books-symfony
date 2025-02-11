@@ -18,16 +18,21 @@ class UserChangePasswordType extends AbstractType
     $builder
       ->add('password', PasswordType::class, [
         'constraints' => [
-          new Assert\NotBlank
-        ]
+          new Assert\NotBlank,
+        ],
       ])
       ->add('newPassword', PasswordRepeatedType::class, [
-        'first_options'  => ['label' => 'New password'],
-        'second_options' => ['label' => 'Repeat new password'],
+        'first_options'  => [
+          'label' => 'New password',
+        ],
+        'second_options' => [
+          'label' => 'Repeat new password',
+        ],
       ])
     ;
   }
 
   public function configureOptions(OptionsResolver $resolver): void
-  {}
+  {
+  }
 }

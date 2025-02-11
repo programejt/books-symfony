@@ -45,18 +45,17 @@ class UserController extends AbstractController
     Request $request,
     EntityManagerInterface $entityManager,
   ): Response {
-    $form = $this->createForm(UserChangeNameType::class);
+    /** @var User $user */
+    $user = $this->getUser();
+    $name = $user->getName();
+
+    $form = $this->createForm(UserChangeNameType::class, $user);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       $nameField = $form->get('name');
-      $name = $nameField->getData();
-      /** @var User $user */
-      $user = $this->getUser();
 
       if ($name !== $user->getName()) {
-        $user->setName($name);
-
         $entityManager->persist($user);
         $entityManager->flush();
 
@@ -65,6 +64,9 @@ class UserController extends AbstractController
         $nameField->addError(new FormError('You typed the same name as you already have'));
       }
     }
+
+    // this must exists to not change user name in views when form is not valid
+    $user->setName($name);
 
     return $this->render('user/change_name_form.html.twig', [
       'form' => $form,
@@ -122,7 +124,7 @@ class UserController extends AbstractController
       return $this->redirectToRoute('app_user_email_change_verification');
     }
 
-    $form = $this->createForm(UserChangeEmailType::class);
+    $form = $this->createForm(UserChangeEmailType::class, $user);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {

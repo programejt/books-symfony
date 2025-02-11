@@ -8,10 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use App\Validator\UserNameRequirements;
 use App\Form\Type\PasswordRepeatedType;
 use App\Form\Type\EmailType;
 use App\Form\Type\UserNameType;
+use App\Validator\EmailRequirements;
+use App\Validator\UniqueEmail;
 
 class RegistrationType extends AbstractType
 {
@@ -20,7 +21,12 @@ class RegistrationType extends AbstractType
     array $options,
   ): void {
     $builder
-      ->add('email', EmailType::class)
+      ->add('email', EmailType::class, [
+        'constraints' => [
+          new EmailRequirements,
+          new UniqueEmail('newEmail'),
+        ],
+      ])
       ->add('name', UserNameType::class)
       ->add('password', PasswordRepeatedType::class)
       ->add('agreeTerms', CheckboxType::class, [

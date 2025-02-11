@@ -17,7 +17,6 @@ class EmailRequirements extends Assert\Compound
         message: 'The email is not valid',
       ),
       new Assert\Length(
-        min: 3,
         max: 180,
       ),
     ];

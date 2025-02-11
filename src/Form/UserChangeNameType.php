@@ -6,7 +6,7 @@ use App\Form\Type\UserNameType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-// use App\Entity\User;
+use App\Entity\User;
 
 class UserChangeNameType extends AbstractType
 {
@@ -21,8 +21,8 @@ class UserChangeNameType extends AbstractType
 
   public function configureOptions(OptionsResolver $resolver): void
   {
-    // $resolver->setDefaults([
-    //   'data_class' => User::class,
-    // ]);
+    $resolver->setDefaults([
+      'data_class' => User::class,
+    ]);
   }
 }
