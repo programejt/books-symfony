@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Test\Helper\FakeConstraint;
 
-class UniqueEntityValidatorTest extends ConstraintValidatorTestCase
+final class UniqueEntityValidatorTest extends ConstraintValidatorTestCase
 {
   private $entityManager;
 

@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class AnyOtherAdminExistsValidatorTest extends ConstraintValidatorTestCase
+final class AnyOtherAdminExistsValidatorTest extends ConstraintValidatorTestCase
 {
   private $userRepository;
 

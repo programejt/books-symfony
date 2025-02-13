@@ -10,7 +10,6 @@ use Symfony\Component\Mime\Address;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Security\EmailVerifier;
 use SymfonyCasts\Bundle\VerifyEmail\Model\VerifyEmailSignatureComponents;
-use Symfony\Component\HttpFoundation\Request;
 
 final class EmailVerifierTest extends WebTestCase
 {
