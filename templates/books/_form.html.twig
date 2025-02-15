@@ -8,11 +8,7 @@
     'class': 'container content-container'
   }
 }) }}
-  <div class="errors">
-    {% for error in form.vars.errors %}
-      <div class="alert alert-danger">{{ error.getMessage() }}</div>
-    {% endfor %}
-  </div>
+  {{ include('forms/global_errors.html.twig') }}
   {% if book.photo %}
     <div class="text-center mb-3">
       <img src="{{ asset(book.getPhotosDir()~'/'~book.photo) }}" alt="photo" class="img">

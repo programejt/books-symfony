@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\IsbnValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 
 final class IsbnGeneratorTest extends WebTestCase
 {
@@ -20,6 +21,8 @@ final class IsbnGeneratorTest extends WebTestCase
   ): void {
     $isbn = new Isbn(Isbn::ISBN_13);
     $validator = new IsbnValidator;
+
+    /** @var MockObject&ExecutionContextInterface $context */
     $context = $this->createMock(ExecutionContextInterface::class);
 
     $validator->initialize($context);

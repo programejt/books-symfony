@@ -7,40 +7,36 @@
 {% endblock %}
 
 {% block body %}
-  {% for flash_error in app.flashes('verify_email_error') %}
-    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-  {% endfor %}
-
   <h1 class="h2 text-center">Register</h1>
 
-  {{ form_errors(registrationForm) }}
-
-  {{ form_start(registrationForm, {
+  {{ form_start(form, {
     'attr': {
       'id': 'registration-form',
       'class': 'container content-container'
     }
   }) }}
+    {{ include('forms/global_errors.html.twig') }}
     {{ include('forms/field.html.twig', {
-      'field': registrationForm.name
+      'field': form.name
     }) }}
     {{ include('forms/field.html.twig', {
-      'field': registrationForm.email
+      'field': form.email
     }) }}
     {{ include('forms/field.html.twig', {
-      'field': registrationForm.password.first
+      'field': form.password.first
     }) }}
     {{ include('forms/field.html.twig', {
-      'field': registrationForm.password.second
+      'field': form.password.second
     }) }}
     {{ include('forms/field.html.twig', {
-      'field': registrationForm.agreeTerms,
+      'field': form.agreeTerms,
       'attr': {
         'class': 'form-check-input'
       }
     }) }}
+    {{ form_rest(form) }}
     <div class="form-buttons">
       <button type="submit" class="btn btn-primary btn-lg form-button">Register</button>
     </div>
-  {{ form_end(registrationForm) }}
+  {{ form_end(form) }}
 {% endblock %}

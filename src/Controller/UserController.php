@@ -9,9 +9,11 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Form\UserChangeNameType;
 use App\Form\UserChangePasswordType;
 use App\Form\UserChangeEmailType;
+use App\Form\UserDeleteAccountType;
 use App\Form\UserChangePhotoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -22,6 +24,8 @@ use App\Security\EmailVerifier;
 use Exception;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route('/user', name: 'app_user_')]
 class UserController extends AbstractController
@@ -288,6 +292,39 @@ class UserController extends AbstractController
     }
 
     return $this->redirectToRoute('app_user_my_account');
+  }
+
+  #[Route('/delete-account', name: 'delete_account', methods: [ 'GET', 'POST'])]
+  #[IsGranted(new Expression('is_authenticated() & !is_granted("'.UserRole::Admin->value.'")'))]
+  public function deleteAccount(
+    Request $request,
+    EntityManagerInterface $entityManager,
+    UserPasswordHasherInterface $userPasswordHasher,
+    Security $security,
+  ): Response {
+    $form = $this->createForm(UserDeleteAccountType::class);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $passwordField = $form->get('password');
+      /** @var User $user */
+      $user = $this->getUser();
+
+      if ($userPasswordHasher->isPasswordValid($user, $passwordField->getData())) {
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $security->logout(false);
+
+        return $this->redirectToRoute('app_home');
+      } else {
+        $passwordField->addError(new FormError('Incorrect password'));
+      }
+    }
+
+    return $this->render('user/_delete_form.html.twig', [
+      'form' => $form,
+    ]);
   }
 
   private function _renderUserHomePage(User $user) {

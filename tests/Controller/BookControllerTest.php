@@ -15,8 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 final class BookControllerTest extends WebTestCase
 {
   private KernelBrowser $client;
-  private EntityManagerInterface $manager;
-  private BookRepository $repository;
+  private EntityManagerInterface $entityManager;
+  private BookRepository $bookRepository;
   private User $user;
   private Author $author;
   private string $path = '/books/';
@@ -24,26 +24,26 @@ final class BookControllerTest extends WebTestCase
   protected function setUp(): void
   {
     $this->client = static::createClient();
-    $this->manager = static::getContainer()->get('doctrine')->getManager();
-    $this->repository = $this->manager->getRepository(Book::class);
+    $this->entityManager = static::getContainer()->get('doctrine')->getManager();
+    $this->bookRepository = $this->entityManager->getRepository(Book::class);
 
-    foreach ($this->repository->findAll() as $book) {
-      $this->manager->remove($book);
+    foreach ($this->bookRepository->findAll() as $book) {
+      $this->entityManager->remove($book);
     }
 
-    $userRepository = $this->manager->getRepository(User::class);
+    $userRepository = $this->entityManager->getRepository(User::class);
 
     foreach ($userRepository->findAll() as $user) {
-      $this->manager->remove($user);
+      $this->entityManager->remove($user);
     }
 
-    $authorRepository = $this->manager->getRepository(Author::class);
+    $authorRepository = $this->entityManager->getRepository(Author::class);
 
     foreach ($authorRepository->findAll() as $author) {
-      $this->manager->remove($author);
+      $this->entityManager->remove($author);
     }
 
-    $this->manager->flush();
+    $this->entityManager->flush();
 
     $user = new User();
     $user
@@ -57,9 +57,9 @@ final class BookControllerTest extends WebTestCase
       ->setName('Jack')
       ->setSurname('Moon');
 
-    $this->manager->persist($user);
-    $this->manager->persist($author);
-    $this->manager->flush();
+    $this->entityManager->persist($user);
+    $this->entityManager->persist($author);
+    $this->entityManager->flush();
 
     $this->user = $user;
     $this->author = $author;
@@ -98,11 +98,11 @@ final class BookControllerTest extends WebTestCase
       'book[description]' => 'Testing',
     ]);
 
-    $book = $this->repository->findAll()[0];
+    $book = $this->bookRepository->findAll()[0];
 
     self::assertResponseRedirects($this->path.$book->getId());
 
-    self::assertSame(1, $this->repository->count([]));
+    self::assertSame(1, $this->bookRepository->count([]));
   }
 
   public function testShow(): void
@@ -117,8 +117,8 @@ final class BookControllerTest extends WebTestCase
     $book->setIsbn(IsbnGenerator::generate());
     $book->setDescription('My Title');
 
-    $this->manager->persist($book);
-    $this->manager->flush();
+    $this->entityManager->persist($book);
+    $this->entityManager->flush();
 
     $this->client->request('GET', sprintf('%s%s', $this->path, $book->getId()));
 
@@ -139,10 +139,10 @@ final class BookControllerTest extends WebTestCase
     $author->setName('John');
     $author->setSurname('Sun');
 
-    $this->manager->persist($book);
-    $this->manager->persist($author);
+    $this->entityManager->persist($book);
+    $this->entityManager->persist($author);
 
-    $this->manager->flush();
+    $this->entityManager->flush();
 
     $uri = sprintf('%s%s/edit', $this->path, $book->getId());
 
@@ -169,7 +169,7 @@ final class BookControllerTest extends WebTestCase
 
     self::assertResponseRedirects($this->path.$book->getId());
 
-    $book = $this->repository->findAll();
+    $book = $this->bookRepository->findAll();
     $book = $book[0];
 
     $authors = $book->getAuthors();
@@ -192,8 +192,8 @@ final class BookControllerTest extends WebTestCase
     $book->setIsbn(IsbnGenerator::generate());
     $book->setDescription('Value');
 
-    $this->manager->persist($book);
-    $this->manager->flush();
+    $this->entityManager->persist($book);
+    $this->entityManager->flush();
 
     $this->loginUser();
 
@@ -203,7 +203,7 @@ final class BookControllerTest extends WebTestCase
     $this->client->submitForm('Delete');
 
     self::assertResponseRedirects('/books');
-    self::assertSame(0, $this->repository->count([]));
+    self::assertSame(0, $this->bookRepository->count([]));
   }
 
   private function loginUser(): void

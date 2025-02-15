@@ -16,11 +16,7 @@
       'class': 'container content-container'
     }
   }) }}
-    <div class="errors">
-      {% for error in form.vars.errors %}
-        <div class="alert alert-danger">{{ error.getMessage() }}</div>
-      {% endfor %}
-    </div>
+    {{ include('forms/global_errors.html.twig') }}
     {% if photo %}
       <div class="user-image-container text-center mb-3">
         <img src="{{ asset(photo) }}" alt="photo" class="img">

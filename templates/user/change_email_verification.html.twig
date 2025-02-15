@@ -13,9 +13,9 @@
     </div>
   {% else %}
     <div class="container section">
-      {% for flash_error in app.flashes('change_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-      {% endfor %}
+      {{ include('forms/flash_errors.html.twig', {
+        'key': 'change_email_error',
+      }) }}
 
       <p class="text-center">Please confirm your change email request by clicking on link sent to your current email address.</p>
       <p class="text-center">Your new email address will be: <strong>{{ app.user.newEmail }}</strong>.</p>

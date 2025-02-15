@@ -38,6 +38,13 @@
         <a href="{{ path('app_user_change_photo') }}" class="btn btn-primary">Change photo</a>
       </div>
       <div class="settings-buttons section">
+        {% if user.role is same as(enum('App\\Enum\\UserRole').Admin) %}
+          <p class="text-muted" style="margin: 0;">You can't delete your account because you are Administrator.</p>
+        {% else %}
+          <a href="{{ path('app_user_delete_account') }}" class="btn btn-danger">Delete account</a>
+        {% endif %}
+      </div>
+      <div class="settings-buttons section">
         <a href="{{ path('app_logout') }}" class="btn btn-secondary">Logout</a>
       </div>
     {% endif %}

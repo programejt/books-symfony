@@ -7,13 +7,14 @@ use App\Repository\UserRepository;
 use App\Validator\UniqueEntity;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use App\Entity\User;
+use PHPUnit\Framework\MockObject\MockObject;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Test\Helper\FakeConstraint;
 
 final class UniqueEntityValidatorTest extends ConstraintValidatorTestCase
 {
-  private $entityManager;
+  private MockObject&EntityManagerInterface $entityManager;
 
   protected function createValidator(): UniqueEntityValidator
   {
@@ -21,15 +22,6 @@ final class UniqueEntityValidatorTest extends ConstraintValidatorTestCase
 
     return new UniqueEntityValidator(
       $this->entityManager,
-    );
-  }
-
-  protected function getConstraint(): UniqueEntity
-  {
-    return new UniqueEntity(
-      User::class,
-      'email',
-      'message',
     );
   }
 
@@ -93,5 +85,14 @@ final class UniqueEntityValidatorTest extends ConstraintValidatorTestCase
     $this->validator->validate($value, $constraint);
 
     $this->assertNoViolation();
+  }
+
+  private function getConstraint(): UniqueEntity
+  {
+    return new UniqueEntity(
+      User::class,
+      'email',
+      'message',
+    );
   }
 }

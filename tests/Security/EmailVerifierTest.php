@@ -10,13 +10,15 @@ use Symfony\Component\Mime\Address;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Security\EmailVerifier;
 use SymfonyCasts\Bundle\VerifyEmail\Model\VerifyEmailSignatureComponents;
+use PHPUnit\Framework\MockObject\MockObject;
 
 final class EmailVerifierTest extends WebTestCase
 {
   public function testSendEmailConfirmation(): void
   {
-    $verifyEmailHelper = $this->createMock(VerifyEmailHelperInterface::class);
-    $mailer = $this->createMock(MailerInterface::class);
+    $verifyEmailHelper = $this->getEmailVerifier();
+    $mailer = $this->getMailer();
+    /** @var MockObject&TemplatedEmail $email */
     $email = $this->createMock(TemplatedEmail::class);
     $signatureComponents = new VerifyEmailSignatureComponents(
       new \DateTime(),
@@ -71,8 +73,8 @@ final class EmailVerifierTest extends WebTestCase
 
   public function testEmailTemplate(): void
   {
-    $verifyEmailHelper = $this->createMock(VerifyEmailHelperInterface::class);
-    $mailer = $this->createMock(MailerInterface::class);
+    $verifyEmailHelper = $this->getEmailVerifier();
+    $mailer = $this->getMailer();
     $email = 'email@email.com';
 
     $emailVerifier = new EmailVerifier(
@@ -91,6 +93,16 @@ final class EmailVerifierTest extends WebTestCase
       [new Address($email, '')],
       $emailTemplate->getTo(),
     );
+  }
+
+  private function getEmailVerifier(): MockObject&VerifyEmailHelperInterface
+  {
+    return $this->createMock(VerifyEmailHelperInterface::class);
+  }
+
+  private function getMailer(): MockObject&MailerInterface
+  {
+    return $this->createMock(MailerInterface::class);
   }
 
   // public function testValidateEmailConfirmationFromRequest(): void

@@ -11,10 +11,11 @@ use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use PHPUnit\Framework\MockObject\MockObject;
 
 final class AnyOtherAdminExistsValidatorTest extends ConstraintValidatorTestCase
 {
-  private $userRepository;
+  private MockObject&UserRepository $userRepository;
 
   protected function createValidator(): AnyOtherAdminExistsValidator
   {
