@@ -10,15 +10,26 @@ class AuthorsFixtures extends Fixture
 {
   public function load(ObjectManager $manager): void
   {
-    for ($i = 0; $i < 105; ++$i) {
+    foreach ($this->generateData() as $key => $data) {
       $author = new Author();
-      $author->setName("Author");
-      $author->setSurname("Name $i");
+      $author->setName($data[0]);
+      $author->setSurname($data[1]);
 
       $manager->persist($author);
       $manager->flush();
 
-      $this->addReference('AUTHOR'.$i, $author);
+      $this->addReference('AUTHOR'.$key, $author);
     }
+  }
+
+  private function generateData(): \Generator
+  {
+    yield ['Jack', 'Smith'];
+    yield ['Johnny', 'Tyler'];
+    yield ['Amanda', 'Moon'];
+    yield ['Susan', 'Sun'];
+    yield ['Elon', 'Dawn'];
+    yield ['Elizabeth', 'Stone'];
+    yield ['Chris', 'Water'];
   }
 }
