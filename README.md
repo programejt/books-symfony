@@ -13,7 +13,6 @@ Website that contains books with detailed informations and authors of them.
 
 After running project, it has one account that has Admin role.
 
-
 ## Screenshots
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-1.png)
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-2.png)
@@ -24,9 +23,7 @@ After running project, it has one account that has Admin role.
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-7.png)
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-8.png)
 
-
 ## How to run project
-
 1. Clone this repo to your computer (`git clone https://github.com/programejt/books-symfony.git`)
 2. Go to directory of cloned repo
 3. Setup your database environment (the best for this project will be `postgres`)
@@ -42,13 +39,12 @@ After running project, it has one account that has Admin role.
 9. Run in terminal `php bin/console asset-map:compile`
 10. Run in terminal `symfony server:start` (you need to have installed symfony cli)
 
-
 ## PHPUnit tests
 1. Create new file (in project's root directory) and name it `.env.test.local`, then configure your database connection in it:
   - pattern: `DATABASE_URL="<database engine>://<user>:<password>@<host>:<port>/<database name>?serverVersion=16&charset=utf8"`
   - example: `DATABASE_URL="postgresql://app_books:qwerty123@127.0.0.1:5432/books?serverVersion=16&charset=utf8"`
 2. Create database for your tests with one of following steps:
-  - if database's user that your application is connecting to has permission to create databases, run in terminal `php bin/console  --env=test doctrine:database:create`
+  - if database's user that your application is connecting to has permission to create databases, run in terminal `php bin/console --env=test doctrine:database:create`
   - create manually in your database environment
 3. Run in terminal `php bin/console --env=test doctrine:migrations:migrate`
 4. To run PHPUnit tests, run in terminal `php bin/phpunit`
