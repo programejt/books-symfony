@@ -4,7 +4,8 @@
 
 {% block body %}
   <header class="text-center">
-    <h1 class="h2"><a href="{{ path('app_authors_show', {'id': author.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ author }}</a></h1>
+    <h1 class="h2"><a href="{{ path('app_authors_show', {'id': author.id}) }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ author }}</a></h1>
+    <p class="type text-muted">(author)</p>
   </header>
 
   {% if is_granted(enum('App\\Enum\\UserRole').Moderator.value) %}

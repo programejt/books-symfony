@@ -20,14 +20,21 @@ class AuthorRepository extends ServiceEntityRepository
     public function findPaginated(
       ?string $name = null,
       int $currentPage = 1,
-      int $limit = 10
+      int $limit = 10,
     ): Paginator {
       $query = $this->createQueryBuilder('a');
 
       if ($name) {
+        $expression = $this->getEntityManager()->getExpressionBuilder();
+
         $query
-          ->where("CONCAT(LOWER(a.name) || ' ' || LOWER(a.surname)) ilike :name")
-          ->setParameter('name', "%" . strtolower($name) . "%");
+          ->where(
+            $expression->like(
+              'CONCAT(LOWER(a.name), \' \', LOWER(a.surname))',
+              ':name',
+            ),
+          )
+          ->setParameter('name', '%'.strtolower($name).'%');
       }
 
       $query->orderBy('a.name', 'ASC');

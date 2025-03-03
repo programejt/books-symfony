@@ -1,5 +1,5 @@
 .book-card .book-author {
-  color: #b0b0b0 !important;
+  color: var(--bs-secondary-color) !important;
   display: inline-block;
   vertical-align: top;
 }

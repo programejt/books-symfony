@@ -5,7 +5,7 @@
 {% block body %}
   <header class="text-center">
     <h1 class="h2">Edit Book</h1>
-    <h2 class="h3"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ book.title }}</a></h2>
+    <h2 class="h3"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ book.title }}</a></h2>
   </header>
 
   {{ include(

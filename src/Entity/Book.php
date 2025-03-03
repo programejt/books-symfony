@@ -163,6 +163,11 @@ class Book
     return FileSystem::IMAGES_DIR . "/books/" . $this->id;
   }
 
+  public function getPhotoPath(): string
+  {
+    return $this->getPhotosDir().'/'.$this->photo;
+  }
+
   /**
    * @return Collection<int, Author>
    */

@@ -340,9 +340,10 @@ class UserController extends AbstractController
     $emailVerifier->sendEmailConfirmation(
       'app_user_set_new_email',
       $user,
-      $emailVerifier->emailTemplate((string) $user->getEmail())
+      $emailVerifier
+        ->emailTemplate((string) $user->getEmail())
         ->subject('Please Confirm your Change Email request')
-        ->htmlTemplate('email/confirmation_change_email.html.twig')
+        ->htmlTemplate('email/confirmation_change_email.html.twig'),
     );
   }
 }

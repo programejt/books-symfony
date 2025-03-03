@@ -11,6 +11,11 @@
     </div>
   {% endif %}
 
+  <form action="{{ path('app_authors_index') }}" method="get" class="d-flex container content-container mb-5" role="search">
+    <input class="form-control me-2" type="search" name="search" placeholder="Search authors" aria-label="Search" value="{{ authorSearchValue ?? '' }}">
+    <button class="btn btn-success" type="submit">Search</button>
+  </form>
+
   <div class="container-fluid">
     <div class="row gap-3 justify-content-center">
       {% for author in authors %}
@@ -31,11 +36,11 @@
     pagesCount: pagesCount,
     prevUrl: path('app_authors_index', {
       page: currentPage - 1,
-      search: searchValue,
+      search: authorSearchValue,
     }),
     nextUrl: path('app_authors_index', {
       page: currentPage + 1,
-      search: searchValue,
+      search: authorSearchValue,
     }),
   }) }}
 {% endblock %}

@@ -11,11 +11,6 @@ body {
   z-index: 20;
 }
 
-#main-header,
-.card {
-  background-color: #2e343a;
-}
-
 .navbar {
   padding: 5px 0;
 }
@@ -34,14 +29,49 @@ img {
   max-width: 100%;
 }
 
+.toggle-theme {
+  margin: 5px 5px 5px 0;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.bi,
+.theme-icon {
+  --size: 1em;
+  width: var(--size);
+  height: var(--size);
+  line-height: 1;
+  font-size: inherit;
+  vertical-align: -.125em;
+  max-width: 100%;
+}
+
+html[data-bs-theme="dark"] .theme-icon.sun-icon,
+html[data-bs-theme="light"] .theme-icon.moon-icon {
+  display: none;
+}
+
 .form-control,
 .form-check-input:not(:checked) {
-  background-color: #14181d !important;
+  background-color: var(--bs-dark-bg-subtle) !important;
   border-color: transparent !important;
 }
 
 .dropdown-menu {
   padding: 8px;
+  transition: opacity, visibility .2s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-item {
+  border-radius: var(--bs-dropdown-border-radius);
+  transition: background-color, color .2s ease-in-out;
 }
 
 .section {
@@ -52,15 +82,11 @@ img {
 .card {
   border: 0;
   padding: 0;
+  background-color: rgb(var(--bs-tertiary-bg-rgb)) !important;
 }
 
 .card > * {
   padding: 8px;
-}
-
-.card-title {
-  font-size: 19px;
-  margin-bottom: 0;
 }
 
 .card-img {
@@ -68,19 +94,32 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 100px;
+  line-height: 1;
+  overflow: hidden;
 }
 
 .card-main-link {
   text-decoration: none;
+  border: 0 !important;
 }
 
 .card-main-link:focus-visible,
 .card-main-link:hover {
-  background-color: #343b42;
+  background-color: rgb(var(--bs-secondary-bg-rgb), .75);
 }
 
 .card-main-link:active {
-  background-color: #373f46;
+  background-color: rgba(var(--bs-secondary-bg-rgb)) !important;
+}
+
+.card-title {
+  font-size: 19px;
+  margin-bottom: 0;
+}
+
+.card-subtitle {
+  margin-top: 0;
 }
 
 .img {
@@ -100,7 +139,7 @@ img {
 }
 
 .data-row-title {
-  color: #b0b0b0;
+  color: var(--bs-secondary-color);
   font-size: 17px;
 }
 

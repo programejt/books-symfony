@@ -24,7 +24,7 @@ final class AuthorsController extends AbstractController
     AuthorRepository $authorRepository,
   ): Response {
     $currentPage = (int) $request->get('page', 1);
-    $name = $request->get('name');
+    $name = $request->get('search');
 
     if ($currentPage < 1) {
       $currentPage = 1;
@@ -35,7 +35,7 @@ final class AuthorsController extends AbstractController
     $authors = $authorRepository->findPaginated($name, $currentPage, $limit);
 
     return $this->render('authors/index.html.twig', [
-      'searchValue' => $name,
+      'authorSearchValue' => $name,
       'currentPage' => $currentPage,
       'pagesCount' => ceil($authors->count() / $limit),
       'authors' => $authors,
@@ -68,7 +68,7 @@ final class AuthorsController extends AbstractController
         return $this->redirectToRoute(
           'app_authors_show',
           ['id' => $author->getId()],
-          Response::HTTP_SEE_OTHER
+          Response::HTTP_SEE_OTHER,
         );
       } catch (ORMException $e) {
         $form->addError(new FormError('Error occured'));
@@ -99,7 +99,7 @@ final class AuthorsController extends AbstractController
         return $this->redirectToRoute(
           'app_authors_show',
           ['id' => $author->getId()],
-          Response::HTTP_SEE_OTHER
+          Response::HTTP_SEE_OTHER,
         );
       } catch (ORMException $e) {
         $form->addError(new FormError('Error occured'));
@@ -130,7 +130,7 @@ final class AuthorsController extends AbstractController
     return $this->redirectToRoute(
       'app_authors_index',
       [],
-      Response::HTTP_SEE_OTHER
+      Response::HTTP_SEE_OTHER,
     );
   }
 }

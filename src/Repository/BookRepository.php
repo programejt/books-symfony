@@ -17,16 +17,28 @@ class BookRepository extends ServiceEntityRepository
   public function findPaginated(
     ?string $titleOrAuthor = null,
     int $currentPage = 1,
-    int $limit = 10
+    int $limit = 10,
   ): Paginator {
     $query = $this
       ->createQueryBuilder('b');
 
     if ($titleOrAuthor) {
+      $expression = $this->getEntityManager()->getExpressionBuilder();
+
       $query
         ->innerJoin('b.authors', 'a')
-        ->where("LOWER(b.title) LIKE :searchValue")
-        ->orWhere("CONCAT(LOWER(a.name), ' ', LOWER(a.surname)) LIKE :searchValue")
+        ->where(
+          $expression->orX(
+            $expression->like(
+              'LOWER(b.title)',
+              ':searchValue',
+            ),
+            $expression->like(
+              'CONCAT(LOWER(a.name), \' \', LOWER(a.surname))',
+              ':searchValue',
+            ),
+          )
+        )
         ->setParameter('searchValue', "%" . strtolower($titleOrAuthor) . "%");
     }
 

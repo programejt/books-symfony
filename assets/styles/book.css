@@ -1,0 +1,8 @@
+.book-photo {
+  font-size: 100px;
+  text-align: center;
+}
+
+.book-photo > img {
+  max-height: 300px;
+}

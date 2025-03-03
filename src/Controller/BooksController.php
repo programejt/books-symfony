@@ -79,7 +79,7 @@ final class BooksController extends AbstractController
         return $this->redirectToRoute(
           'app_books_show',
           ['id' => $book->getId()],
-          Response::HTTP_SEE_OTHER
+          Response::HTTP_SEE_OTHER,
         );
       }
 
@@ -108,7 +108,7 @@ final class BooksController extends AbstractController
         return $this->redirectToRoute(
           'app_books_show',
           ['id' => $book->getId()],
-          Response::HTTP_SEE_OTHER
+          Response::HTTP_SEE_OTHER,
         );
       }
       $form->addError(new FormError('Error occured'));
@@ -138,7 +138,7 @@ final class BooksController extends AbstractController
     return $this->redirectToRoute(
       'app_books_index',
       [],
-      Response::HTTP_SEE_OTHER
+      Response::HTTP_SEE_OTHER,
     );
   }
 

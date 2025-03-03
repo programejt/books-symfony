@@ -5,7 +5,7 @@ Website that contains books with detailed informations and authors of them.
 
 ## On the website you can
 - browse books and authors with details
-- search books
+- search books and authors
 - create account and sign in to it
 - manage your account - verify email, change name, change password, change photo, change email and delete account
 - if you have Moderator or Admin role, you can create, edit and delete books and authors
@@ -22,6 +22,8 @@ After running project, it has one account that has Admin role.
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-6.png)
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-7.png)
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-8.png)
+![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-9.png)
+![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-10.png)
 
 ## How to run project
 1. Clone this repo to your computer (`git clone https://github.com/programejt/books-symfony.git`)
