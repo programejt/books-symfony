@@ -21,7 +21,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Service\FileSystem;
 use App\Security\EmailVerifier;
-use Exception;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
