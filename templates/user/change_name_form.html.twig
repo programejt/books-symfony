@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Change name{% endblock %}
+{% block title %}{{ 'change.name'|trans }}{% endblock %}
 
 {% block stylesheets %}
   <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
@@ -10,7 +10,7 @@
   {{ include('user/header.html.twig', {
     'user': app.user
   }) }}
-  <h2 class="h3 text-center mb-3">Change name</h2>
+  <h2 class="h3 text-center mb-3">{{ 'change.name'|trans }}</h2>
   {{ form_start(form, {
     'attr': {
       'class': 'container content-container'
@@ -22,7 +22,7 @@
     }) }}
     {{ form_rest(form) }}
     {{ include('forms/form_buttons.html.twig', {
-      'submitButtonLabel': 'Save',
+      'submitButtonLabel': 'save',
       'cancelButtonHref': path('app_user_my_account')
     }) }}
   {{ form_end(form) }}

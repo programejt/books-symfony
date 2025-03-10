@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Delete account{% endblock %}
+{% block title %}{{ 'delete_account'|trans }}{% endblock %}
 
 {% block stylesheets %}
   <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
@@ -10,11 +10,11 @@
   {{ include('user/header.html.twig', {
     'user': app.user
   }) }}
-  <h2 class="h3 text-center mb-3">Delete account</h2>
+  <h2 class="h3 text-center mb-3">{{ 'delete_account'|trans }}</h2>
   {{ form_start(form, {
     'attr': {
       'class': 'container content-container',
-      'onsubmit': "return confirm('Are you sure you want to delete your account? This operation cannot be undone!');",
+      'onsubmit': "return confirm('" ~ 'confirm_delete_account_message'|trans ~ "!');",
     }
   }) }}
     {{ include('forms/global_errors.html.twig') }}
@@ -23,8 +23,8 @@
     }) }}
     {{ form_rest(form) }}
     <div class="form-buttons">
-      <a href="{{ path('app_user_my_account') }}" class="btn btn-secondary form-button">Cancel</a>
-      <button type="submit" class="btn btn-danger form-button">Delete account</button>
+      <a href="{{ path('app_user_my_account') }}" class="btn btn-secondary form-button">{{ 'cancel'|trans }}</a>
+      <button type="submit" class="btn btn-danger form-button">{{ 'delete_account'|trans }}</button>
     </div>
   {{ form_end(form) }}
 {% endblock %}

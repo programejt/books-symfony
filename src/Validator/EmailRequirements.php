@@ -3,6 +3,7 @@
 namespace App\Validator;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\User;
 
 #[\Attribute]
 class EmailRequirements extends Assert\Compound
@@ -11,13 +12,14 @@ class EmailRequirements extends Assert\Compound
   {
     return [
       new Assert\NotBlank(
-        message: 'The email can\'t be empty',
+        message: 'email.not_blank',
       ),
       new Assert\Email(
-        message: 'The email is not valid',
+        message: 'email.not_valid',
       ),
       new Assert\Length(
-        max: 180,
+        max: User::EMAIL_MAX_LENGTH,
+        maxMessage: 'email.length.max',
       ),
     ];
   }

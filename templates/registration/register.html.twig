@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'register'|trans }}{% endblock %}
 
 {% block stylesheets %}
   <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-  <h1 class="h2 text-center">Register</h1>
+  <h1 class="h2 text-center">{{ 'register'|trans }}</h1>
 
   {{ form_start(form, {
     'attr': {
@@ -36,7 +36,7 @@
     }) }}
     {{ form_rest(form) }}
     <div class="form-buttons">
-      <button type="submit" class="btn btn-primary btn-lg form-button">Register</button>
+      <button type="submit" class="btn btn-primary btn-lg form-button">{{ 'register'|trans }}</button>
     </div>
   {{ form_end(form) }}
 {% endblock %}

@@ -15,7 +15,7 @@ class UniqueEmail extends UniqueEntity
     parent::__construct(
       User::class,
       $field,
-      'There is already an account with this email',
+      'unique.email',
       $groups,
       $payload,
     );

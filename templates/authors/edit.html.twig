@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit author{% endblock %}
+{% block title %}{{ 'edit_author'|trans }}{% endblock %}
 
 {% block body %}
   <header class="text-center">
-    <h1 class="h2">Edit author</h1>
+    <h1 class="h2">{{ 'edit_author'|trans }}</h1>
     <h2 class="h3"><a href="{{ path('app_authors_show', {'id': author.id}) }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ author }}</a></h2>
   </header>
 
   {{ include(
     'authors/_form.html.twig',
     {
-      'submitButtonLabel': 'Update',
+      'submitButtonLabel': 'update',
       'cancelButtonHref': path('app_authors_show', {'id': author.id})
     }
   )}}

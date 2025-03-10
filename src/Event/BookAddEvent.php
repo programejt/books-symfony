@@ -7,7 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BookAddEvent extends Event
 {
-  public const NAME = 'book.add';
+  public const string NAME = 'book.add';
 
   public function __construct(
     private readonly Book $book,

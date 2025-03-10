@@ -6,24 +6,39 @@ use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AuthorRepository::class)]
 class Author
 {
+  public const int NAME_MAX_LENGTH = 100;
+
   #[ORM\Id]
   #[ORM\GeneratedValue(strategy: "SEQUENCE")]
   #[ORM\Column]
   private ?int $id = null;
 
-  #[ORM\Column(length: 100)]
+  #[Assert\NotBlank(message: 'not_blank')]
+  #[Assert\Length(
+    min: 2,
+    max: self::NAME_MAX_LENGTH,
+    minMessage: 'length.min',
+    maxMessage: 'length.max',
+  )]
+  #[ORM\Column(length: self::NAME_MAX_LENGTH)]
   private ?string $name = null;
 
-  #[ORM\Column(length: 100)]
+  #[Assert\NotBlank(message: 'not_blank')]
+  #[Assert\Length(
+    min: 2,
+    max: self::NAME_MAX_LENGTH,
+    minMessage: 'length.min',
+    maxMessage: 'length.max',
+  )]
+  #[ORM\Column(length: self::NAME_MAX_LENGTH)]
   private ?string $surname = null;
 
-  /**
-   * @var Collection<int, Book>
-   */
+  /** @var Collection<int, Book> */
   #[ORM\ManyToMany(
     targetEntity: Book::class,
     mappedBy: 'authors',

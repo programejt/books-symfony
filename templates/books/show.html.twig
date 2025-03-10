@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ book.title }} - book{% endblock %}
+{% block title %}{{ book.title }} - {{ 'book'|trans }}{% endblock %}
 {% block stylesheets %}
   <link href="{{ asset('styles/book.css') }}" rel="stylesheet">
 {% endblock %}
@@ -8,12 +8,12 @@
 {% block body %}
   <header class="text-center">
     <h1 class="h2"><a href="{{ path('app_books_show', {'id': book.id}) }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ book.title }}</a></h1>
-    <p class="type text-muted">(book)</p>
+    <p class="type text-muted">({{ 'book'|trans }})</p>
   </header>
 
   {% if is_granted(enum('App\\Enum\\UserRole').Moderator.value) %}
     <div class="container my-4 d-flex justify-content-center align-items-center gap-2">
-      <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">Edit</a>
+      <a href="{{ path('app_books_edit', {'id': book.id}) }}" class="btn btn-secondary">{{ 'edit'|trans }}</a>
 
       {{ include('books/_delete_form.html.twig') }}
     </div>
@@ -24,23 +24,23 @@
       {{ include('books/photo.html.twig') }}
     </div>
     <div class="data-row">
-      <div class="data-row-title">Title</div>
+      <div class="data-row-title">{{ 'title'|trans }}</div>
       <div class="data-row-content">{{ book.title }}</div>
     </div>
     <div class="data-row">
-      <div class="data-row-title">Authors</div>
+      <div class="data-row-title">{{ 'authors'|trans }}</div>
       <div class="data-row-content">{{ include('authors/names.html.twig', {'authors': book.authors}) }}</div>
     </div>
     <div class="data-row">
-      <div class="data-row-title">Year</div>
+      <div class="data-row-title">{{ 'year'|trans }}</div>
       <div class="data-row-content">{{ book.year }}</div>
     </div>
     <div class="data-row">
-      <div class="data-row-title">ISBN</div>
+      <div class="data-row-title">{{ 'isbn'|trans }}</div>
       <div class="data-row-content">{{ book.isbn }}</div>
     </div>
     <div class="data-row">
-      <div class="data-row-title">Description</div>
+      <div class="data-row-title">{{ 'description'|trans }}</div>
       <div class="data-row-content white-space-pre-wrap">{{ book.description }}</div>
     </div>
   </div>

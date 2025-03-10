@@ -27,39 +27,44 @@ use App\Enum\UserRole;
 )]
 #[UniqueEntity(
   fields: 'name',
-  message: 'There is already an account with this name',
+  message: 'unique.name',
 )]
 #[UniqueEntity(
   fields: 'email',
-  message: 'There is already an account with this email',
+  message: 'unique.email',
 )]
 #[UniqueEntity(
   fields: 'newEmail',
-  message: 'There is already an account with this email',
+  message: 'unique.email',
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+  public const int NAME_MAX_LENGTH = 60;
+  public const int EMAIL_MAX_LENGTH = 100;
+  public const int ROLE_MAX_LENGTH = 60;
+  public const int PHOTO_MAX_LENGTH = 60;
+
   #[ORM\Id]
   #[ORM\GeneratedValue(strategy: "SEQUENCE")]
   #[ORM\Column]
   private ?int $id = null;
 
-  #[ORM\Column(length: 60)]
+  #[ORM\Column(length: self::NAME_MAX_LENGTH)]
   private ?string $name = null;
 
-  #[ORM\Column(length: 180)]
+  #[ORM\Column(length: self::EMAIL_MAX_LENGTH)]
   private ?string $email = null;
 
   #[ORM\Column]
   private ?string $password = null;
 
-  #[ORM\Column(type: 'string', length: 50, enumType: UserRole::class)]
+  #[ORM\Column(length: self::ROLE_MAX_LENGTH)]
   private UserRole $role = UserRole::User;
 
   #[ORM\Column]
   private bool $emailVerified = false;
 
-  #[ORM\Column(length: 60, nullable: true)]
+  #[ORM\Column(length: self::PHOTO_MAX_LENGTH, nullable: true)]
   private ?string $photo = null;
 
   #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -68,7 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $passwordChangedAt = null;
 
-  #[ORM\Column(length: 100, nullable: true)]
+  #[ORM\Column(length: self::EMAIL_MAX_LENGTH, nullable: true)]
   private ?string $newEmail = null;
 
   public function __construct() {

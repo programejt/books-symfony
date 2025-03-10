@@ -12,65 +12,65 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class AuthorRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Author::class);
+  public function __construct(ManagerRegistry $registry)
+  {
+    parent::__construct($registry, Author::class);
+  }
+
+  public function findPaginated(
+    ?string $name = null,
+    int $currentPage = 1,
+    int $limit = 10,
+  ): Paginator {
+    $query = $this->createQueryBuilder('a');
+
+    if ($name) {
+      $expression = $this->getEntityManager()->getExpressionBuilder();
+
+      $query
+        ->where(
+          $expression->like(
+            'CONCAT(LOWER(a.name), \' \', LOWER(a.surname))',
+            ':name',
+          ),
+        )
+        ->setParameter('name', '%' . strtolower($name) . '%');
     }
 
-    public function findPaginated(
-      ?string $name = null,
-      int $currentPage = 1,
-      int $limit = 10,
-    ): Paginator {
-      $query = $this->createQueryBuilder('a');
+    $query->orderBy('a.name', 'ASC');
 
-      if ($name) {
-        $expression = $this->getEntityManager()->getExpressionBuilder();
+    $paginator = new Paginator($query, true);
 
-        $query
-          ->where(
-            $expression->like(
-              'CONCAT(LOWER(a.name), \' \', LOWER(a.surname))',
-              ':name',
-            ),
-          )
-          ->setParameter('name', '%'.strtolower($name).'%');
-      }
+    $paginator
+      ->getQuery()
+      ->setFirstResult(($currentPage - 1) * $limit)
+      ->setMaxResults($limit);
 
-      $query->orderBy('a.name', 'ASC');
+    return $paginator;
+  }
 
-      $paginator = new Paginator($query, true);
+  //    /**
+  //     * @return Author[] Returns an array of Author objects
+  //     */
+  //    public function findByExampleField($value): array
+  //    {
+  //        return $this->createQueryBuilder('a')
+  //            ->andWhere('a.exampleField = :val')
+  //            ->setParameter('val', $value)
+  //            ->orderBy('a.id', 'ASC')
+  //            ->setMaxResults(10)
+  //            ->getQuery()
+  //            ->getResult()
+  //        ;
+  //    }
 
-      $paginator
-        ->getQuery()
-        ->setFirstResult(($currentPage - 1) * $limit)
-        ->setMaxResults($limit);
-
-      return $paginator;
-    }
-
-    //    /**
-    //     * @return Author[] Returns an array of Author objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Author
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+  //    public function findOneBySomeField($value): ?Author
+  //    {
+  //        return $this->createQueryBuilder('a')
+  //            ->andWhere('a.exampleField = :val')
+  //            ->setParameter('val', $value)
+  //            ->getQuery()
+  //            ->getOneOrNullResult()
+  //        ;
+  //    }
 }

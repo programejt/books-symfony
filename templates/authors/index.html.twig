@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Authors{% endblock %}
+{% block title %}{{ 'authors'|trans }}{% endblock %}
 
 {% block body %}
-  <h1 class="h2 text-center">Authors</h1>
+  <h1 class="h2 text-center">{{ 'authors'|trans }}</h1>
 
   {% if is_granted(enum('App\\Enum\\UserRole').Moderator.value) %}
     <div class="text-center my-4">
-      <a href="{{ path('app_authors_new') }}" class="btn btn-success">Add new</a>
+      <a href="{{ path('app_authors_new') }}" class="btn btn-success">{{ 'add_new'|trans }}</a>
     </div>
   {% endif %}
 
   <form action="{{ path('app_authors_index') }}" method="get" class="d-flex container content-container mb-5" role="search">
-    <input class="form-control me-2" type="search" name="search" placeholder="Search authors" aria-label="Search" value="{{ authorSearchValue ?? '' }}">
-    <button class="btn btn-success" type="submit">Search</button>
+    <input class="form-control me-2" type="search" name="search" placeholder="{{ 'search_authors'|trans }}" aria-label="{{ 'search'|trans }}" value="{{ authorSearchValue ?? '' }}">
+    <button class="btn btn-success" type="submit">{{ 'search'|trans }}</button>
   </form>
 
   <div class="container-fluid">
@@ -22,11 +22,11 @@
         <div class="card col-12 col-sm-6 col-md-4 col-lg-3">
           <div class="card-body">
             <a href="{{ path('app_authors_show', { id: author.id }) }}" class="d-block card-title text-center btn card-main-link">{{ author }}</a>
-            <p class="card-text h6 text-muted">{{ author.books.count() }} book(s)</p>
+            <p class="card-text h6 text-muted">{{ author.books.count() }} {{ 'book_s'|trans }}</p>
           </div>
         </div>
       {% else %}
-        <div class="text-center">No authors found</div>
+        <div class="text-center">{{ 'no_authors_found'|trans }}</div>
       {% endfor %}
     </div>
   </div>

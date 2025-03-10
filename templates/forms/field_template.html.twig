@@ -1,6 +1,6 @@
 {# {% set fieldErrors = field_errors(field) %} #}
 {% set defaultAttr = {
-  'class': (field_errors(field)|length ? 'is-invalid' : '')~' form-control'
+  'class': (field_errors(field)|length ? 'is-invalid' : '') ~ ' form-control'
 } %}
 {% if attr|default(null) != null %}
   {% set defaultAttr = defaultAttr|merge(attr) %}

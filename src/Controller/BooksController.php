@@ -83,7 +83,7 @@ final class BooksController extends AbstractController
         );
       }
 
-      $form->addError(new FormError('Error occured'));
+      $form->addError(new FormError('form.general'));
     }
 
     return $this->render('books/new.html.twig', [
@@ -111,7 +111,7 @@ final class BooksController extends AbstractController
           Response::HTTP_SEE_OTHER,
         );
       }
-      $form->addError(new FormError('Error occured'));
+      $form->addError(new FormError('form.general'));
     }
 
     return $this->render('books/edit.html.twig', [

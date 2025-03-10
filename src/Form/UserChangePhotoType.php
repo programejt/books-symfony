@@ -25,6 +25,7 @@ class UserChangePhotoType extends AbstractType
   ): void {
     $builder
       ->add('photo', FileType::class, [
+        'label' => 'photo',
         'required' => false,
         'constraints' => [
           new ImageRequirements,
@@ -42,7 +43,7 @@ class UserChangePhotoType extends AbstractType
         if ($user->getPhoto()) {
           $form->add('deletePhoto', CheckboxType::class, [
             'required' => false,
-            'label' => 'Delete photo'
+            'label' => 'delete_photo'
           ]);
         }
       },

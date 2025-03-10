@@ -1,0 +1,63 @@
+image:
+  mime_types: Image does not have valid mime type. Please upload a valid image
+
+file:
+  max_size: The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}
+  name_too_long: File name is too long
+  partial: Only part of file was uploaded
+  no_file: No file was uploaded
+  no_tmp_dir: File was not uploaded because of server error
+  cant_write: File was not uploaded because of server error
+  extension: File was not uploaded because of server error
+  upload: File was not uploaded because of server error
+  size_not_detected: File was not uploaded because of server error
+  move: Error occured while saving uploaded photo
+
+email:
+  not_blank: The email can't be empty
+  not_valid: The email is not valid
+  length:
+    max: The email can't have more than {{ limit }} characters
+
+unique:
+  email: There is already an account with this email
+  name: There is already an account with this name
+  isbn: There is already a book with this ISBN
+
+isbn13: This value is not valid ISBN-13
+
+agree_terms: You should agree to our terms
+
+any_other_admin: There is no any other admin in system. System must have at least one admin
+
+authors:
+  min: You must specify at least {{ limit }} author
+  max: You must specify no more than {{ limit }} authors
+
+select:
+  user: The selected user is not valid. Please choose a valid user
+  user_role: The selected role is not valid. Please choose a valid role
+
+same:
+  name: You typed the same name as you already have
+  email: You typed the same email as you already have
+
+password:
+  repeat: The password fields must match
+  current: Current password is not valid
+  length:
+    min: Your password should be at least {{ limit }} characters
+    max: Your password should be max {{ limit }} characters
+  not_blank: Password can't be empty
+
+form:
+  general: Error occured while saving data
+
+not_blank: 'This field cannot be empty'
+
+length:
+  min: 'The value must be at least {{ limit }} characters long'
+  max: 'The value cannot be longer than {{ limit }} characters'
+
+greater_than: 'The value must be greater than {{ limit }}'
+less_than: 'The value must be less than {{ limit }}'

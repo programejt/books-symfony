@@ -12,9 +12,9 @@
         <span class="d-block card-title">{{ book.title }}</span>
       </a>
       <p class="card-subtitle h6 mb-2 text-muted">{{ include('authors/names.html.twig', {'authors': book.authors}) }}</p>
-      <p class="card-text h6 text-muted">{{ book.year }} year</p>
+      <p class="card-text h6 text-muted">{{ book.year }} {{ 'year'|trans|lower }}</p>
     </div>
   </div>
 {% else %}
-  <div class="text-center">No books found</div>
+  <div class="text-center">{{ 'no_books_found'|trans }}</div>
 {% endfor %}

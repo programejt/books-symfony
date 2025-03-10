@@ -24,7 +24,8 @@ class ChangeUserRoleType extends AbstractType
       ->add('user', EntityType::class, [
         'class' => User::class,
         'choice_label' => 'name',
-        'invalid_message' => 'The selected user is not valid. Please choose a valid user.',
+        'label' => 'user',
+        'invalid_message' => 'select.user',
         'constraints' => [
           new AnyOtherAdminExists(
             groups: [self::ROLE_OTHER_THAN_ADMIN]
@@ -33,7 +34,8 @@ class ChangeUserRoleType extends AbstractType
       ])
       ->add('role', EnumType::class, [
         'class' => UserRole::class,
-        'invalid_message' => 'The selected role is not valid. Please choose a valid role.',
+        'label' => 'role',
+        'invalid_message' => 'select.user_role',
       ]);
   }
 

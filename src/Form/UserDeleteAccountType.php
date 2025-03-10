@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class UserDeleteAccountType extends AbstractType
 {
@@ -16,8 +15,9 @@ class UserDeleteAccountType extends AbstractType
   ): void {
     $builder
       ->add('password', PasswordType::class, [
+        'label' => 'password',
         'constraints' => [
-          new Assert\NotBlank,
+          new \App\Validator\CurrentPassword,
         ],
       ])
     ;

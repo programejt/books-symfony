@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use App\Form\Type\PasswordRepeatedType;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class UserChangePasswordType extends AbstractType
 {
@@ -17,16 +16,17 @@ class UserChangePasswordType extends AbstractType
   ): void {
     $builder
       ->add('password', PasswordType::class, [
+        'label' => 'password',
         'constraints' => [
-          new Assert\NotBlank,
+          new \App\Validator\CurrentPassword,
         ],
       ])
       ->add('newPassword', PasswordRepeatedType::class, [
         'first_options'  => [
-          'label' => 'New password',
+          'label' => 'new_password',
         ],
         'second_options' => [
-          'label' => 'Repeat new password',
+          'label' => 'repeat_new_password',
         ],
       ])
     ;

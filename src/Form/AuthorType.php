@@ -14,8 +14,12 @@ class AuthorType extends AbstractType
     array $options,
   ): void {
     $builder
-      ->add('name')
-      ->add('surname')
+      ->add('name', options: [
+        'label' => 'first_name',
+      ])
+      ->add('surname', options: [
+        'label' => 'surname',
+      ])
       ;
   }
 

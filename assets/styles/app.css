@@ -59,9 +59,15 @@ html[data-bs-theme="light"] .theme-icon.moon-icon {
 
 .dropdown-menu {
   padding: 8px;
-  transition: opacity, visibility .2s ease-in-out;
   opacity: 0;
   visibility: hidden;
+  transition: all .2s ease-in-out;
+}
+
+@media (min-width: 576px) {
+  .user-dropdown-menu {
+    display: block !important;
+  }
 }
 
 .dropdown-menu.show {
@@ -71,7 +77,7 @@ html[data-bs-theme="light"] .theme-icon.moon-icon {
 
 .dropdown-item {
   border-radius: var(--bs-dropdown-border-radius);
-  transition: background-color, color .2s ease-in-out;
+  transition: background-color .2s, color .2s ease-in-out;
 }
 
 .section {

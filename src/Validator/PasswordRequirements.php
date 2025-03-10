@@ -11,13 +11,13 @@ class PasswordRequirements extends Assert\Compound
   {
     return [
       new Assert\NotBlank([
-        'message' => 'Please enter a password'
+        'message' => 'password.not_blank',
       ]),
       new Assert\Length([
         'min' => 6,
-        'minMessage' => 'Your password should be at least {{ limit }} characters',
+        'minMessage' => 'password.length.min',
         'max' => 255,
-        'maxMessage' => 'Your password should be max {{ limit }} characters'
+        'maxMessage' => 'password.length.max',
       ]),
     ];
   }

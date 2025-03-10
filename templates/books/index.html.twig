@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Books{% endblock %}
+{% block title %}{{ 'books'|trans }}{% endblock %}
 
 {% block body %}
-  <h1 class="h2 text-center">Books</h1>
+  <h1 class="h2 text-center">{{ 'books'|trans }}</h1>
 
   {% if is_granted(enum('App\\Enum\\UserRole').Moderator.value) %}
     <div class="text-center my-4">
-      <a href="{{ path('app_books_new') }}" class="btn btn-success">Add new</a>
+      <a href="{{ path('app_books_new') }}" class="btn btn-success">{{ 'add_new'|trans }}</a>
     </div>
   {% endif %}
 

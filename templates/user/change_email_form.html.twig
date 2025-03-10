@@ -1,29 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Change email{% endblock %}
+{% block title %}{{ 'change.email'|trans }}{% endblock %}
 
 {% block stylesheets %}
   <link href="{{ asset('styles/form.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-  {{ include('user/header.html.twig', {
-    'user': app.user
-  }) }}
-  <h2 class="h3 text-center mb-3">Change email</h2>
-  {{ form_start(form, {
-    'attr': {
-      'class': 'container content-container'
-    }
-  }) }}
-    {{ include('forms/global_errors.html.twig') }}
-    {{ include('forms/field.html.twig', {
-      'field': form.email
+  <div class="container content-container">
+    {{ include('forms/flash_errors.html.twig', {
+      'key': 'change_email_error',
     }) }}
-    {{ form_rest(form) }}
-    {{ include('forms/form_buttons.html.twig', {
-      'submitButtonLabel': 'Save',
-      'cancelButtonHref': path('app_user_my_account')
+
+    {{ include('user/header.html.twig', {
+      'user': app.user
     }) }}
-  {{ form_end(form) }}
+    <h2 class="h3 text-center mb-3">{{ 'change.email'|trans }}</h2>
+    {{ form_start(form) }}
+      {{ include('forms/global_errors.html.twig') }}
+      {{ include('forms/field.html.twig', {
+        'field': form.email
+      }) }}
+      {{ form_rest(form) }}
+      {{ include('forms/form_buttons.html.twig', {
+        'submitButtonLabel': 'save',
+        'cancelButtonHref': path('app_user_my_account')
+      }) }}
+    {{ form_end(form) }}
+  </div>
 {% endblock %}

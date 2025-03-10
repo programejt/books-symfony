@@ -11,7 +11,7 @@ class ImageRequirements extends Assert\Compound
   {
     return [
       new Assert\Image(
-        maxSize: '5m',
+        maxSize: '5Mi',
         mimeTypes: [
           'image/jpg',
           'image/jpeg',
@@ -20,7 +20,18 @@ class ImageRequirements extends Assert\Compound
           'image/avif',
           'image/heif',
         ],
-        mimeTypesMessage: 'Please upload a valid image',
+        mimeTypesMessage: 'image.mime_types',
+        maxSizeMessage: 'file.max_size',
+        filenameTooLongMessage: 'file.name_too_long',
+        uploadIniSizeErrorMessage: 'file.max_size',
+        uploadFormSizeErrorMessage: 'file.max_size',
+        uploadPartialErrorMessage: 'file.partial',
+        uploadNoFileErrorMessage: 'file.no_file',
+        uploadNoTmpDirErrorMessage: 'file.no_tmp_dir',
+        uploadCantWriteErrorMessage: 'file.cant_write',
+        uploadExtensionErrorMessage: 'file.extension',
+        uploadErrorMessage: 'file.upload',
+        sizeNotDetectedMessage: 'file.size_not_detected',
       ),
     ];
   }

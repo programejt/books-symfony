@@ -18,6 +18,7 @@ class UserChangeEmailType extends AbstractType
   ): void {
     $builder
       ->add('email', EmailType::class, [
+        'label' => 'email',
         'property_path' => 'newEmail',
         'constraints' => [
           new EmailRequirements,

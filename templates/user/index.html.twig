@@ -8,44 +8,44 @@
   }) }}
   <div class="container content-container">
     <div class="data-row">
-      <div class="data-row-title">Email verified</div>
-      <div class="data-row-content">{{ user.emailVerified ? 'Yes' : 'No' }}</div>
+      <div class="data-row-title">{{ 'email_verified'|trans }}</div>
+      <div class="data-row-content">{{ (user.emailVerified ? 'yes' : 'no')|trans }}</div>
     </div>
     <div class="data-row">
-      <div class="data-row-title">Created at</div>
+      <div class="data-row-title">{{ 'created_at'|trans }}</div>
       <div class="data-row-content">{{ user.createdAt.format('Y-m-d') }}</div>
     </div>
     {% if app.user and app.user.id is same as(user.id) %}
       <div class="data-row">
-        <div class="data-row-title">Email</div>
+        <div class="data-row-title">{{ 'email'|trans }}</div>
         <div class="data-row-content">{{ user.email }}</div>
       </div>
       <div class="data-row">
-        <div class="data-row-title">Role</div>
-        <div class="data-row-content">{{ user.role.toRoleName() }}</div>
+        <div class="data-row-title">{{ 'role'|trans }}</div>
+        <div class="data-row-content">{{ user.role.toRoleName()|trans }}</div>
       </div>
       <div class="data-row">
-        <div class="data-row-title">Password changed at</div>
-        <div class="data-row-content">{{ user.passwordChangedAt ? user.passwordChangedAt.format('Y-m-d') : 'Never' }}</div>
+        <div class="data-row-title">{{ 'password_changed_at'|trans }}</div>
+        <div class="data-row-content">{{ user.passwordChangedAt ? user.passwordChangedAt.format('Y-m-d') : 'never'|trans }}</div>
       </div>
       <div class="settings-buttons section">
         {% if not user.emailVerified %}
-          <a href="{{ path('app_email_verification') }}" class="btn btn-primary">Verify email</a>
+          <a href="{{ path('app_email_verification') }}" class="btn btn-primary">{{ 'verify_email'|trans }}</a>
         {% endif %}
-        <a href="{{ path('app_user_change_name') }}" class="btn btn-primary">Change name</a>
-        <a href="{{ path('app_user_change_password') }}" class="btn btn-primary">Change password</a>
-        <a href="{{ path('app_user_change_email') }}" class="btn btn-primary">Change email</a>
-        <a href="{{ path('app_user_change_photo') }}" class="btn btn-primary">Change photo</a>
+        <a href="{{ path('app_user_change_name') }}" class="btn btn-primary">{{ 'change.name'|trans }}</a>
+        <a href="{{ path('app_user_change_password') }}" class="btn btn-primary">{{ 'change.password'|trans }}</a>
+        <a href="{{ path('app_user_change_email') }}" class="btn btn-primary">{{ 'change.email'|trans }}</a>
+        <a href="{{ path('app_user_change_photo') }}" class="btn btn-primary">{{ 'change.photo'|trans }}</a>
       </div>
       <div class="settings-buttons section">
         {% if user.role is same as(enum('App\\Enum\\UserRole').Admin) %}
-          <p class="text-muted" style="margin: 0;">You can't delete your account because you are Administrator.</p>
+          <p class="text-muted" style="margin: 0;">{{ 'admin_delete_account_message'|trans }}.</p>
         {% else %}
-          <a href="{{ path('app_user_delete_account') }}" class="btn btn-danger">Delete account</a>
+          <a href="{{ path('app_user_delete_account') }}" class="btn btn-danger">{{ 'delete_account'|trans }}</a>
         {% endif %}
       </div>
       <div class="settings-buttons section">
-        <a href="{{ path('app_logout') }}" class="btn btn-secondary">Logout</a>
+        <a href="{{ path('app_logout') }}" class="btn btn-secondary">{{ 'logout'|trans }}</a>
       </div>
     {% endif %}
   </div>

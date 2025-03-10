@@ -5,7 +5,7 @@ namespace App\Validator;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute]
-class AnyOtherAdminExists extends Constraint
+class PasswordValid extends Constraint
 {
-  public string $message = 'any_other_admin';
+  public string $message = 'password.current';
 }

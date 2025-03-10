@@ -3,7 +3,7 @@
 {% endif %}
 
 <div class="text-center my-5 pagination-container">
-  <a href="{{ prevUrl }}" class="btn btn-secondary{{ currentPage > 1 ? '' : ' disabled' }}">Previous page</a>
+  <a href="{{ prevUrl }}" class="btn btn-secondary{{ currentPage > 1 ? '' : ' disabled' }}">{{ 'previous_page'|trans }}</a>
   <span>{{ currentPage }} / {{ pagesCount }}</span>
-  <a href="{{ nextUrl }}" class="btn btn-secondary{{ currentPage < pagesCount ? '' : ' disabled' }}">Next page</a>
+  <a href="{{ nextUrl }}" class="btn btn-secondary{{ currentPage < pagesCount ? '' : ' disabled' }}">{{ 'next_page'|trans }}</a>
 </div>

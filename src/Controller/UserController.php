@@ -65,7 +65,7 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_my_account');
       } else {
-        $nameField->addError(new FormError('You typed the same name as you already have'));
+        $nameField->addError(new FormError('same.name'));
       }
     }
 
@@ -88,24 +88,19 @@ class UserController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $password = $form->get('password');
       /** @var User $user */
       $user = $this->getUser();
 
-      if ($userPasswordHasher->isPasswordValid($user, $password->getData())) {
-        $user->setPassword($userPasswordHasher->hashPassword(
-          $user,
-          $form->get('newPassword')->getData())
-        );
-        $user->setPasswordChangedAt(new \DateTime());
+      $user->setPassword($userPasswordHasher->hashPassword(
+        $user,
+        $form->get('newPassword')->getData()
+      ));
+      $user->setPasswordChangedAt(new \DateTime());
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+      $entityManager->persist($user);
+      $entityManager->flush();
 
-        return $this->redirectToRoute('app_user_my_account');
-      }
-
-      $password->addError(new FormError('Current password is not valid'));
+      return $this->redirectToRoute('app_user_my_account');
     }
 
     return $this->render('user/change_password_form.html.twig', [
@@ -119,6 +114,7 @@ class UserController extends AbstractController
     Request $request,
     EntityManagerInterface $entityManager,
     EmailVerifier $emailVerifier,
+    TranslatorInterface $translator,
   ): Response {
     /** @var User $user */
     $user = $this->getUser();
@@ -136,7 +132,7 @@ class UserController extends AbstractController
       $email = $emailField->getData();
 
       if ($email !== $user->getEmail()) {
-        $this->_sendChangeEmailVerification($emailVerifier, $user);
+        $this->_sendChangeEmailVerification($emailVerifier, $user, $translator);
 
         if (!$newEmail || $newEmail !== $email) {
           $user->setNewEmail($email);
@@ -147,7 +143,7 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_email_change_verification');
       } else {
-        $emailField->addError(new FormError('You typed the same email as you already have'));
+        $emailField->addError(new FormError('same.email'));
       }
     }
 
@@ -171,8 +167,11 @@ class UserController extends AbstractController
     if (! $newEmail) {
       $this->addFlash('change_email_error', $translator->trans('empty_new_email'));
 
-      return $this->redirectToRoute('app_user_email_change_verification');
+      return $this->redirectToRoute('app_user_change_email');
     }
+
+    $verificationLink = true;
+    $error = false;
 
     try {
       $emailVerifier->validateEmailConfirmationFromRequest($request, $user);
@@ -183,28 +182,38 @@ class UserController extends AbstractController
 
       $entityManager->persist($user);
       $entityManager->flush();
-    } catch (VerifyEmailExceptionInterface $exception) {
-      $this->addFlash('change_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+    } catch (VerifyEmailExceptionInterface $e) {
+      $verificationLink = false;
+    } catch (\Exception $e) {
+      $error = true;
     }
 
-    return $this->redirectToRoute('app_user_email_change_verification');
+    return $this->render('user/set_new_email.html.twig', [
+      'verificationLink' => $verificationLink,
+      'error' => $error,
+    ]);
   }
 
-  #[Route('/email/change-verification', name: 'email_change_verification')]
+  #[Route('/email-change-verification', name: 'email_change_verification')]
   #[isGranted('IS_AUTHENTICATED')]
   public function userEmailVerification(
     Request $request,
     EmailVerifier $emailVerifier,
+    TranslatorInterface $translator,
   ): Response {
     /** @var User $user */
     $user = $this->getUser();
 
-    if ($user->getNewEmail() && $request->getMethod() === 'POST') {
+    if (!$user->getNewEmail()) {
+      return $this->redirectToRoute('app_user_change_email');
+    }
+
+    if ($request->getMethod() === 'POST') {
       if ($this->isCsrfTokenValid(
         'resend_email',
         $request->getPayload()->getString('_token')
       )) {
-        $this->_sendChangeEmailVerification($emailVerifier, $user);
+        $this->_sendChangeEmailVerification($emailVerifier, $user, $translator);
       }
     }
 
@@ -239,7 +248,7 @@ class UserController extends AbstractController
       try {
         $entityManager->flush();
       } catch (ORMException $e) {
-        $form->addError(new FormError('Error occured while saving data'));
+        $form->addError(new FormError('form.general'));
       }
 
       $photoDir = FileSystem::getDocumentRoot().$photosDir;
@@ -252,7 +261,7 @@ class UserController extends AbstractController
         try {
           $newPhoto->move($photoDir, $user->getPhoto());
         } catch (FileException $e) {
-          $form->addError(new FormError('Error occured while moving uploaded photo'));
+          $form->addError(new FormError('file.move'));
         }
       }
 
@@ -272,6 +281,7 @@ class UserController extends AbstractController
   public function cancelEmailChange(
     Request $request,
     EntityManagerInterface $entityManager,
+    TranslatorInterface $translator,
   ): Response {
     /** @var User $user */
     $user = $this->getUser();
@@ -285,7 +295,9 @@ class UserController extends AbstractController
           $user->setNewEmail(null);
           $entityManager->persist($user);
           $entityManager->flush();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+          $this->addFlash('change_email_error', $translator->trans('cancel_email_change_database_error'));
+
           return $this->redirectToRoute('app_user_email_change_verification');
         }
       }
@@ -299,27 +311,21 @@ class UserController extends AbstractController
   public function deleteAccount(
     Request $request,
     EntityManagerInterface $entityManager,
-    UserPasswordHasherInterface $userPasswordHasher,
     Security $security,
   ): Response {
     $form = $this->createForm(UserDeleteAccountType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $passwordField = $form->get('password');
       /** @var User $user */
       $user = $this->getUser();
 
-      if ($userPasswordHasher->isPasswordValid($user, $passwordField->getData())) {
-        $entityManager->remove($user);
-        $entityManager->flush();
+      $entityManager->remove($user);
+      $entityManager->flush();
 
-        $security->logout(false);
+      $security->logout(false);
 
-        return $this->redirectToRoute('app_home');
-      } else {
-        $passwordField->addError(new FormError('Incorrect password'));
-      }
+      return $this->redirectToRoute('app_home');
     }
 
     return $this->render('user/_delete_form.html.twig', [
@@ -336,13 +342,14 @@ class UserController extends AbstractController
   private function _sendChangeEmailVerification(
     EmailVerifier $emailVerifier,
     User $user,
+    TranslatorInterface $translator,
   ): void {
     $emailVerifier->sendEmailConfirmation(
       'app_user_set_new_email',
       $user,
       $emailVerifier
         ->emailTemplate((string) $user->getEmail())
-        ->subject('Please Confirm your Change Email request')
+        ->subject($translator->trans('confirm_email_change_subject'))
         ->htmlTemplate('email/confirmation_change_email.html.twig'),
     );
   }

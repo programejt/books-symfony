@@ -1,0 +1,116 @@
+login: Login
+logout: Logout
+register: Register
+toggle_theme: Toggle theme
+toggle_navigation: Toggle navigation
+books: Books
+authors: Authors
+account: Account
+profile: Profile
+admin_panel: Admin panel
+verify_email: Verify email
+search: Search
+search_books: Search books..
+next_page: Next page
+previous_page: Previous page
+
+add: Add
+edit: Edit
+delete: Delete
+add_new: Add new
+
+email_verified: Email verified
+created_at: Created at
+email: Email
+password: Password
+repeat_password: Repeat password
+new_password: New password
+repeat_new_password: Repeat new password
+role: Role
+password_changed_at: Password changed at
+never: Never
+change:
+  name: Change name
+  password: Change password
+  email: Change email
+  photo: Change photo
+  user_role: Change user role
+delete_account: Delete account
+admin_delete_account_message: You can't delete your account because you are Administrator
+yes: Yes
+no: No
+
+Admin: Admin
+Moderator: Moderator
+User: User
+
+cancel: Cancel
+save: Save
+update: Update
+
+photo: Photo
+user: User
+
+go_to_home: Go to homepage
+go_to_your_profile: Go to your profile
+
+confirm_email_change: Confirm email change
+email_changed_message: Your email address has been changed
+set_new_email: Set new email
+verification_link_failed: You did not click in verification link sent to your current email or verification link expired
+set_new_email_database_error: Error occured while changing email
+cancel_email_change_database_error: Error occured while canceling email change request
+confirm_email_change_subject: Please confirm your change email request
+confirm_email_change_message: Please confirm your change email request by clicking on link sent to your current email address
+new_email_message: Your new email address will be
+send_email_again_message: If you didn't get confirmation mail, you can try send it again
+send_confirmation_email: Send confirmation email
+cancel_email_change_message: You can also cancel email change request
+cancel_email_change: Cancel email change
+confirm_delete_account_message: Are you sure you want to delete your account? This operation cannot be undone
+
+log_in: Log in
+remember_me: Remember me
+
+email_verified_message: Your email address has been verified
+verify_email_message: Please verify your email address. It's not required but it's recomended
+send_verification_email: Send verification email
+
+hi: Hi
+cheers: Cheers
+
+confirm_email_subject: Please confirm your email
+confirm_email_header: Please confirm your email
+confirm_email_message: Please confirm your email address by clicking the following link
+link_expire_message: This link will expire in
+confirm_my_email: Confirm my email
+ignore_message: Ignore this if that was not you
+email_change_message: You requested email change
+confirm_email_change_link_message: Please confirm this decision by clicking the following link
+
+book: Book
+author: Author
+
+name: Name
+agree_terms: Agree terms
+
+confirm_delete_book_message: Are you sure you want to delete this book?
+title: Title
+year: Year
+isbn: ISBN
+description: Description
+add_new_book: Add new book
+edit_book: Edit book
+no_books_found: No books found
+delete_photo: Delete photo
+
+confirm_delete_author_message: Are you sure you want to delete this author?
+first_name: Name
+surname: Surname
+books_amount: Books amount
+search_authors: Search authors...
+book_s: book(s)
+edit_author: Edit author
+no_authors_found: No authors found
+
+empty_new_email: New email is not set

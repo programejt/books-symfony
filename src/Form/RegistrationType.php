@@ -22,20 +22,24 @@ class RegistrationType extends AbstractType
   ): void {
     $builder
       ->add('email', EmailType::class, [
+        'label' => 'email',
         'constraints' => [
           new EmailRequirements,
           new UniqueEmail('newEmail'),
         ],
       ])
-      ->add('name', UserNameType::class)
+      ->add('name', UserNameType::class, [
+        'label' => 'name',
+      ])
       ->add('password', PasswordRepeatedType::class)
       ->add('agreeTerms', CheckboxType::class, [
         'mapped' => false,
+        'label' => 'agree_terms',
         'constraints' => [
           new IsTrue([
-            'message' => 'You should agree to our terms.',
+            'message' => 'agree_terms',
           ])
-        ]
+        ],
       ])
     ;
   }

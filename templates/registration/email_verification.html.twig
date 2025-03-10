@@ -1,26 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Verify email{% endblock %}
+{% block title %}{{ 'verify_email'|trans }}{% endblock %}
 
 {% block body %}
   <article class="container content-container">
-  <h1 class="text-center">Verify email</h1>
+  <h1 class="text-center">{{ 'verify_email'|trans }}</h1>
 
   {% if app.user.emailVerified %}
-    <div class="alert alert-success" role="alert">Your email address has been verified.</div>
+    <div class="alert alert-success" role="alert">{{ 'email_verified_message'|trans }}.</div>
     <div class="text-center">
-      <a href="{{ path('app_home') }}" class="btn btn-secondary">Go to home</a>
+      <a href="{{ path('app_home') }}" class="btn btn-secondary">{{ 'go_to_home'|trans }}</a>
     </div>
   {% else %}
     {{ include('forms/flash_errors.html.twig', {
       'key': 'verify_email_error',
     }) }}
 
-    <p class="text-center">Please verify your email address. It's not required but it's recomended</p>
+    <p class="text-center">{{ 'verify_email_message'|trans }}</p>
 
     <form method="post" class="text-center">
       <input type="hidden" name="token" value="{{ csrf_token('resend_email') }}">
-      <button type="submit" class="btn btn-primary">Send verification email</button>
+      <button type="submit" class="btn btn-primary">{{ 'send_verification_email'|trans }}</button>
     </form>
   {% endif %}
   </article>

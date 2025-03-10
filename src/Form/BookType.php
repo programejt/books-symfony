@@ -26,20 +26,30 @@ class BookType extends AbstractType
         'data_class' => null,
         'required' => false,
         'mapped' => false,
+        'label' => 'photo',
         'constraints' => [
           new ImageRequirements,
         ],
       ])
-      ->add('title')
+      ->add('title', options: [
+        'label' => 'title',
+      ])
       ->add('authors', EntityType::class, [
         'class' => Author::class,
         'multiple' => true,
         'expanded' => true,
         'by_reference' => false,
+        'label' => 'authors',
       ])
-      ->add('year')
-      ->add('isbn')
-      ->add('description', TextareaType::class);
+      ->add('year', options: [
+        'label' => 'year',
+      ])
+      ->add('isbn', options: [
+        'label' => 'isbn',
+      ])
+      ->add('description', TextareaType::class, [
+        'label' => 'description',
+      ]);
 
     $builder->addEventListener(
       FormEvents::PRE_SET_DATA,
@@ -54,7 +64,7 @@ class BookType extends AbstractType
             [
               'mapped' => false,
               'required' => false,
-              'label' => 'Delete photo',
+              'label' => 'delete_photo',
             ],
           );
         }

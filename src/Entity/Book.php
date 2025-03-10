@@ -13,55 +13,57 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\Table(name: 'books')]
-#[UniqueEntity(fields: 'isbn', message: 'There is already a book with this Isbn')]
+#[UniqueEntity(fields: 'isbn', message: 'unique.isbn')]
 class Book
 {
+  public const int TITLE_MAX_LENGTH = 120;
+  public const int DESCRIPTION_MAX_LENGTH = 3000;
+
   #[ORM\Id]
   #[ORM\GeneratedValue(strategy: "SEQUENCE")]
   #[ORM\Column]
   private ?int $id = null;
 
-  #[Assert\NotBlank]
+  #[Assert\NotBlank(message: 'not_blank')]
   #[Assert\Length(
     min: 3,
-    max: 255
+    max: self::TITLE_MAX_LENGTH,
+    minMessage: 'length.min',
+    maxMessage: 'length.max',
   )]
-  #[ORM\Column(length: 255)]
+  #[ORM\Column(length: self::TITLE_MAX_LENGTH)]
   private ?string $title = null;
 
-  #[Assert\NotBlank]
+  #[Assert\NotBlank(message: 'not_blank')]
   #[Assert\Length(
     min: 3,
-    max: 255
+    max: self::DESCRIPTION_MAX_LENGTH,
+    minMessage: 'length.min',
+    maxMessage: 'length.max',
   )]
-  #[ORM\Column(length: 3000)]
+  #[ORM\Column(length: self::DESCRIPTION_MAX_LENGTH)]
   private ?string $description = null;
 
-  #[Assert\NotBlank]
-  #[Assert\LessThan(2100)]
-  #[Assert\GreaterThan(1400)]
+  #[Assert\NotBlank(message: 'not_blank')]
+  #[Assert\LessThan(2100, message: 'less_than')]
+  #[Assert\GreaterThan(1400, message: 'greater_than')]
   #[ORM\Column(type: Types::SMALLINT)]
   private ?int $year = null;
 
-  #[Assert\NotBlank]
-  #[Assert\Isbn(
-    type: Assert\Isbn::ISBN_13,
-    message: 'ISBN is not valid.'
-  )]
+  #[Assert\NotBlank(message: 'not_blank')]
+  #[Assert\Isbn(type: Assert\Isbn::ISBN_13, message: 'isbn13')]
   #[ORM\Column(type: Types::BIGINT, unique: true)]
   private ?int $isbn = null;
 
   #[ORM\Column(length: 255, nullable: true)]
   private ?string $photo = null;
 
-  /**
-   * @var Collection<int, Author>
-   */
+  /** @var Collection<int, Author> */
   #[Assert\Count(
     min: 1,
     max: 6,
-    minMessage: 'You must specify at least one author',
-    maxMessage: 'You must specify no more than 6 authors',
+    minMessage: 'authors.min',
+    maxMessage: 'authors.max',
   )]
   #[ORM\ManyToMany(
     targetEntity: Author::class,

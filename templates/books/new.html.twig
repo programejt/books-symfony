@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add new book{% endblock %}
+{% block title %}{{ 'add_new_book'|trans }}{% endblock %}
 
 {% block body %}
   <header class="text-center">
-    <h1 class="h2">Add new book</h1>
+    <h1 class="h2">{{ 'add_new_book'|trans }}</h1>
   </header>
 
   {{ include(
     'books/_form.html.twig',
     {
-      'submitButtonLabel': 'Add',
+      'submitButtonLabel': 'add',
       'cancelButtonHref': path('app_books_index')
     }
   )}}

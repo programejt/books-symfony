@@ -21,6 +21,7 @@ class RegistrationController extends AbstractController
 {
   public function __construct(
     private readonly EmailVerifier $emailVerifier,
+    private readonly TranslatorInterface $translator,
   ) {}
 
   #[IsGranted(new Expression('! is_authenticated()'))]
@@ -75,7 +76,6 @@ class RegistrationController extends AbstractController
   public function verifyUserEmail(
     Request $request,
     EntityManagerInterface $entityManager,
-    TranslatorInterface $translator,
   ): Response {
     /** @var User $user */
     $user = $this->getUser();
@@ -88,8 +88,8 @@ class RegistrationController extends AbstractController
 
         $entityManager->persist($user);
         $entityManager->flush();
-      } catch (VerifyEmailExceptionInterface $exception) {
-        $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+      } catch (VerifyEmailExceptionInterface $e) {
+        $this->addFlash('verify_email_error', $this->translator->trans('verification_link_failed'));
       }
     }
 
@@ -102,7 +102,7 @@ class RegistrationController extends AbstractController
       'app_verify_email',
       $user,
       $this->emailVerifier->emailTemplate((string) $user->getEmail())
-        ->subject('Please Confirm your Email')
+        ->subject($this->translator->trans('confirm_email_subject'))
         ->htmlTemplate('email/confirmation_email.html.twig')
     );
   }

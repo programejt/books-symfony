@@ -15,7 +15,9 @@ class UserChangeNameType extends AbstractType
     array $options,
   ): void {
     $builder
-      ->add('name', UserNameType::class)
+      ->add('name', UserNameType::class, [
+        'label' => 'name',
+      ])
     ;
   }
 
