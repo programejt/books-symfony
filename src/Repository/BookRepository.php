@@ -39,7 +39,7 @@ class BookRepository extends ServiceEntityRepository
             ),
           )
         )
-        ->setParameter('searchValue', "%" . strtolower($titleOrAuthor) . "%");
+        ->setParameter('searchValue', "%" . \strtolower($titleOrAuthor) . "%");
     }
 
     $query->orderBy('b.id', 'DESC');

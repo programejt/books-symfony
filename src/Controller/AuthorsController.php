@@ -37,7 +37,7 @@ final class AuthorsController extends AbstractController
     return $this->render('authors/index.html.twig', [
       'authorSearchValue' => $name,
       'currentPage' => $currentPage,
-      'pagesCount' => ceil($authors->count() / $limit),
+      'pagesCount' => \ceil($authors->count() / $limit),
       'authors' => $authors,
     ]);
   }

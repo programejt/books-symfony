@@ -78,7 +78,7 @@ final class BookControllerTest extends WebTestCase
 
   public function testNew(): void
   {
-    $uri = sprintf('%snew', $this->path);
+    $uri = \sprintf('%snew', $this->path);
 
     $this->client->request('GET', $uri);
 
@@ -120,7 +120,7 @@ final class BookControllerTest extends WebTestCase
     $this->entityManager->persist($book);
     $this->entityManager->flush();
 
-    $this->client->request('GET', sprintf('%s%s', $this->path, $book->getId()));
+    $this->client->request('GET', \sprintf('%s%s', $this->path, $book->getId()));
 
     self::assertResponseStatusCodeSame(200);
     self::assertPageTitleContains($title);
@@ -197,7 +197,7 @@ final class BookControllerTest extends WebTestCase
 
     $this->loginUser();
 
-    $this->client->request('GET', sprintf('%s%s', $this->path, $book->getId()));
+    $this->client->request('GET', \sprintf('%s%s', $this->path, $book->getId()));
 
     self::assertResponseStatusCodeSame(200);
     $this->client->submitForm('Delete');

@@ -34,7 +34,7 @@ class AuthorRepository extends ServiceEntityRepository
             ':name',
           ),
         )
-        ->setParameter('name', '%' . strtolower($name) . '%');
+        ->setParameter('name', '%' . \strtolower($name) . '%');
     }
 
     $query->orderBy('a.name', 'ASC');

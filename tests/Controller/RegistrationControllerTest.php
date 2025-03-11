@@ -75,7 +75,7 @@ final class RegistrationControllerTest extends WebTestCase
     $messageBody = $templatedEmail->getHtmlBody();
     self::assertIsString($messageBody);
 
-    preg_match('#(http://localhost/email/verify.+)">#', $messageBody, $resetLink);
+    \preg_match('#(http://localhost/email/verify.+)">#', $messageBody, $resetLink);
 
     // "Click" the link and see if the user is verified
     $this->client->request('GET', $resetLink[1]);

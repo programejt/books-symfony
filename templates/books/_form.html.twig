@@ -11,7 +11,7 @@
   {{ include('forms/global_errors.html.twig') }}
   {% if book.photo %}
     <div class="text-center mb-3">
-      <img src="{{ asset(book.getPhotoPath()) }}" alt="photo" class="img">
+      <img src="{{ asset(book.getPhotoPath()) }}" alt="photo" class="img image-preview">
     </div>
     {{ include('forms/field.html.twig', {
       'field': form.deletePhoto,

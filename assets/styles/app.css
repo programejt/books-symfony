@@ -156,3 +156,7 @@ html[data-bs-theme="light"] .theme-icon.moon-icon {
 .white-space-pre-wrap {
   white-space: pre-wrap;
 }
+
+.image-preview {
+  max-height: 300px;
+}

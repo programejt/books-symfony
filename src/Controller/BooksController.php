@@ -43,7 +43,7 @@ final class BooksController extends AbstractController
     return $this->render('books/index.html.twig', [
       'searchValue' => $searchValue,
       'currentPage' => $currentPage,
-      'pagesCount' => ceil($books->count() / $limit),
+      'pagesCount' => \ceil($books->count() / $limit),
       'books' => $books,
     ]);
   }
@@ -131,6 +131,10 @@ final class BooksController extends AbstractController
       'delete' . $book->getId(),
       $request->getPayload()->getString('_token')
     )) {
+      if ($book->getPhoto()) {
+        FileSystem::deleteDir(FileSystem::getDocumentRoot().$book->getPhotosDir());
+      }
+
       $entityManager->remove($book);
       $entityManager->flush();
     }
@@ -155,7 +159,7 @@ final class BooksController extends AbstractController
 
     $book->setPhoto(match (true) {
       $deletePhoto => null,
-      $newPhoto !== null => 'book' . '-' . bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
+      $newPhoto !== null => 'book' . '-' . \bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
       default => $photo
     });
 
@@ -167,8 +171,12 @@ final class BooksController extends AbstractController
 
     $photoDir = FileSystem::getDocumentRoot().$book->getPhotosDir();
 
-    if ($photo && ($deletePhoto || $newPhoto)) {
-      FileSystem::deleteFile("$photoDir/$photo");
+    if ($photo) {
+      if ($deletePhoto) {
+        FileSystem::deleteDir($photoDir);
+      } else if ($newPhoto) {
+        FileSystem::deleteFile($photoDir."/".$photo);
+      }
     }
 
     if ($newPhoto) {

@@ -240,7 +240,7 @@ class UserController extends AbstractController
 
       $user->setPhoto(match (true) {
         $deletePhoto => null,
-        $newPhoto != null => 'user' . '-' . bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
+        $newPhoto != null => 'user' . '-' . \bin2hex(random_bytes(13)) . '.' . $newPhoto->guessExtension(),
         default => $photo
       });
 
@@ -252,8 +252,12 @@ class UserController extends AbstractController
 
       $photoDir = FileSystem::getDocumentRoot().$photosDir;
 
-      if ($photo && ($deletePhoto || $newPhoto)) {
-        FileSystem::deleteFile("$photoDir/$photo");
+      if ($photo) {
+        if ($deletePhoto) {
+          FileSystem::deleteDir($photoDir);
+        } else if ($newPhoto) {
+          FileSystem::deleteFile($photoDir."/".$photo);
+        }
       }
 
       if ($newPhoto) {
@@ -264,7 +268,7 @@ class UserController extends AbstractController
         }
       }
 
-      if (! count($form->getErrors())) {
+      if (!\count($form->getErrors())) {
         return $this->redirectToRoute('app_user_my_account');
       }
     }
@@ -318,6 +322,10 @@ class UserController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       /** @var User $user */
       $user = $this->getUser();
+
+      if ($user->getPhoto()) {
+        FileSystem::deleteDir(FileSystem::getDocumentRoot().$user->getPhotosDir());
+      }
 
       $entityManager->remove($user);
       $entityManager->flush();

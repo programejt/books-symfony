@@ -59,7 +59,7 @@ class RegistrationController extends AbstractController
   #[Route('/email/verification', name: 'app_email_verification', methods: ['GET', 'POST'])]
   #[isGranted('IS_AUTHENTICATED')]
   public function userEmailVerification(
-    Request $request
+    Request $request,
   ): Response {
     /** @var User $user */
     $user = $this->getUser();

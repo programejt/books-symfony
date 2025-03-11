@@ -16,7 +16,7 @@ class BooksFixtures extends Fixture
       $book = new Book();
       $book->setTitle($data[0]);
 
-      for ($i = 0; $i < rand(1, 4); ++$i) {
+      for ($i = 0; $i < \rand(1, 4); ++$i) {
         $book->addAuthor(
           $this->getReference(
             'AUTHOR'.$i,
@@ -25,7 +25,7 @@ class BooksFixtures extends Fixture
         );
       }
 
-      $book->setYear(rand(1950, 2025));
+      $book->setYear(\rand(1950, 2025));
       $book->setIsbn(IsbnGenerator::generate());
       $book->setDescription($data[1]);
 

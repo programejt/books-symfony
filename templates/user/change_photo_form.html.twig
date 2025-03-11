@@ -19,7 +19,7 @@
     {{ include('forms/global_errors.html.twig') }}
     {% if photo %}
       <div class="user-image-container text-center mb-3">
-        <img src="{{ asset(photo) }}" alt="{{ 'photo'|trans }}" class="img">
+        <img src="{{ asset(photo) }}" alt="{{ 'photo'|trans }}" class="img image-preview">
       </div>
       {{ include('forms/field.html.twig', {
         'field': form.deletePhoto,

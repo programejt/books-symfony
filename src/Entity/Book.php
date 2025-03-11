@@ -187,7 +187,7 @@ class Book
       $names .= $author.$separator;
     }
 
-    return rtrim($names, $separator);
+    return \rtrim($names, $separator);
   }
 
   public function addAuthor(Author $author): static
