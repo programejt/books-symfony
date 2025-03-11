@@ -44,10 +44,6 @@ class FileSystem
         if (!self::deleteDir($file)) {
           $failure = true;
         }
-
-        if (!\rmdir($file)) {
-          $failure = true;
-        }
       }
     }
 
