@@ -9,11 +9,11 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use App\Entity\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Test\Helper\FakeConstraint;
 
 final class UniqueEntityValidatorTest extends ConstraintValidatorTestCase
 {
+  use \Test\Helper\IncorrectConstraintTrait;
+
   private MockObject&EntityManagerInterface $entityManager;
 
   protected function createValidator(): UniqueEntityValidator
@@ -23,13 +23,6 @@ final class UniqueEntityValidatorTest extends ConstraintValidatorTestCase
     return new UniqueEntityValidator(
       $this->entityManager,
     );
-  }
-
-  public function testIncorrectConstraint(): void
-  {
-    $this->expectException(UnexpectedTypeException::class);
-
-    $this->validator->validate(null, new FakeConstraint);
   }
 
   public function testNullIsValid(): void

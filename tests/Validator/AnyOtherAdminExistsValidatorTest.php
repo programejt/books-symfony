@@ -5,16 +5,16 @@ namespace Test\Validator;
 use App\Repository\UserRepository;
 use App\Validator\AnyOtherAdminExistsValidator;
 use App\Validator\AnyOtherAdminExists;
-use Test\Helper\FakeConstraint;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use PHPUnit\Framework\MockObject\MockObject;
 
 final class AnyOtherAdminExistsValidatorTest extends ConstraintValidatorTestCase
 {
+  use \Test\Helper\IncorrectConstraintTrait;
+
   private MockObject&UserRepository $userRepository;
 
   protected function createValidator(): AnyOtherAdminExistsValidator
@@ -24,13 +24,6 @@ final class AnyOtherAdminExistsValidatorTest extends ConstraintValidatorTestCase
     return new AnyOtherAdminExistsValidator(
       $this->userRepository,
     );
-  }
-
-  public function testIncorrectConstraint(): void
-  {
-    $this->expectException(UnexpectedTypeException::class);
-
-    $this->validator->validate(null, new FakeConstraint);
   }
 
   public function testNullIsValid(): void
