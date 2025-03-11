@@ -1,0 +1,63 @@
+image:
+  mime_types: Obraz nie jest poprawny. Prześlij poprawny obraz
+
+file:
+  max_size: Rozmiar pliku jest zbyt duży. Dopuszczalny maksymalny rozmiar to {{ limit }} {{ suffix }}
+  name_too_long: Nazwa pliku jest zbyt długa
+  partial: Plik został przesłany tylko częściowo
+  no_file: Nie wybrano pliku
+  no_tmp_dir: Plik nie został przesłany z powodu błędu serwera
+  cant_write: Plik nie został przesłany z powodu błędu serwera
+  extension: Plik nie został przesłany z powodu błędu serwera
+  upload: Plik nie został przesłany z powodu błędu serwera
+  size_not_detected: Plik nie został przesłany z powodu błędu serwera
+  move: Wystąpił błąd podczas zapisywania przesłanego pliku
+
+email:
+  not_blank: Email nie może być pusty
+  not_valid: Email nie jest poprawny
+  length:
+    max: Email nie może mieć więcej niż {{ limit }} znaków
+
+unique:
+  email: Konto z tym email już istnieje
+  name: Konto z tą nazwą już istnieje
+  isbn: Ksiązka z tym ISBN już istnieje
+
+isbn13: Ta wartość nie jest poprawnym ISBN-13
+
+agree_terms: Musisz zaakceptować nasz regulamin
+
+any_other_admin: Nie ma innego administratora w systemie. System musi mieć przynajmniej jednego administratora
+
+authors:
+  min: 'Wymagana minimalna ilość autorów: {{ limit }}'
+  max: 'Wymagana maksymalna ilość autorów: {{ limit }}'
+
+select:
+  user: Wybrany użytkownik nie jest poprawny. Wybierz poprawnego użytkownika
+  user_role: Wybrana rola nie jest poprawna. Wybierz poprawną rolę
+
+same:
+  name: Podana nazwa jest taka sama jak obecna
+  email: Podany email jest taki sam jak obecny
+
+password:
+  repeat: Hasła muszą być takie same
+  current: Obecne hasło nie jest prawidłowe
+  length:
+    min: Hasło musi mieć przynajmniej {{ limit }} znaków
+    max: Hasło musi mieć maksymalnie {{ limit }} znaków
+  not_blank: Hasło nie może być puste
+
+form:
+  general: Wystąpił błąd podczas zapisywania danych
+
+not_blank: To pole nie może być puste
+
+length:
+  min: 'Wymagana minimalna ilość znaków: {{ limit }}'
+  max: 'Wymagana maksymalna ilość znaków: {{ limit }}'
+
+greater_than: Wartość musi być większa niż {{ limit }}
+less_than: Wartość musi być mniejsza niż {{ limit }}

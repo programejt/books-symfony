@@ -9,7 +9,7 @@
   {% if app.user.emailVerified %}
     <div class="alert alert-success" role="alert">{{ 'email_verified_message'|trans }}.</div>
     <div class="text-center">
-      <a href="{{ path('app_home') }}" class="btn btn-secondary">{{ 'go_to_home'|trans }}</a>
+      <a href="{{ path('app_home') }}" class="btn btn-secondary">{{ 'go_to.home'|trans }}</a>
     </div>
   {% else %}
     {{ include('forms/flash_errors.html.twig', {

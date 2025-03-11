@@ -51,8 +51,9 @@ update: Update
 photo: Photo
 user: User
 
-go_to_home: Go to homepage
-go_to_your_profile: Go to your profile
+go_to:
+  home: Go to homepage
+  your_profile: Go to your profile
 
 confirm_email_change: Confirm email change
 email_changed_message: Your email address has been changed
@@ -68,6 +69,7 @@ send_confirmation_email: Send confirmation email
 cancel_email_change_message: You can also cancel email change request
 cancel_email_change: Cancel email change
 confirm_delete_account_message: Are you sure you want to delete your account? This operation cannot be undone
+empty_new_email: New email is not set
 
 log_in: Log in
 remember_me: Remember me
@@ -112,5 +114,3 @@ search_authors: Search authors...
 book_s: book(s)
 edit_author: Edit author
 no_authors_found: No authors found
-
-empty_new_email: New email is not set

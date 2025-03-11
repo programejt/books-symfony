@@ -1,0 +1,116 @@
+login: Zaloguj
+logout: Wyloguj
+register: Zarejestruj się
+toggle_theme: Przełącz motyw
+toggle_navigation: Przełącz menu
+books: Książki
+authors: Autorzy
+account: Konto
+profile: Profil
+admin_panel: Panel administratora
+verify_email: Zweryfikuj email
+search: Szukaj
+search_books: Szukaj książek..
+next_page: Następna strona
+previous_page: Poprzednia strona
+
+add: Dodaj
+edit: Edytuj
+delete: Usuń
+add_new: Dodaj
+
+email_verified: Email zweryfikowany
+created_at: Utworzony
+email: Email
+password: Hasło
+repeat_password: Powtórz hasło
+new_password: Nowe hasło
+repeat_new_password: Powtórz nowe hasło
+role: Rola
+password_changed_at: Ostatnia zmiana hasła
+never: Nigdy
+change:
+  name: Zmień nazwę
+  password: Zmień hasło
+  email: Zmień email
+  photo: Zmień zdjęcie
+  user_role: Zmień rolę
+delete_account: Usuń konto
+admin_delete_account_message: Nie możesz usunąć swojego konta ponieważ jesteś Administratorem
+yes: Tak
+no: Nie
+
+Admin: Administrator
+Moderator: Moderator
+User: Użytkownik
+
+cancel: Anuluj
+save: Zapisz
+update: Aktualizuj
+
+photo: Zdjęcie
+user: Użytkownik
+
+go_to:
+  home: Strona główna
+  your_profile: Twój profil
+
+confirm_email_change: Potwierdź zmianę email
+email_changed_message: Twój email został zmieniony
+set_new_email: Ustaw nowy email
+verification_link_failed: Nie kliknąłeś(aś) w link weryfikacyjny wysłany na Twój email lub link weryfikacyjny wygasł
+set_new_email_database_error: Wystąpił błąd podczas zmiany email
+cancel_email_change_database_error: Wystąpił błąd podczas anulowania zmiany email
+confirm_email_change_subject: Potwierdź prośbę o zmianę email
+confirm_email_change_message: Potwierdź prośbę o zmianę email klikając w link weryfikacyjny wysłany na Twój obecny email
+new_email_message: Twój nowy email po zmianie
+send_email_again_message: Jeśli nie dostałeś(aś) wiadomości potwierdzającej na email, możesz spróbować wysłać ją ponownie
+send_confirmation_email: Wyślij mail potwierdzający
+cancel_email_change_message: Możesz również anulować prośbę o zmianę email
+cancel_email_change: Anuluj zmianę email
+confirm_delete_account_message: Jesteś pewien, że chcesz usunąc swoje konto? Tej operacji nie da się cofnąć
+empty_new_email: Nowy email nie został ustawiony
+
+log_in: Zaloguj
+remember_me: Zapamiętaj mnie
+
+email_verified_message: Twój email został zweryfikowany
+verify_email_message: Zweryfikuj swój email. Nie jest to wymagane ale jest to rekomendowane
+send_verification_email: Wyślij mail weryfikacyjny
+
+hi: Cześć
+cheers: Pozdrawiamy
+
+confirm_email_subject: Potwierdź swój email
+confirm_email_header: Potwierdź swój email
+confirm_email_message: Potwierdź swój email klikając w poniższy link
+link_expire_message: Ten link wygaśnie
+confirm_my_email: Potwierdź mój email
+ignore_message: Zignoruj tą wiadomość jeśli to nie Ty
+email_change_message: Wysłałeś(aś) prośbę o zmianę email
+confirm_email_change_link_message: Potwierdź tą decyzję klikając w poniższy link
+
+book: Książka
+author: Autor
+
+name: Nazwa
+agree_terms: Akceptuję regulamin
+
+confirm_delete_book_message: Jesteś pewien(wna), że chcesz usunąć tę książkę?
+title: Tytuł
+year: Rok
+isbn: ISBN
+description: Opis
+add_new_book: Dodaj nową książkę
+edit_book: Edytuj książkę
+no_books_found: Nie znaleziono książek
+delete_photo: Usuń zdjęcie
+
+confirm_delete_author_message: Jesteś pewien(wna), że chcesz usunąć tego autora?
+first_name: Imię
+surname: Nazwisko
+books_amount: Ilość książek
+search_authors: Szukaj autorów...
+book_s: książek
+edit_author: Edytuj autora
+no_authors_found: Nie znaleziono autorów

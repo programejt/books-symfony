@@ -11,7 +11,7 @@ file:
   extension: File was not uploaded because of server error
   upload: File was not uploaded because of server error
   size_not_detected: File was not uploaded because of server error
-  move: Error occured while saving uploaded photo
+  move: Error occured while saving uploaded file
 
 email:
   not_blank: The email can't be empty
@@ -53,11 +53,11 @@ password:
 form:
   general: Error occured while saving data
 
-not_blank: 'This field cannot be empty'
+not_blank: This field cannot be empty
 
 length:
-  min: 'The value must be at least {{ limit }} characters long'
-  max: 'The value cannot be longer than {{ limit }} characters'
+  min: The value must be at least {{ limit }} characters long
+  max: The value cannot be longer than {{ limit }} characters
 
-greater_than: 'The value must be greater than {{ limit }}'
-less_than: 'The value must be less than {{ limit }}'
+greater_than: The value must be greater than {{ limit }}
+less_than: The value must be less than {{ limit }}
