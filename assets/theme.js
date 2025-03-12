@@ -1,14 +1,13 @@
 (function () {
   const html = document.documentElement;
-  const attribute = 'data-bs-theme';
 
-  document.addEventListener('click', function (ev) {
-    let themeButton = ev.target.closest('button.toggle-theme');
+  document.addEventListener('change', function (ev) {
+    let themeInput = ev.target;
 
-    if (themeButton) {
-      let theme = html.getAttribute(attribute) === 'dark' ? 'light' : 'dark';
+    if (themeInput.matches('input.toggle-theme')) {
+      let theme = themeInput.value;
 
-      html.setAttribute(attribute, theme);
+      html.setAttribute('data-bs-theme', theme);
 
       const d = new Date();
       d.setTime(d.getTime() + (150 * 24 * 60 * 60 * 1000));

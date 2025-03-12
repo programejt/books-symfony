@@ -1,7 +1,7 @@
 login: Login
 logout: Logout
 register: Register
-toggle_theme: Toggle theme
+settings: Settings
 toggle_navigation: Toggle navigation
 books: Books
 authors: Authors
@@ -114,3 +114,12 @@ search_authors: Search authors...
 book_s: book(s)
 edit_author: Edit author
 no_authors_found: No authors found
+
+theme:
+  text: theme
+  dark: Dark
+  light: Light
+
+locale:
+  en: English
+  pl: Polish

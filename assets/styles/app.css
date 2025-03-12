@@ -46,11 +46,6 @@ img {
   max-width: 100%;
 }
 
-html[data-bs-theme="dark"] .theme-icon.sun-icon,
-html[data-bs-theme="light"] .theme-icon.moon-icon {
-  display: none;
-}
-
 .form-control,
 .form-check-input:not(:checked) {
   background-color: var(--bs-dark-bg-subtle) !important;
@@ -62,6 +57,26 @@ html[data-bs-theme="light"] .theme-icon.moon-icon {
   opacity: 0;
   visibility: hidden;
   transition: all .2s ease-in-out;
+}
+
+.settings-dropdown {
+  display: block !important;
+}
+
+.settings-dropdown > li {
+  display: flex;
+}
+
+.locale-section {
+  flex-direction: column;
+}
+
+.locale-section label {
+  text-align: left;
+}
+
+.settings-dropdown > li > * {
+  flex: 1;
 }
 
 @media (min-width: 576px) {
