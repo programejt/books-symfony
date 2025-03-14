@@ -11,6 +11,8 @@ Website that contains books with detailed informations and authors of them.
 - if you have Moderator or Admin role, you can create, edit and delete books and authors
 - if you have Admin role, you can also change role of other users
 
+Website is available in English and Polish language. It has dark and light theme.
+
 After running project, it has one account that has Admin role.
 
 ## Screenshots
@@ -22,8 +24,6 @@ After running project, it has one account that has Admin role.
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-6.png)
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-7.png)
 ![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-8.png)
-![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-9.png)
-![alt text](https://github.com/programejt/books-symfony/blob/main/screenshots/screenshot-10.png)
 
 ## How to run project
 1. Clone this repo to your computer (`git clone https://github.com/programejt/books-symfony.git`)

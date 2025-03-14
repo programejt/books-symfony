@@ -29,6 +29,33 @@ img {
   max-width: 100%;
 }
 
+.btn-check + .btn {
+  border-color: transparent !important;
+}
+
+.nav-pills .nav-link {
+  color: var(--bs-body-color);
+  padding: 7px;
+}
+
+.nav-pills .nav-link:hover,
+.nav-pills .nav-link:focus-visible,
+.btn-check + .btn:hover,
+.btn-check:checked + .btn:hover,
+.btn-check + .btn:focus-visible {
+  background-color: rgb(var(--bs-tertiary-bg-rgb));
+}
+
+.btn-check:checked + .btn,
+.btn-check + .btn:active {
+  background-color: rgb(var(--bs-secondary-bg-rgb));
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .nav-link:active {
+  background-color: rgb(var(--bs-body-bg-rgb));
+}
+
 .toggle-theme {
   margin: 5px 5px 5px 0;
   padding: 5px;
@@ -59,8 +86,13 @@ img {
   transition: all .2s ease-in-out;
 }
 
+.navbar .dropdown-menu {
+  position: static;
+}
+
 .settings-dropdown {
-  display: block !important;
+  left: auto !important;
+  right: 0;
 }
 
 .settings-dropdown > li {
@@ -80,8 +112,9 @@ img {
 }
 
 @media (min-width: 576px) {
-  .user-dropdown-menu {
+  .navbar .dropdown-menu {
     display: block !important;
+    position: absolute;
   }
 }
 
