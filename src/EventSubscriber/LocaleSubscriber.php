@@ -20,7 +20,7 @@ readonly final class LocaleSubscriber implements EventSubscriberInterface
     $request = $event->getRequest();
     $locales = $this->params->get('kernel.enabled_locales');
     $localeCookie = $request->cookies->get('locale');
-    $userLocale = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? null;
+    $userLocale = $request->headers->get('Accept-Language');
 
     $request->attributes->set('locales', $locales);
 
