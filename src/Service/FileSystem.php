@@ -31,18 +31,18 @@ class FileSystem
       return false;
     }
 
-    $failure = false;
+    $result = true;
 
     for ($i = 2, $imax = \count($scan); $i < $imax; ++$i) {
       $file = $dir."/".$scan[$i];
 
       if (\is_file($file)) {
         if (!\unlink($file)) {
-          $failure = true;
+          $result = false;
         }
       } else if (\is_dir($file)) {
         if (!self::deleteDir($file)) {
-          $failure = true;
+          $result = false;
         }
       }
     }
@@ -51,7 +51,7 @@ class FileSystem
       return false;
     }
 
-    return !$failure;
+    return $result;
   }
 
   public static function getDocumentRoot(): string

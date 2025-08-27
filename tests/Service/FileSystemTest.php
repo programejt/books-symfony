@@ -14,7 +14,7 @@ final class FileSystemTest extends WebTestCase
     if (!$this->testDir) {
       self::bootKernel();
 
-      $this->testDir = self::$kernel->getProjectDir()."/var/test";
+      $this->testDir = self::$kernel->getProjectDir().'/var/test';
 
       if (!\file_exists($this->testDir)) {
         \mkdir($this->testDir);
@@ -35,11 +35,11 @@ final class FileSystemTest extends WebTestCase
   public function testDeleteDir(): void
   {
     $dir1 = $this->testDir.'/dir1';
-    $dir2 = $dir1.'/dir2';
+    $dir2 = "$dir1/dir2";
 
-    $file1 = $dir1.'/file1.txt';
-    $file2 = $dir1.'/file2.txt';
-    $file3 = $dir2.'/file3.txt';
+    $file1 = "$dir1/file1.txt";
+    $file2 = "$dir1/file2.txt";
+    $file3 = "$dir2/file3.txt";
 
     if (!\file_exists($dir1)) {
       \mkdir($dir1);
@@ -69,6 +69,13 @@ final class FileSystemTest extends WebTestCase
   {
     $this->assertSame(
       '',
+      FileSystem::getDocumentRoot(),
+    );
+
+    $_SERVER['DOCUMENT_ROOT'] = 'root';
+
+    $this->assertSame(
+      'root/',
       FileSystem::getDocumentRoot(),
     );
   }
