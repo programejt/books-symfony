@@ -4,26 +4,44 @@ namespace Test\Enum;
 
 use App\Enum\UserRole;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class UserRoleTest extends WebTestCase
 {
-  public function testUserRole(): void
+  #[DataProvider('userRoleSuccessDataProvider')]
+  public function testUserRoleSuccess(
+    string $roleKey,
+    string $roleName,
+    UserRole $role,
+  ): void {
+    $userRole = UserRole::from($roleKey);
+
+    $this->assertSame($userRole, $role);
+    $this->assertSame($userRole->toRoleName(), $roleName);
+  }
+
+  public static function userRoleSuccessDataProvider(): \Generator
   {
-    $this->assertSame(
-      UserRole::from('ROLE_ADMIN'),
-      UserRole::Admin,
-    );
+    yield 'admin' => [
+      'roleKey' => 'ROLE_ADMIN',
+      'roleName' => 'Admin',
+      'role' => UserRole::Admin,
+    ];
 
-    $this->assertSame(
-      UserRole::from('ROLE_MODERATOR'),
-      UserRole::Moderator,
-    );
+    yield 'moderator' => [
+      'roleKey' => 'ROLE_MODERATOR',
+      'roleName' => 'Moderator',
+      'role' => UserRole::Moderator,
+    ];
 
-    $this->assertSame(
-      UserRole::from('ROLE_USER'),
-      UserRole::User,
-    );
+    yield 'user' => [
+      'roleKey' => 'ROLE_USER',
+      'roleName' => 'User',
+      'role' => UserRole::User,
+    ];
+  }
 
+  public function testUserRoleFailure(): void {
     $this->expectException(\ValueError::class);
     $this->expectExceptionMessage('"ROLE_NOT_EXISTS" is not a valid backing value for enum App\Enum\UserRole');
 
