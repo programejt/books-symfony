@@ -34,7 +34,7 @@ class FileSystem
     $result = true;
 
     for ($i = 2, $imax = \count($scan); $i < $imax; ++$i) {
-      $file = $dir."/".$scan[$i];
+      $file = "$dir/{$scan[$i]}";
 
       if (\is_file($file)) {
         if (!\unlink($file)) {

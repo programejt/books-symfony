@@ -24,7 +24,7 @@ final class FileSystemTest extends WebTestCase
 
   public function testDeleteFile(): void
   {
-    $file = $this->testDir.'/test.txt';
+    $file = "{$this->testDir}/test.txt";
 
     \touch($file);
 
@@ -34,7 +34,7 @@ final class FileSystemTest extends WebTestCase
 
   public function testDeleteDir(): void
   {
-    $dir1 = $this->testDir.'/dir1';
+    $dir1 = "{$this->testDir}/dir1";
     $dir2 = "$dir1/dir2";
 
     $file1 = "$dir1/file1.txt";
@@ -67,24 +67,15 @@ final class FileSystemTest extends WebTestCase
 
   public function testGetDocumentRoot(): void
   {
-    $this->assertSame(
-      '',
-      FileSystem::getDocumentRoot(),
-    );
+    $this->assertSame('', FileSystem::getDocumentRoot());
 
     $_SERVER['DOCUMENT_ROOT'] = 'root';
 
-    $this->assertSame(
-      'root/',
-      FileSystem::getDocumentRoot(),
-    );
+    $this->assertSame('root/', FileSystem::getDocumentRoot());
   }
 
   public function testEscapePath(): void
   {
-    $this->assertSame(
-      '//yyy',
-      FileSystem::escapePath('../../yy\y'),
-    );
+    $this->assertSame('//yyy', FileSystem::escapePath('../../yy\y'));
   }
 }
