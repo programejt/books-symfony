@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="tests/bootstrap.php"
-         colors="true"
-         displayDetailsOnTestsThatTriggerDeprecations="true"
-         displayDetailsOnTestsThatTriggerErrors="true"
-         displayDetailsOnTestsThatTriggerNotices="true"
-         displayDetailsOnTestsThatTriggerWarnings="true"
-         displayDetailsOnPhpunitDeprecations="true">
+<phpunit
+  bootstrap="tests/bootstrap.php"
+  colors="true"
+  displayDetailsOnTestsThatTriggerDeprecations="true"
+  displayDetailsOnTestsThatTriggerErrors="true"
+  displayDetailsOnTestsThatTriggerNotices="true"
+  displayDetailsOnTestsThatTriggerWarnings="true"
+  displayDetailsOnPhpunitDeprecations="true"
+>
   <testsuites>
     <testsuite name="Application Test Suite">
       <directory>./tests</directory>
     </testsuite>
   </testsuites>
+
+  <source>
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </source>
 
   <php>
     <env name="APP_ENV" value="test"/>
@@ -19,8 +27,15 @@
 
   <coverage
     includeUncoveredFiles="true"
-    pathCoverage="false"
+    pathCoverage="true"
     ignoreDeprecatedCodeUnits="true"
-    disableCodeCoverageIgnore="true">
+    disableCodeCoverageIgnore="true"
+  >
+    <report>
+      <html outputDirectory="var/coverage/html" lowUpperBound="40" highLowerBound="80"/>
+      <!-- <php outputFile="var/coverage/coverage.php"/>
+      <text outputFile="var/coverage/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+      <xml outputDirectory="var/coverage/xml"/> -->
+    </report>
   </coverage>
 </phpunit>
