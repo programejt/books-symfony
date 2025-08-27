@@ -49,4 +49,4 @@ After running project, it has one account that has Admin role.
   - if database's user that your application is connecting to has permission to create databases, run in terminal `php bin/console --env=test doctrine:database:create`
   - create manually in your database environment
 3. Run in terminal `php bin/console --env=test doctrine:migrations:migrate`
-4. To run PHPUnit tests, run in terminal `php bin/phpunit`
+4. To run PHPUnit tests, run in terminal `php bin/phpunit` (you need to have XDEBUG php extension installed and XDEBUG_MODE=coverage. You can run `XDEBUG_MODE=coverage php bin/phpunit`)
