@@ -2,7 +2,7 @@
 
 {% block title %}{{ book.title }} - {{ 'book'|trans }}{% endblock %}
 {% block stylesheets %}
-  <link href="{{ asset('styles/book.css') }}" rel="stylesheet">
+  <link href="{{ asset('styles/show.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
@@ -19,8 +19,8 @@
     </div>
   {% endif %}
 
-  <div class="container book-container content-container">
-    <div class="data-row book-photo">
+  <div class="container data-container content-container">
+    <div class="data-row photo">
       {{ include('books/photo.html.twig') }}
     </div>
     <div class="data-row">

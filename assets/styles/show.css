@@ -1,0 +1,21 @@
+.data-row {
+  margin-bottom: 10px;
+}
+
+.data-row-title {
+  color: var(--bs-secondary-color);
+  font-size: 17px;
+}
+
+.data-row-content {
+  font-size: 20px;
+}
+
+.white-space-pre-wrap {
+  white-space: pre-wrap;
+}
+
+.data-row.photo {
+  font-size: 100px;
+  text-align: center;
+}

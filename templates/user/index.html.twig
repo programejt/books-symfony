@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ user.name }}{% endblock %}
+{% block stylesheets %}
+  <link href="{{ asset('styles/show.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
   {{ include('user/header.html.twig', {

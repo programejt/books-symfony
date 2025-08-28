@@ -12,8 +12,14 @@
   {% endif %}
 
   <form action="{{ path('app_authors_index') }}" method="get" class="d-flex container content-container mb-5" role="search">
-    <input class="form-control me-2" type="search" name="search" placeholder="{{ 'search_authors'|trans }}" aria-label="{{ 'search'|trans }}" value="{{ authorSearchValue ?? '' }}">
-    <button class="btn btn-success" type="submit">{{ 'search'|trans }}</button>
+    <div class="input-group">
+      <input class="form-control form-control-lg" type="search" name="search" placeholder="{{ 'search_authors'|trans }}" aria-label="{{ 'search'|trans }}" value="{{ authorSearchValue ?? '' }}">
+      <button class="btn btn-success" type="submit" title="{{ 'search'|trans }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        </svg>
+      </button>
+    </div>
   </form>
 
   <div class="container-fluid">
@@ -21,7 +27,12 @@
       {% for author in authors %}
         <div class="card col-12 col-sm-6 col-md-4 col-lg-3">
           <div class="card-body">
-            <a href="{{ path('app_authors_show', { id: author.id }) }}" class="d-block card-title text-center btn card-main-link">{{ author }}</a>
+            <a href="{{ path('app_authors_show', { id: author.id }) }}" class="d-block text-center btn card-main-link">
+              <span class="card-img">
+                {{ include('authors/photo.html.twig') }}
+              </span>
+              <span class="d-block card-title">{{ author }}</span>
+            </a>
             <p class="card-text h6 text-muted">{{ author.books.count() }} {{ 'book_s'|trans }}</p>
           </div>
         </div>

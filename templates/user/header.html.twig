@@ -3,12 +3,10 @@
 {% endblock %}
 
 <header class="text-center">
-  <h1 class="h2 mb-3"><a href="{{ path('app_user_show', {'user': user.id}) }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover mx-auto user-signature">
-    {% if user.photo %}
-      <span class="user-photo-container mb-1">
-        <img src="{{ asset('assets/images/users/'~user.id~'/'~user.photo) }}" alt="{{ 'photo'|trans }}" class="img img-circled user-photo">
-      </span>
-    {% endif %}
-    <span class="user-name">{{ user.name }}</span>
-  </a></h1>
+  <h1 class="h2 mb-3">
+    <a href="{{ path('app_user_show', {'user': user.id}) }}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover mx-auto user-signature">
+      <span class="d-block mb-1 user-photo">{{ include('user/photo.html.twig') }}</span>
+      <span class="user-name">{{ user.name }}</span>
+    </a>
+  </h1>
 </header>

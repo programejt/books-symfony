@@ -38,9 +38,10 @@
                 <a class="nav-link {% if app.request.attributes.get('_route') == 'app_authors_index' %}active{% endif %}" href="{{ path('app_authors_index') }}">{{ 'authors'|trans }}</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle {% if app.request.attributes.get('_route') == 'app_user_my_account' %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle user-dropdown-toggle {% if app.request.attributes.get('_route') == 'app_user_my_account' %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {% if app.user %}
-                    {{ app.user.name }}
+                    {# <span class="user-icon">{{ include('user/photo.html.twig') }}</span> #}
+                    <span class="">{{ app.user.name }}</span>
                   </a>
                   <ul class="dropdown-menu user-dropdown-menu">
                     <li><a class="dropdown-item" href="{{ path('app_user_my_account') }}">{{ 'profile'|trans }}</a></li>
@@ -63,8 +64,14 @@
               </li>
             </ul>
             <form action="{{ path('app_books_index') }}" method="get" class="d-flex my-2 my-sm-0" role="search">
-              <input class="form-control me-2" type="search" name="search" placeholder="{{ 'search_books'|trans }}" aria-label="{{ 'search'|trans }}" value="{{ searchValue ?? '' }}">
-              <button class="btn btn-success" type="submit">{{ 'search'|trans }}</button>
+              <div class="input-group">
+                <input class="form-control" type="search" name="search" placeholder="{{ 'search_books'|trans }}" aria-label="{{ 'search'|trans }}" value="{{ searchValue ?? '' }}">
+                <button class="btn btn-success" type="submit" title="{{ 'search'|trans }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                  </svg>
+                </button>
+              </div>
             </form>
             <div class="dropdown settings ms-sm-2">
               <button type="button" class="w-100 btn btn-secondary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'settings'|trans }}">

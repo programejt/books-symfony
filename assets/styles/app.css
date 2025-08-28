@@ -188,23 +188,27 @@ img {
   max-width: 600px;
 }
 
-.data-row {
-  margin-bottom: 10px;
-}
-
-.data-row-title {
-  color: var(--bs-secondary-color);
-  font-size: 17px;
-}
-
-.data-row-content {
-  font-size: 20px;
-}
-
-.white-space-pre-wrap {
-  white-space: pre-wrap;
-}
-
 .image-preview {
   max-height: 300px;
+}
+
+.card {
+  max-width: 350px;
+}
+
+.data-container {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(var(--bs-secondary-bg-rgb)) !important;
+}
+
+.user-photo {
+  width: 1em;
+  height: 1em;
+  vertical-align: baseline !important;
+}
+
+img.user-photo {
+  object-fit: cover;
+  object-position: center;
 }

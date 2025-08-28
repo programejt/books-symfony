@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ author }} - {{ 'author'|trans }}{% endblock %}
+{% block stylesheets %}
+  <link href="{{ asset('styles/show.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
   <header class="text-center">
@@ -16,7 +19,10 @@
     </div>
   {% endif %}
 
-  <div class="container author-container content-container">
+  <div class="container data-container content-container">
+    <div class="data-row photo">
+      {{ include('authors/photo.html.twig') }}
+    </div>
     <div class="data-row">
       <div class="data-row-title">{{ 'first_name'|trans }}</div>
       <div class="data-row-content">{{ author.name }}</div>
@@ -32,7 +38,7 @@
     </div>
   </div>
 
-  <div class="container-fluid">
+  <div class="container-fluid mt-4">
     <h2 class="text-center">{{ 'books'|trans }}</h2>
     <div class="row gap-3 justify-content-center">
       {{ include('books/cards.html.twig', {'books': author.books}) }}
