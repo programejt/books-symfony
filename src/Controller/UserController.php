@@ -117,24 +117,24 @@ class UserController extends AbstractController
   ): Response {
     /** @var User $user */
     $user = $this->getUser();
-    $newEmail = $user->getNewEmail();
 
-    if ($newEmail) {
+    if ($user->isNewEmailSet()) {
       return $this->redirectToRoute('app_user_email_change_verification');
     }
 
-    $form = $this->createForm(UserChangeEmailType::class, $user);
+    $form = $this->createForm(UserChangeEmailType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $emailField = $form->get('email');
-      $email = $emailField->getData();
+      $newEmailInput = $form->get('email');
+      $newEmailFromRequest = $newEmailInput->getData();
 
-      if ($email !== $user->getEmail()) {
+      if ($newEmailFromRequest !== $user->getEmail()) {
         $this->_sendChangeEmailVerification($emailVerifier, $user, $translator);
 
-        if (!$newEmail || $newEmail !== $email) {
-          $user->setNewEmail($email);
+        if ($user->getNewEmail() !== $newEmailFromRequest) {
+          $user->setNewEmail($newEmailFromRequest);
+          $user->setDefaultNewEmailExpires();
 
           $entityManager->persist($user);
           $entityManager->flush();
@@ -142,7 +142,7 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_email_change_verification');
       } else {
-        $emailField->addError(new FormError('same.email'));
+        $newEmailInput->addError(new FormError('same.email'));
       }
     }
 
@@ -161,9 +161,8 @@ class UserController extends AbstractController
   ): Response {
     /** @var User $user */
     $user = $this->getUser();
-    $newEmail = $user->getNewEmail();
 
-    if (! $newEmail) {
+    if (!$user->isNewEmailSet()) {
       $this->addFlash('change_email_error', $translator->trans('empty_new_email'));
 
       return $this->redirectToRoute('app_user_change_email');
@@ -175,8 +174,9 @@ class UserController extends AbstractController
     try {
       $emailVerifier->validateEmailConfirmationFromRequest($request, $user);
 
-      $user->setEmail($newEmail);
+      $user->setEmail($user->getNewEmail());
       $user->setNewEmail(null);
+      $user->setNewEmailExpires(null);
       $user->setEmailVerified(false);
 
       $entityManager->persist($user);
@@ -203,7 +203,7 @@ class UserController extends AbstractController
     /** @var User $user */
     $user = $this->getUser();
 
-    if (!$user->getNewEmail()) {
+    if (!$user->isNewEmailSet()) {
       return $this->redirectToRoute('app_user_change_email');
     }
 
@@ -289,7 +289,7 @@ class UserController extends AbstractController
     /** @var User $user */
     $user = $this->getUser();
 
-    if ($user->getNewEmail()) {
+    if ($user->isNewEmailSet()) {
       if ($this->isCsrfTokenValid(
         'cancel_email_change',
         $request->getPayload()->getString('_token')

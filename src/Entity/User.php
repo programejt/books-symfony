@@ -76,6 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column(length: self::EMAIL_MAX_LENGTH, nullable: true)]
   private ?string $newEmail = null;
 
+  #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+  private ?\DateTimeInterface $newEmailExpires = null;
+
   public function __construct() {
     $this->createdAt = new \DateTime();
   }
@@ -209,6 +212,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     $this->newEmail = $newEmail;
 
     return $this;
+  }
+
+  public function getNewEmailExpires(): ?\DateTimeInterface
+  {
+    return $this->newEmailExpires;
+  }
+
+  public function setNewEmailExpires(?\DateTimeInterface $newEmailExpires): static
+  {
+    $this->newEmailExpires = $newEmailExpires;
+
+    return $this;
+  }
+
+  public function setDefaultNewEmailExpires(): static
+  {
+    $this->newEmailExpires = new \DateTime('+2 days');
+
+    return $this;
+  }
+
+  public function newEmailExpired(): bool
+  {
+    return !$this->newEmailExpires || $this->newEmailExpires < new \DateTime();
+  }
+
+  public function isNewEmailSet(): bool
+  {
+    return $this->newEmail && !$this->newEmailExpired();
   }
 
   public function getRole(): UserRole
