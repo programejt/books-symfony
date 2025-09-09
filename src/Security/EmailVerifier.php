@@ -9,6 +9,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EmailVerifier
 {
@@ -56,6 +57,20 @@ class EmailVerifier
       $request,
       (string) $user->getId(),
       (string) $user->getEmail(),
+    );
+  }
+
+  public function sendChangeEmailVerification(
+    User $user,
+    TranslatorInterface $translator,
+  ): void {
+    $this->sendEmailConfirmation(
+      'app_user_set_new_email',
+      $user,
+      $this
+        ->emailTemplate((string) $user->getEmail())
+        ->subject($translator->trans('confirm_email_change_subject'))
+        ->htmlTemplate('email/confirmation_change_email.html.twig'),
     );
   }
 }

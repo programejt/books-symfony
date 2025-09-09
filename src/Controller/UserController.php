@@ -130,7 +130,7 @@ class UserController extends AbstractController
       $newEmailFromRequest = $newEmailInput->getData();
 
       if ($newEmailFromRequest !== $user->getEmail()) {
-        $this->_sendChangeEmailVerification($emailVerifier, $user, $translator);
+        $emailVerifier->sendChangeEmailVerification($user, $translator);
 
         if ($user->getNewEmail() !== $newEmailFromRequest) {
           $user->setNewEmail($newEmailFromRequest);
@@ -212,7 +212,7 @@ class UserController extends AbstractController
         'resend_email',
         $request->getPayload()->getString('_token')
       )) {
-        $this->_sendChangeEmailVerification($emailVerifier, $user, $translator);
+        $emailVerifier->sendChangeEmailVerification($user, $translator);
       }
     }
 
@@ -344,20 +344,5 @@ class UserController extends AbstractController
     return $this->render('user/index.html.twig', [
       'user' => $user,
     ]);
-  }
-
-  private function _sendChangeEmailVerification(
-    EmailVerifier $emailVerifier,
-    User $user,
-    TranslatorInterface $translator,
-  ): void {
-    $emailVerifier->sendEmailConfirmation(
-      'app_user_set_new_email',
-      $user,
-      $emailVerifier
-        ->emailTemplate((string) $user->getEmail())
-        ->subject($translator->trans('confirm_email_change_subject'))
-        ->htmlTemplate('email/confirmation_change_email.html.twig'),
-    );
   }
 }
